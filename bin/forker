@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+$LOAD_PATH << File.expand_path(File.dirname(__FILE__) + '/../lib')
+require 'forker'
+require 'yaml'
+require 'nokogiri'
+open(File.dirname(__FILE__) + '/../config.yml') {|f| $config = YAML.load(f)}
+events = Eventsfinder.new({
+                            bookies: $config[:bookies],
+                            downloader: Downloader.new
+                          }).events
+events.each do |key,arr|
+  forker = Forksfinder.new({
+                             downloader: Downloader.new
+                           })
+  forker.parse(arr)
+  Display.new.debug_parsed_bookies(forker.parsed_bookies)
+  forker.forking
+  unless forker.forks.empty?
+    display = Display.new
+    display.to_screen(forker.forks)
+  end
+end

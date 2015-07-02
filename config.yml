@@ -1,0 +1,8 @@
+---
+:min_percent: 0.3
+:task: /home/gentoo/Temp/task.iim
+:waiter: /home/gentoo/Temp/waiter.iim
+:macros_folder: /home/gentoo/Temp/
+:bookies:
+- WilliamHill
+- Betfair
