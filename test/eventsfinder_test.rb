@@ -49,7 +49,7 @@ class TestEvFinder < Test::Unit::TestCase
       assert_equal(Array, val.class)
       assert_equal(String, key.class)
       assert(val.size > 1)
-      puts ""; puts key; puts ""; puts val
+#      puts ""; puts key; puts ""; puts val
     end
   end
 end
