@@ -74,17 +74,22 @@ class WilliamHill < Bookmaker
       player = :away_player
     end
     chunk = event.css("tbody #{priceholder}").each do |pl|
-        name = pl.css('div.eventselection').text.strip
-        coeff = pl.css('div.eventprice').text.strip.to_f
-        coeff = pl.css(pricecoeff).text.strip.to_f if coeff == 0.0
+      name = pl.css('div.eventselection').text.strip
+      coeff = pl.css('div.eventprice').text.strip.to_f
+      coeff = pl.css(pricecoeff).text.strip.to_f if coeff == 0.0
+      unless coeff == 0.0
         @parsed_event[player][:name] ||= unified_names(name)
         if what.include? 'Match Betting'
           @parsed_event[player][:match] = coeff
         elsif what.include? ' Set - Game '
           @parsed_event[player][:game] ||= Hash.new
-          @parsed_event[player][:game].merge!({what.scan(/\w+/)[-1] => coeff}) unless coeff == 0.0
+          @parsed_event[player][:game].merge!({what.scan(/\w+/)[-1] => coeff})
+        elsif what.include? ' Set Betting Live'
+          @parsed_event[player][:set] ||= Hash.new
+          @parsed_event[player][:set].merge!({what.scan(/\w+/)[0].to_i.to_s => coeff})
         end
       end
+    end
   end
 
 end

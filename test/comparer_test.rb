@@ -14,6 +14,9 @@ class TestComparer < Test::Unit::TestCase
         match: 1.6,
         game: {
           "4" => 2.2
+        },
+        set: {
+          "1" => 1.4
         }
       },
       away_player: {
@@ -21,6 +24,9 @@ class TestComparer < Test::Unit::TestCase
         match: 2.3,
         game: {
           "4" => 1.7
+        },
+        set: {
+          "1" => 2.9
         }
       }
     }
@@ -32,6 +38,9 @@ class TestComparer < Test::Unit::TestCase
         match: 1.3,
         game: {
           "4" => 2.9
+        },
+        set: {
+          "1" => 1.6
         }
       },
       away_player: {
@@ -39,6 +48,9 @@ class TestComparer < Test::Unit::TestCase
         match: 3.3,
         game: {
           "4" => 1.4
+        },
+        set: {
+          "1" => 2.2
         }
       }
     }
@@ -50,6 +62,9 @@ class TestComparer < Test::Unit::TestCase
         match: 1.3,
         game: {
           "4" => 2.9
+        },
+        set: {
+          "1" => 1.01
         }
       },
       away_player: {
@@ -57,6 +72,9 @@ class TestComparer < Test::Unit::TestCase
         match: 3.3,
         game: {
           "4" => 1.4
+        },
+        set: {
+          "1" => 1.01
         }
       }
     }
@@ -68,12 +86,11 @@ class TestComparer < Test::Unit::TestCase
   def test_compare
     forks = @comparer.compare(@first, @second)
     refute(forks.empty?)
-    puts forks
     forks.each do |fork|
       assert_equal("WilliamHill - Betfair", fork[:bookies])
       assert_equal("Home_Player  VS  Away_Player", fork[:players])
       assert_equal("3:3", fork[:score])
-      assert(fork[:what] =~ /match|game4/)
+      assert(fork[:what] =~ /match|game4|set1/)
       assert_equal(String, fork[:percent].class)
     end
   end

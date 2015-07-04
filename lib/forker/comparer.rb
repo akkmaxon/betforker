@@ -40,10 +40,19 @@ class Comparer
     end
     #game processing
     if first[:home_player].has_key?(:game) and second[:home_player].has_key?(:game)
-      respond = game_win(first, second)
+      respond = game_or_set_win(:game, first, second)
       unless respond.empty?
         respond.each do |game|
           @forks_found << header.merge(game)
+        end
+      end
+    end
+    #set processing
+    if first[:home_player].has_key?(:set) and second[:home_player].has_key?(:set)
+      respond = game_or_set_win(:set, first, second)
+      unless respond.empty?
+        respond.each do |set|
+          @forks_found << header.merge(set)
         end
       end
     end
@@ -76,20 +85,20 @@ class Comparer
     respond
   end
 
-  def game_win first, second
+  def game_or_set_win param, first, second
     respond = []
     percent_straight = {}
     percent_reverse = {}
-    first[:home_player][:game].each do |first_key, first_val|
-      second[:away_player][:game].each do |second_key, second_val|
+    first[:home_player][param].each do |first_key, first_val|
+      second[:away_player][param].each do |second_key, second_val|
         if first_key == second_key
           percent_straight[first_key] = calculate_forks(first_val, second_val)
         end
       end
     end
 
-    first[:away_player][:game].each do |first_key, first_val|
-      second[:home_player][:game].each do |second_key, second_val|
+    first[:away_player][param].each do |first_key, first_val|
+      second[:home_player][param].each do |second_key, second_val|
         if first_key == second_key
           percent_reverse[first_key] = calculate_forks(first_val, second_val)
         end
@@ -101,7 +110,7 @@ class Comparer
         if key_str == key_rev
           percent = val_str > val_rev ? val_str : val_rev
           if percent > $config[:min_percent]
-            respond << { what: "game#{key_str}", percent: percent.round(2).to_s }
+            respond << { what: (param.to_s + key_str), percent: percent.round(2).to_s }
           end
         end
       end

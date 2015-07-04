@@ -1,7 +1,7 @@
 require 'test/unit'
 require 'forker'
 
-$config = {min_percent: 1.1}
+$config = {min_percent: 1.1, log_forks: '/home/gentoo/Temp/ffff', log_parsed_bookies: '/home/gentoo/Temp/kkkk'}
 #######CHANGE TO FALSE WHEN ALL CODE WILL BE READY#############
 $addresses = Hash.new
 (1..8).each do |num|
@@ -80,20 +80,24 @@ class TestForksFinder < Test::Unit::TestCase
   end
 
   def test_forking
-    @finder.parse($addresses["5"]) unless $local
-    Display.new.debug_parsed_bookies(@finder.parsed_bookies)
-    @finder.forking
-    Display.new.to_screen(@finder.forks)
-    assert_equal(Array, @finder.forks.class)
-    unless @finder.forks.empty?
-      @finder.forks.size.times do |num|
-        [:bookies, :players, :score, :what, :percent].each do |key|
-          assert(@finder.forks[num].include?(key))
-          assert_equal(String, @finder.forks[num][key].class)
+    (6..8).each do |num|
+    @finder = Forksfinder.new({
+                                downloader: LocalDownloader.new
+                              })
+      @finder.parse($addresses[num.to_s]) unless $local
+      Display.new.debug_parsed_bookies(@finder.parsed_bookies)
+      @finder.forking
+      Display.new.to_screen(@finder.forks)
+      assert_equal(Array, @finder.forks.class)
+      unless @finder.forks.empty?
+        @finder.forks.size.times do |num|
+          [:bookies, :players, :score, :what, :percent].each do |key|
+            assert(@finder.forks[num].include?(key))
+            assert_equal(String, @finder.forks[num][key].class)
+          end
         end
       end
     end
-
   end
 
 end

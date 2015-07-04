@@ -7,7 +7,7 @@ $event_pages = []
   $event_pages << "test/html/williamhill#{num}.html"
 end
 
-$live_page = open('test/html/wh_live1.htm').read
+$live_page = open('test/html/wh_live.htm').read
 class TestWilliamHill < Test::Unit::TestCase
 
   def setup

@@ -98,9 +98,12 @@ class Betfair < Bookmaker
       return if coeff == 0.0
       if what.include? 'Match Odds'
         @parsed_event[player][:match] = coeff
-      elsif what.include? 'Game ' and coeff.class == Float
+      elsif what.include? 'Game '
         @parsed_event[player][:game] ||= Hash.new
         @parsed_event[player][:game].merge!({what.scan(/\w+/)[-2] => coeff})
+      elsif what.include? 'Set' and what.include? 'Winner'
+        @parsed_event[player][:set] ||= Hash.new
+        @parsed_event[player][:set].merge!({what.scan(/\w+/)[-2].to_i.to_s => coeff})
       end
     end
   end

@@ -3,6 +3,8 @@
 :task: /home/gentoo/Temp/task.iim
 :waiter: /home/gentoo/Temp/waiter.iim
 :macros_folder: /home/gentoo/Temp/
+:log_forks: /home/gentoo/Temp/ffff
+:log_parsed_bookies: /home/gentoo/Temp/kkkk
 :bookies:
 - WilliamHill
 - Betfair

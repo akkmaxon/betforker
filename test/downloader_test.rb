@@ -1,5 +1,6 @@
 require 'test/unit'
 require 'forker'
+require 'capybara/poltergeist'
 require 'yaml'
 open(File.dirname(__FILE__) + '/../config.yml') {|f| $config = YAML.load(f)}
 class TestDown < Test::Unit::TestCase
@@ -15,11 +16,13 @@ class TestDown < Test::Unit::TestCase
       ya: 'http://ya.ru',
       pn: 'http://pinnaclesports.com'
     }
+    3.times do
     addr.each do |who,link|
       page = @down.download(link)
       assert_equal(String, page.class)
       assert(page.size > 1000)
       assert(page.include? link[7, 5])
+    end
     end
   end
 end

@@ -1,5 +1,6 @@
 require 'test/unit'
 require 'forker'
+require 'capybara/poltergeist'
 require 'yaml'
 
 $bookies = [
@@ -9,7 +10,7 @@ $bookies = [
 $config = YAML.load(open('/home/gentoo/Projects/ruby/forker/config.yml'))
 
 ##############CHANGE TO FALSE WHEN ALL CODE WILL BE READY FOR INTERNET TESTING#############
-$local = true
+$local = true #open saved files
 
 class LocalDownloader
   def download add
@@ -19,12 +20,12 @@ end
 if $local
   class WilliamHill
     def initialize
-      @live_address = 'test/html/wh_live1.htm'
+      @live_address = 'test/html/wh_live.htm'
     end
   end
   class Betfair
     def initialize
-      @live_address = 'test/html/bf_live1.htm'
+      @live_address = 'test/html/bf_live.htm'
     end
   end
 end
