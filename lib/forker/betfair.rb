@@ -33,8 +33,7 @@ class Betfair < Bookmaker
     away_set = nok.css('.runners-table .away-header .active-set').text.strip
     home_game = nok.css('.runners-table .ui-score-home').text.strip
     away_game = nok.css('.runners-table .ui-score-away').text.strip
-    score = "#{home_game}:#{away_game} (#{home_set}:#{away_set})"
-    @parsed_event[:score] = score
+    @parsed_event[:score] = "#{home_game}:#{away_game} (#{home_set}:#{away_set})"
     nok.css('.list-minimarkets .mod-minimarketview').each do |event|
       what = event.css('.minimarketview-header span.title').text
       next if what =~ /Point|Handicap|Set Betting|Games|A Set/

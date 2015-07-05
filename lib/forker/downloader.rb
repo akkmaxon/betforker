@@ -11,7 +11,7 @@ class Downloader
       opts = {
         js_errors: false,
         phantomjs_options: ['--load-images=false', '--ignore-ssl-errors=true'],
-        timeout: 45
+        timeout: 15
       }
       Capybara::Poltergeist::Driver.new(app, opts)
     end
@@ -21,6 +21,7 @@ class Downloader
   end
 
   def download address
+    puts "Processing #{address}"
     cookie_setter
     headers_setter
     @browser.visit address
@@ -34,6 +35,7 @@ class Downloader
     @browser.page.driver.set_cookie('cust_lang', 'en-gb', {domain: '.williamhill.com'})
     @browser.page.driver.set_cookie('cust_prefs', 'en|DECIMAL|form|TYPE|PRICE|||0|SB|0|0||0|en|0|TIME|TYPE|0|31|A|0||0|1|0||TYPE|', {domain: '.williamhill.com'})
     @browser.page.driver.set_cookie('vid', '20691c80-5359-4b9a-98ab-20c363ae65bb', {domain: '.betfair.com'})
+    @browser.page.driver.set_cookie('panbet.oddstype', 'Decimal', {domain: 'www.betmarathon.com'})
   end
 
   def headers_setter
@@ -52,7 +54,9 @@ class Downloader
       'https://uservoice.com',
       'http://mediaplex.com',
       'http://rnengage.com',
-      'https://betfair.it'
+      'https://betfair.it',
+      'http://dgmdigital.com',
+      'http://googletagmanager.com'
     ]
   end
 end

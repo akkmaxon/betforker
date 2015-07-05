@@ -34,14 +34,12 @@ class Eventsfinder
   def check_bookmaker bookmaker
     who = Object.new
     case bookmaker
-    when 'WilliamHill'
-      who = WilliamHill.new
-    when 'Betfair'
-      who = Betfair.new
-    when 'Bet365'
-      who = Bet365.new
-    when 'Sportingbet'
-      who = Sportingbet.new
+    when 'WilliamHill' then who = WilliamHill.new
+    when 'Betfair' then who = Betfair.new
+    when 'Bet365' then who = Bet365.new
+    when 'Sportingbet' then who = Sportingbet.new
+    when 'Marathon' then who = Marathon.new
+    when 'Winlinebet'then who = Winlinebet.new
     end
     who
   end

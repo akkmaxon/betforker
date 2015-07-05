@@ -33,29 +33,12 @@ class Display
 
   def debug_parsed_bookies data
     open($config[:log_parsed_bookies], 'a') do |f|
-      f.write("\n##############------------------------------################")
-      f.write("\n#{data[0][:bookie]}                                   #{data[1][:bookie]}\n")
-      f.write("#{data[0][:score]}         #{data[1][:score]}\n")
-      f.write("#{data[0][:home_player][:name]}                       #{data[0][:away_player][:name]}")
-      f.write("          #{data[1][:home_player][:name]}                       #{data[1][:away_player][:name]}\n")
-      f.write("match #{data[0][:home_player][:match]}     match #{data[0][:away_player][:match]}")
-      f.write("                       match #{data[1][:home_player][:match]}     match #{data[1][:away_player][:match]}\n")
-      if data[0][:home_player].has_key?(:game)
-        f.write("games #{data[0][:home_player][:game]}  games #{data[0][:away_player][:game]}")
-      else
-        f.write("                                         ")
+      f.write("\n############################")
+      data.each do |buk|
+        buk.each do |key, val|
+          f.write("\n #{key}:  #{val}")
+        end
       end
-      if data[1][:home_player].has_key?(:game)
-        f.write("         games #{data[1][:home_player][:game]}  games #{data[1][:away_player][:game]}\n")
-      else
-        f.write("\n")
-      end
-      if data[0][:home_player].has_key?(:set)
-        f.write("sets #{data[0][:home_player][:set]}  sets #{data[0][:away_player][:set]}")
-      else
-        f.write("                                         ")
-      end
-      f.write("         sets #{data[1][:home_player][:set]}  sets #{data[1][:away_player][:set]}\n") if data[1][:home_player].has_key?(:set)
       f.close
     end
   end

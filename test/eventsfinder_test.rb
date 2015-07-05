@@ -5,7 +5,8 @@ require 'yaml'
 
 $bookies = [
   'WilliamHill',
-  'Betfair'
+  'Betfair',
+  'Marathon'
 ]
 $config = YAML.load(open('/home/gentoo/Projects/ruby/forker/config.yml'))
 
@@ -26,6 +27,11 @@ if $local
   class Betfair
     def initialize
       @live_address = 'test/html/bf_live.htm'
+    end
+  end
+  class Marathon
+    def initialize
+      @live_address = 'test/html/mar_live.html'
     end
   end
 end
@@ -49,7 +55,7 @@ class TestEvFinder < Test::Unit::TestCase
       assert_equal(Array, val.class)
       assert_equal(String, key.class)
       assert(val.size > 1)
-#      puts ""; puts key; puts ""; puts val
+      puts ""; puts key; puts ""; puts val
     end
   end
 end

@@ -53,6 +53,8 @@ class Forksfinder
     when address.include?('williamhill') then who = WilliamHill.new
     when address.include?('betfair') then who = Betfair.new
     when address.include?('bet365') then who = Bet365.new
+    when address.include?('marathon') then who = Marathon.new
+    when address.include?('winlinebet') then who = Winlinebet.new
     end
     who
   end

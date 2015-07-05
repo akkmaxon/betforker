@@ -14,7 +14,8 @@ class TestDown < Test::Unit::TestCase
       wh: 'http://sports.williamhill.com/bet/en-gb',
       bf: 'https://www.betfair.com/sport/inplay',
       ya: 'http://ya.ru',
-      pn: 'http://pinnaclesports.com'
+      pn: 'http://pinnaclesports.com',
+      mar: 'https://www.betmarathon.com/en/live/popular'
     }
     3.times do
     addr.each do |who,link|
