@@ -20,11 +20,14 @@ class Display
   end
 
   def to_screen forks_to_screen
-    to_screen = "#{forks_to_screen[0][:bookies]}\n"
+    to_screen = ""
     forks_to_screen.each do |fork|
       fork.each do |key, val|
-        next if key == :bookies
-        to_screen += "#{val}  "
+        if key == :bookies
+          to_screen << "#{val}\n" unless to_screen.include?(val)
+        else
+          to_screen << "#{val}  "
+        end
       end
       to_screen += "\n"
     end
