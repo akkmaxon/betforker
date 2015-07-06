@@ -15,7 +15,8 @@ class WilliamHill < Bookmaker
     nok = Nokogiri::HTML(html_source)
     links = Hash.new
     nok.css('#ip_sport_24_types .CentrePad a').each do |link|
-      href = link['href']#.gsub('%2d', ' ')
+      next unless link['href']
+      href = link['href']
       who = link.text
       links[href] = unified_names(who)
     end

@@ -16,6 +16,7 @@ class Marathon < Bookmaker
     nok = Nokogiri::HTML(html_source)
     links = Hash.new
     nok.css('.live-today-name .command').each do |link|
+      next unless link.attribute('onclick')
       num = link.attribute('onclick').text.scan(/\d+/)
       number = num.first if num.class == Array
       href = "https://www.betmarathon.com/en/live/#{number}?openedMarkets=#{number}"
@@ -38,7 +39,8 @@ class Marathon < Bookmaker
       @parsed_event[:home_player][:name] = unified_names(h_pl)
       @parsed_event[:away_player][:name] = unified_names(a_pl)
     end
-    sets_nums = ['1st', '2nd', '3rd', '4th', '5th']
+    #find sets & match
+    sets_nums = %w{ 1st 2nd 3rd 4th 5th }
     nok.css('span.selection-link').each do |link|
       if link.attribute('data-selection-key').text.include? 'Match_Result.1'
         @parsed_event[:home_player][:match] = link.text.to_f
@@ -52,6 +54,22 @@ class Marathon < Bookmaker
         elsif link.attribute('data-selection-key').text.include? "#{v}_Set_Result.RN_A"
           @parsed_event[:away_player][:set] ||= Hash.new
           @parsed_event[:away_player][:set][v[0]] = link.text.to_f
+        end
+      end
+    end
+    #find games
+    nok.css('.block-market-wrapper').each do |chunk|
+      next unless chunk.attribute('data-mutable-id').text == "B82"
+      chunk.css('.market-inline-block-table-wrapper').each do |ch|
+        next unless ch.css('.name-field').text.include? 'To Win Game'
+        ch.css('table tr').each do |t|
+          next if t.to_s.include?('<th')
+          num = t.css('.aleft .market-table-name b').text
+          coeff1, coeff2 = t.css('.price .selection-link').collect {|c| c.text.to_f}
+          @parsed_event[:home_player][:game] ||= Hash.new
+          @parsed_event[:away_player][:game] ||= Hash.new
+          @parsed_event[:home_player][:game][num] = coeff1
+          @parsed_event[:away_player][:game][num] = coeff2
         end
       end
     end
@@ -74,10 +92,17 @@ class Marathon < Bookmaker
     who
   end
 
-  def second_names_finder names#works only with singles not doubles
+  def second_names_finder names
     w = []
     names.gsub!('-', ' ')
-    w << names.split(',')[0].scan(/\w+/)[-1]
+    if names.include?('/')
+      nn = names.split(/\//)
+      nn.each do |n|
+        w << n.scan(/\w+/)[-1]
+      end
+    else
+      w << names.split(',')[0].scan(/\w+/)[-1]
+    end
     w
   end
 
