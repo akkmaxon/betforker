@@ -31,7 +31,7 @@ class Display
       end
       to_screen += "\n"
     end
-    `kdialog --passivepopup "#{to_screen}" 60`
+    `kdialog --passivepopup "#{to_screen}" 30`
   end
 
   def debug_parsed_bookies data

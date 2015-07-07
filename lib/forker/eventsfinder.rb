@@ -8,7 +8,7 @@ class Eventsfinder
 
   def events
     @bookies.each do |bookmaker|
-      who = check_bookmaker(bookmaker)
+      who = eval("#{bookmaker}.new")
       html = @downloader.download(who.live_address)
       @ev.merge! who.live_page_parsed(html) #hash addr => players
     end
@@ -29,19 +29,6 @@ class Eventsfinder
       end
     end
     new_evs
-  end
-
-  def check_bookmaker bookmaker
-    who = Object.new
-    case bookmaker
-    when 'WilliamHill' then who = WilliamHill.new
-    when 'Betfair' then who = Betfair.new
-    when 'Bet365' then who = Bet365.new
-    when 'Sportingbet' then who = Sportingbet.new
-    when 'Marathon' then who = Marathon.new
-    when 'Winlinebet'then who = Winlinebet.new
-    end
-    who
   end
 
   def remove_single_events
