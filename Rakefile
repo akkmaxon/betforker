@@ -1,7 +1,7 @@
+=begin
 require 'rake/clean'
 require 'rubygems'
-require 'rubygems/package_task'
-require 'rdoc/task'
+
 require 'cucumber'
 require 'cucumber/rake/task'
 Rake::RDocTask.new do |rd|
@@ -9,11 +9,19 @@ Rake::RDocTask.new do |rd|
   rd.rdoc_files.include("README.rdoc","lib/**/*.rb","bin/**/*")
   rd.title = 'Your application title'
 end
-
+=end
+require 'rubygems/package_task'
+require 'rdoc/task'
 spec = eval(File.read('forker.gemspec'))
 
 Gem::PackageTask.new(spec) do |pkg|
 end
+RDoc::Task.new do |rdoc|
+  rdoc.main = "README.rdoc"
+  rdoc.rdoc_files.include("README.rdoc", "lib/**/*.rb", "bin/**/*")
+  rdoc.title = 'Forker doc'
+end
+=begin
 CUKE_RESULTS = 'results.html'
 CLEAN << CUKE_RESULTS
 desc 'Run features'
@@ -42,3 +50,4 @@ Rake::TestTask.new do |t|
 end
 
 task :default => [:test,:features]
+=end

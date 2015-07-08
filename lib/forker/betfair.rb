@@ -1,4 +1,3 @@
-require 'nokogiri'
 class Betfair < Bookmaker
 
   def initialize

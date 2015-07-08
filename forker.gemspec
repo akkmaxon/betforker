@@ -1,23 +1,26 @@
 # Ensure we require the local version and not one we might have installed already
 require File.join([File.dirname(__FILE__),'lib','forker','version.rb'])
-spec = Gem::Specification.new do |s| 
+spec = Gem::Specification.new do |s|
   s.name = 'forker'
   s.version = Forker::VERSION
-  s.author = 'Your Name Here'
-  s.email = 'your@email.address.com'
-  s.homepage = 'http://your.website.com'
+  s.author = 'Akkuzin Maxim'
+  s.email = 'akkmaxon2307@gmail.com'
+  s.homepage = ''
   s.platform = Gem::Platform::RUBY
-  s.summary = 'A description of your project'
+  s.summary = "An app that looking for available bukmeker's forks"
   s.files = `git ls-files`.split("
 ")
   s.require_paths << 'lib'
-  s.has_rdoc = true
-  s.extra_rdoc_files = ['README.rdoc','forker.rdoc']
-  s.rdoc_options << '--title' << 'forker' << '--main' << 'README.rdoc' << '-ri'
+#  s.has_rdoc = true
+#  s.extra_rdoc_files = ['README.rdoc','forker.rdoc']
+#  s.rdoc_options << '--title' << 'forker' << '--main' << 'README.rdoc' << '-ri'
   s.bindir = 'bin'
   s.executables << 'forker'
-  s.add_development_dependency('rake')
-  s.add_development_dependency('rdoc')
+  s.add_dependency('nokogiri')
+  s.add_dependency('capybara')
+  s.add_dependency('poltergeist')
+  s.add_dependency('mechanize')
+  s.add_development_dependency('rake', '~> 10.4.2')
+  s.add_development_dependency('rdoc', '~> 4.2')
   s.add_development_dependency('aruba')
-  s.add_runtime_dependency('gli','2.13.0')
 end

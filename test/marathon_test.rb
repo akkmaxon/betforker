@@ -1,4 +1,5 @@
 require 'test/unit'
+require 'nokogiri'
 require 'forker'
 
 # $live_page = open('html/wh_live.html').read
@@ -33,7 +34,7 @@ class TestMarathon < Test::Unit::TestCase
 
   def test_live_page
     result = @wh.live_page_parsed($live_page)
-    result.each {|k,r| puts k; puts r}
+#    result.each {|k,r| puts k; puts r}
     assert_equal(Hash, result.class)
     result.each do |addr, who|
       assert(addr.include? 'marathon')

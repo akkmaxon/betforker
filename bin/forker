@@ -4,6 +4,7 @@ require 'forker'
 require 'capybara/poltergeist'
 require 'yaml'
 require 'nokogiri'
+require 'mechanize'
 open(File.dirname(__FILE__) + '/../config.yml') {|f| $config = YAML.load(f)}
 ####################let's go
 t1 = Time.now.to_i

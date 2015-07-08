@@ -2,6 +2,7 @@ require 'test/unit'
 require 'forker'
 require 'capybara/poltergeist'
 require 'yaml'
+require 'mechanize'
 open(File.dirname(__FILE__) + '/../config.yml') {|f| $config = YAML.load(f)}
 class TestDown < Test::Unit::TestCase
 
@@ -11,7 +12,7 @@ class TestDown < Test::Unit::TestCase
 
   def test_download
     addr = {
-      wh: 'http://sports.williamhill.com/bet/en-gb',
+      wh: 'http://sports.williamhill.com/bet/en-gb/betlive/all',
       bf: 'https://www.betfair.com/sport/inplay',
       ya: 'http://ya.ru',
       pn: 'http://pinnaclesports.com',

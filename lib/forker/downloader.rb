@@ -11,31 +11,45 @@ class Downloader
       opts = {
         js_errors: false,
         phantomjs_options: ['--load-images=false', '--ignore-ssl-errors=true'],
-        timeout: 15
+        timeout: 20
       }
       Capybara::Poltergeist::Driver.new(app, opts)
     end
     Capybara.default_driver = :poltergeist
-    @browser = Capybara
-    #actions for light pages
+    @browser = Object.new
   end
 
   def download address
     puts "Processing #{address}"
-    cookie_setter
-    headers_setter
-    @browser.visit address
-    page = @browser.html
+    if address.include?('williamhill')
+      @browser = Capybara
+      cookie_setter('phantomjs')
+      headers_setter
+      @browser.visit address
+      page = @browser.html
+      Capybara.reset!
+    else
+      @browser = Mechanize.new
+      cookie_setter('mechanize')
+      page = @browser.get(address).body
+    end
+    page
   end
 
   def capybara_init
   end
 
-  def cookie_setter
-    @browser.page.driver.set_cookie('cust_lang', 'en-gb', {domain: '.williamhill.com'})
-    @browser.page.driver.set_cookie('cust_prefs', 'en|DECIMAL|form|TYPE|PRICE|||0|SB|0|0||0|en|0|TIME|TYPE|0|31|A|0||0|1|0||TYPE|', {domain: '.williamhill.com'})
-    @browser.page.driver.set_cookie('vid', '20691c80-5359-4b9a-98ab-20c363ae65bb', {domain: '.betfair.com'})
-    @browser.page.driver.set_cookie('panbet.oddstype', 'Decimal', {domain: 'www.betmarathon.com'})
+  def cookie_setter crawler
+    case crawler
+    when 'phantomjs'
+      @browser.page.driver.set_cookie('cust_lang', 'en-gb', {domain: '.williamhill.com'})
+      @browser.page.driver.set_cookie('cust_prefs', 'en|DECIMAL|form|TYPE|PRICE|||0|SB|0|0||0|en|0|TIME|TYPE|0|31|A|0||0|1|0||TYPE|', {domain: '.williamhill.com'})
+      @browser.page.driver.set_cookie('vid', '20691c80-5359-4b9a-98ab-20c363ae65bb', {domain: '.betfair.com'})
+      @browser.page.driver.set_cookie('panbet.oddstype', 'Decimal', {domain: 'www.betmarathon.com'})
+    when 'mechanize'
+      @browser.cookie_jar << Mechanize::Cookie.new(domain: 'www.betmarathon.com', name: 'panbet.oddstype', value: 'Decimal', path: '/')
+      @browser.cookie_jar << Mechanize::Cookie.new(domain: '.betfair.com', name: 'vid', value: '20691c80-5359-4b9a-98ab-20c363ae65bb', path: '/')
+    end
   end
 
   def headers_setter

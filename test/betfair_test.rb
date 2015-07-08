@@ -1,4 +1,5 @@
 require 'test/unit'
+require 'nokogiri'
 require 'forker'
 
 $event_pages = []

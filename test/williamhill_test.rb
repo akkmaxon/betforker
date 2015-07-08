@@ -1,4 +1,5 @@
 require 'test/unit'
+require 'nokogiri'
 require 'forker'
 
 # $live_page = open('html/wh_live.html').read

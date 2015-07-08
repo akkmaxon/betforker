@@ -1,5 +1,3 @@
-require 'nokogiri'
-
 class Bookmaker
   attr_reader :live_address
 

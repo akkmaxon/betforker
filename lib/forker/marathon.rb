@@ -1,4 +1,3 @@
-require 'nokogiri'
 class Marathon < Bookmaker
 
   def initialize
