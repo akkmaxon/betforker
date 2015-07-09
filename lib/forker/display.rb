@@ -45,4 +45,12 @@ class Display
       f.close
     end
   end
+
+  def thrown_forks data
+    open($config[:log_thrown_forks], 'a') do |f|
+      f.write("\n############################")
+      f.write(data)
+      f.close
+    end
+  end
 end

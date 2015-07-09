@@ -5,7 +5,8 @@
 :macros_folder: /home/gentoo/Temp/
 :log_forks: /home/gentoo/Temp/ffff
 :log_parsed_bookies: /home/gentoo/Temp/kkkk
+:log_thrown_forks: /home/gentoo/Temp/tttt
 :bookies:
-- WilliamHill
-- Betfair
 - Marathon
+- Betfair
+- WilliamHill

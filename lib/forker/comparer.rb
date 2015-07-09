@@ -24,17 +24,23 @@ class Comparer
       bookies: "#{first[:bookie]} - #{second[:bookie]}",
       players: "#{first[:home_player][:name]}  VS  #{first[:away_player][:name]}",
     }
-    unless first[:score].empty?
-      header[:score] = first[:score]
-    else
-      header[:score] = second[:score]
-    end
+    header[:score] = first[:score].empty? ? second[:score] : first[:score]
+    break_now = is_a_break?(header[:score])
     #match processing
-    if first[:home_player].has_key?(:match) and second[:home_player].has_key?(:match)
+    if first[:home_player].has_key?(:match) and second[:home_player].has_key?(:match) and break_now
       if first[:home_player][:match].class == Float and second[:home_player][:match].class == Float
         respond = match_win(first, second)
         unless respond.empty?
           @forks_found << header.merge(respond)
+        end
+      end
+    end
+    #set processing
+    if first[:home_player].has_key?(:set) and second[:home_player].has_key?(:set) and break_now
+      respond = game_or_set_win(:set, first, second)
+      unless respond.empty?
+        respond.each do |set|
+          @forks_found << header.merge(set)
         end
       end
     end
@@ -47,15 +53,7 @@ class Comparer
         end
       end
     end
-    #set processing
-    if first[:home_player].has_key?(:set) and second[:home_player].has_key?(:set)
-      respond = game_or_set_win(:set, first, second)
-      unless respond.empty?
-        respond.each do |set|
-          @forks_found << header.merge(set)
-        end
-      end
-    end
+    score_analyzer
     @forks_found
   end
 
@@ -116,6 +114,43 @@ class Comparer
       end
     end
     respond
+  end
+
+  def is_a_break? score
+    g1, g2, s1, s2 = score_parser(score)
+    if (g1 + g2) == 0 and ((s1 + s2) == 0 or (s1 + s2).odd?)
+      return true
+    else
+      return false
+    end
+  end
+
+  def score_analyzer
+    return if @forks_found.empty?
+    @forks_found.each do |fork|
+      next unless fork[:what].include?('game')
+      g1, g2, s1, s2 = score_parser(fork[:score])
+      game_in_fork = fork[:what].scan(/\d+/)[0].to_i
+      not_a_time = game_in_fork > (s1 + s2 + 1) ? false : true
+      if not_a_time
+        Display.new.thrown_forks(fork)
+        @forks_found.delete(fork)
+      end
+    end
+  end
+
+  def score_parser score
+    s = score.split(/\(|\)|,/)
+    if s.size == 1 or score[0] == ' '
+      games = '0:0'
+      sets = s[0].strip
+    else
+      games = s[0].strip
+      sets = s[-1].strip
+    end
+    g1, g2 = games.scan(/\d+/)
+    s1, s2 = sets.scan(/\d+/)
+    return g1.to_i, g2.to_i, s1.to_i, s2.to_i
   end
 
 end
