@@ -27,7 +27,6 @@ class Downloader
       headers_setter
       @browser.visit address
       page = @browser.html
-      Capybara.reset!
     else
       @browser = Mechanize.new
       cookie_setter('mechanize')

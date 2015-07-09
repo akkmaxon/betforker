@@ -48,8 +48,7 @@ class Display
 
   def thrown_forks data
     open($config[:log_thrown_forks], 'a') do |f|
-      f.write("\n############################")
-      f.write(data)
+      f.write("\n#{data}\n")
       f.close
     end
   end
