@@ -35,7 +35,7 @@ class Betfair < Bookmaker
     @parsed_event[:score] = "#{home_game}:#{away_game} (#{home_set}:#{away_set})"
     nok.css('.list-minimarkets .mod-minimarketview').each do |event|
       what = event.css('.minimarketview-header span.title').text
-      next if what =~ /Point|Handicap|Set Betting|Games|A Set/
+      next if what =~ /Point|Handicap|Set Betting|Games|A Set/ or event.css('.ui-market-suspended').to_s.size < 1
       target_filler(event, what, 'home')
       target_filler(event, what, 'away')
     end
