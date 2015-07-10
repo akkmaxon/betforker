@@ -6,6 +6,8 @@
 :log_forks: /home/gentoo/Temp/ffff
 :log_parsed_bookies: /home/gentoo/Temp/kkkk
 :log_thrown_forks: /home/gentoo/Temp/tttt
+:filtering: true
 :bookies:
 - Marathon
+- Betfair
 - WilliamHill

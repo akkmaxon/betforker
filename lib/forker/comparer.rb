@@ -25,7 +25,14 @@ class Comparer
       players: "#{first[:home_player][:name]}  VS  #{first[:away_player][:name]}",
     }
     header[:score] = first[:score].empty? ? second[:score] : first[:score]
-    break_now = is_a_break?(header[:score])
+
+    if $config[:filtering]
+      break_now = is_a_break?(header[:score])
+      filtering = true
+    else
+      break_now = true
+      filtering = false
+    end
     #match processing
     if first[:home_player].has_key?(:match) and second[:home_player].has_key?(:match) and break_now
       if first[:home_player][:match].class == Float and second[:home_player][:match].class == Float
@@ -53,7 +60,7 @@ class Comparer
         end
       end
     end
-    score_analyzer
+    score_analyzer(filtering)
     @forks_found
   end
 
@@ -125,8 +132,8 @@ class Comparer
     end
   end
 
-  def score_analyzer
-    return if @forks_found.empty?
+  def score_analyzer filtering
+    return if @forks_found.empty? or !filtering
     @forks_found.each do |fork|
       next unless fork[:what].include?('game')
       g1, g2, s1, s2 = score_parser(fork[:score])
