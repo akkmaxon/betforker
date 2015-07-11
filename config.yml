@@ -1,5 +1,5 @@
 ---
-:min_percent: 1.3
+:min_percent: 1.99
 :task: /home/gentoo/Temp/task.iim
 :waiter: /home/gentoo/Temp/waiter.iim
 :macros_folder: /home/gentoo/Temp/
