@@ -65,10 +65,12 @@ class Marathon < Bookmaker
           next if t.to_s.include?('<th')
           num = t.css('.aleft .market-table-name b').text
           coeff1, coeff2 = t.css('.price .selection-link').collect {|c| c.text.to_f}
-          @parsed_event[:home_player][:game] ||= Hash.new
-          @parsed_event[:away_player][:game] ||= Hash.new
-          @parsed_event[:home_player][:game][num] = coeff1
-          @parsed_event[:away_player][:game][num] = coeff2
+          if coeff1 and coeff2
+            @parsed_event[:home_player][:game] ||= Hash.new
+            @parsed_event[:away_player][:game] ||= Hash.new
+            @parsed_event[:home_player][:game][num] = coeff1
+            @parsed_event[:away_player][:game][num] = coeff2
+          end
         end
       end
     end

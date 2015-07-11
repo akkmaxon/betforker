@@ -12,6 +12,7 @@ class Comparer
 
   def initialize
     @forks_found = Array.new
+    @output = Output.new
   end
 
   def compare first, second
@@ -61,6 +62,9 @@ class Comparer
       end
     end
     score_analyzer(filtering)
+
+    @output.comparer_log(first[:bookie], second[:bookie], @forks_found.clone)
+
     @forks_found
   end
 
@@ -141,7 +145,7 @@ class Comparer
       game_in_fork = fork[:what].scan(/\d+/)[0].to_i
       not_a_time = game_in_fork > (s1 + s2 + 1) ? false : true
       if not_a_time
-        Display.new.thrown_forks(fork)
+        @output.thrown_forks(fork)
         @forks_found.delete(fork)
       end
     end

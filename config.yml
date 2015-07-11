@@ -3,9 +3,7 @@
 :task: /home/gentoo/Temp/task.iim
 :waiter: /home/gentoo/Temp/waiter.iim
 :macros_folder: /home/gentoo/Temp/
-:log_forks: /home/gentoo/Temp/ffff
-:log_parsed_bookies: /home/gentoo/Temp/kkkk
-:log_thrown_forks: /home/gentoo/Temp/tttt
+:log_file: /home/gentoo/Temp/forker_log
 :filtering: true
 :bookies:
 - Marathon

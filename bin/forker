@@ -7,26 +7,20 @@ require 'nokogiri'
 require 'mechanize'
 open(File.dirname(__FILE__) + '/../config.yml') {|f| $config = YAML.load(f)}
 ####################let's go
-t1 = Time.now.to_i
+output = Output.new
+time_of_beginning = Time.now.to_i
 events = Eventsfinder.new({
                             bookies: $config[:bookies],
                             downloader: Downloader.new
                           }).events
-
-#########################################
-open($config[:log_parsed_bookies], 'a') {|f| f.write("\n-------------------I have found #{events.size} events-------------\n")}
-#########################################
+output.before_work(events) #writing to log
 events.each do |key,arr|
   forker = Forksfinder.new({
                              downloader: Downloader.new
                            })
   forker.parse(arr)
-  Display.new.debug_parsed_bookies(forker.parsed_bookies)
+  output.parsed_bookies(forker.parsed_bookies)
   forker.forking
-  unless forker.forks.empty?
-    display = Display.new
-    display.to_log(forker.forks.clone)
-    display.to_screen(forker.forks.clone)
-  end
+  output.to_screen(forker.forks) unless forker.forks.empty?
 end
-open($config[:log_parsed_bookies], 'a') {|f| f.write("\nIt is took #{Time.now.to_i - t1} seconds.\n")}
+output.after_work(time_of_beginning) #writing to log
