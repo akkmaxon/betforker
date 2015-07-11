@@ -1,7 +1,6 @@
 class Forksfinder
 
-  attr_reader :forks
-  attr_accessor :parsed_bookies
+  attr_reader :forks, :parsed_bookies
 
   def initialize args
     @downloader = args[:downloader]

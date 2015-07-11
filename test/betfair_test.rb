@@ -17,11 +17,11 @@ class TestWilliamHill < Test::Unit::TestCase
   def teardown
   end
 
-  def test_event_parsed
+  def test_bf_event_parsed
     $event_pages.each do |event_page|
       @bf = Betfair.new
       res = @bf.event_parsed(open(event_page).read)
-      p res
+#      p res
       assert_equal(String, res[:home_player][:name].class)
       assert_equal(String, res[:away_player][:name].class)
       assert_equal(Hash, res[:home_player].class)
@@ -31,7 +31,7 @@ class TestWilliamHill < Test::Unit::TestCase
     end
   end
 
-  def test_live_page
+  def test_bf_live_page
     result = @bf.live_page_parsed($live_page)
 #    result.each {|k,r| puts k; puts r}
     assert_equal(Hash, result.class)

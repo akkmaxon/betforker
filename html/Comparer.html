@@ -6,19 +6,16 @@
 
 <title>class Comparer - Forker doc</title>
 
-<link href="./fonts.css" rel="stylesheet">
-<link href="./rdoc.css" rel="stylesheet">
-
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
 </script>
 
 <script src="./js/jquery.js"></script>
-<script src="./js/navigation.js"></script>
-<script src="./js/search_index.js"></script>
-<script src="./js/search.js"></script>
-<script src="./js/searcher.js"></script>
 <script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
 
 
 <body id="top" role="document" class="class">
@@ -140,6 +137,7 @@ String percent: &#39;2.2&#39;                  String</p>
             <pre><span class="ruby-comment"># File lib/forker/comparer.rb, line 13</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>
   <span class="ruby-ivar">@forks_found</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-ivar">@output</span> = <span class="ruby-constant">Output</span>.<span class="ruby-identifier">new</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -178,7 +176,7 @@ String percent: &#39;2.2&#39;                  String</p>
 
           
           <div class="method-source-code" id="compare-source">
-            <pre><span class="ruby-comment"># File lib/forker/comparer.rb, line 17</span>
+            <pre><span class="ruby-comment"># File lib/forker/comparer.rb, line 18</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">compare</span> <span class="ruby-identifier">first</span>, <span class="ruby-identifier">second</span>
   <span class="ruby-ivar">@forks_found</span> = [] <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@forks_found</span>.<span class="ruby-identifier">empty?</span>
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">first</span>[<span class="ruby-value">:home_player</span>][<span class="ruby-value">:name</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">second</span>[<span class="ruby-value">:home_player</span>][<span class="ruby-value">:name</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">first</span>[<span class="ruby-value">:away_player</span>][<span class="ruby-value">:name</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">second</span>[<span class="ruby-value">:away_player</span>][<span class="ruby-value">:name</span>]
@@ -190,7 +188,14 @@ String percent: &#39;2.2&#39;                  String</p>
     <span class="ruby-identifier">players</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{first[:home_player][:name]}  VS  #{first[:away_player][:name]}&quot;</span>,
   }
   <span class="ruby-identifier">header</span>[<span class="ruby-value">:score</span>] = <span class="ruby-identifier">first</span>[<span class="ruby-value">:score</span>].<span class="ruby-identifier">empty?</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">second</span>[<span class="ruby-value">:score</span>] <span class="ruby-operator">:</span> <span class="ruby-identifier">first</span>[<span class="ruby-value">:score</span>]
-  <span class="ruby-identifier">break_now</span> = <span class="ruby-identifier">is_a_break?</span>(<span class="ruby-identifier">header</span>[<span class="ruby-value">:score</span>])
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">$config</span>[<span class="ruby-value">:filtering</span>]
+    <span class="ruby-identifier">break_now</span> = <span class="ruby-identifier">is_a_break?</span>(<span class="ruby-identifier">header</span>[<span class="ruby-value">:score</span>])
+    <span class="ruby-identifier">filtering</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">break_now</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-identifier">filtering</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">end</span>
   <span class="ruby-comment">#match processing</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">first</span>[<span class="ruby-value">:home_player</span>].<span class="ruby-identifier">has_key?</span>(<span class="ruby-value">:match</span>) <span class="ruby-keyword">and</span> <span class="ruby-identifier">second</span>[<span class="ruby-value">:home_player</span>].<span class="ruby-identifier">has_key?</span>(<span class="ruby-value">:match</span>) <span class="ruby-keyword">and</span> <span class="ruby-identifier">break_now</span>
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">first</span>[<span class="ruby-value">:home_player</span>][<span class="ruby-value">:match</span>].<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Float</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">second</span>[<span class="ruby-value">:home_player</span>][<span class="ruby-value">:match</span>].<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Float</span>
@@ -218,7 +223,10 @@ String percent: &#39;2.2&#39;                  String</p>
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">score_analyzer</span>
+  <span class="ruby-identifier">score_analyzer</span>(<span class="ruby-identifier">filtering</span>)
+
+  <span class="ruby-ivar">@output</span>.<span class="ruby-identifier">comparer_log</span>(<span class="ruby-identifier">first</span>[<span class="ruby-value">:bookie</span>], <span class="ruby-identifier">second</span>[<span class="ruby-value">:bookie</span>], <span class="ruby-ivar">@forks_found</span>.<span class="ruby-identifier">clone</span>)
+
   <span class="ruby-ivar">@forks_found</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -239,7 +247,7 @@ String percent: &#39;2.2&#39;                  String</p>
 
 <footer id="validator-badges" role="contentinfo">
   <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.0.
-  <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

@@ -129,7 +129,7 @@ class Comparer
 
   def is_a_break? score
     g1, g2, s1, s2 = score_parser(score)
-    end_of_set = ((s1 + s2) == 12 and s1 != s2) or ((s1 == 6 and s1 > (s2 + 1)) or (s2 == 6 and s2 > (s1 + 1)))
+    end_of_set = ((s1 + s2) == 12 and s1 != s2) || ((s1 == 6 and (s1 - s2) > 1) || (s2 == 6 and (s2 - s1) > 1))
     if (g1 + g2) == 0 and ((s1 + s2) == 0 or (s1 + s2).odd? or end_of_set)
       return true
     else

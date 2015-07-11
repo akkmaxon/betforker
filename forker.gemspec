@@ -22,5 +22,5 @@ spec = Gem::Specification.new do |s|
   s.add_dependency('mechanize')
   s.add_development_dependency('rake', '~> 10.4.2')
   s.add_development_dependency('rdoc', '~> 4.2')
-  s.add_development_dependency('aruba')
+  s.add_development_dependency('aruba', '~> 0.7.4')
 end

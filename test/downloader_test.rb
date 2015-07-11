@@ -18,7 +18,7 @@ class TestDown < Test::Unit::TestCase
       pn: 'http://pinnaclesports.com',
       mar: 'https://www.betmarathon.com/en/live/popular'
     }
-    3.times do
+    2.times do
     addr.each do |who,link|
       page = @down.download(link)
       assert_equal(String, page.class)
