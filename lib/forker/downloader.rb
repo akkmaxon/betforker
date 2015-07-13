@@ -27,6 +27,8 @@ class Downloader
       headers_setter
       @browser.visit address
       page = @browser.html
+      @browser.reset!
+      page
     else
       @browser = Mechanize.new
       cookie_setter('mechanize')

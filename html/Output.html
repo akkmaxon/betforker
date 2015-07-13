@@ -178,7 +178,7 @@
 
           
           <div class="method-source-code" id="after_work-source">
-            <pre><span class="ruby-comment"># File lib/forker/output.rb, line 29</span>
+            <pre><span class="ruby-comment"># File lib/forker/output.rb, line 38</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">after_work</span> <span class="ruby-identifier">time_of_beginning</span>
   <span class="ruby-identifier">open</span>(<span class="ruby-ivar">@log_file</span>, <span class="ruby-string">&#39;a&#39;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span>(<span class="ruby-node">&quot;\nIt is took #{Time.now.to_i - time_of_beginning} seconds.\n&quot;</span>)
@@ -214,7 +214,7 @@
 
           
           <div class="method-source-code" id="before_work-source">
-            <pre><span class="ruby-comment"># File lib/forker/output.rb, line 22</span>
+            <pre><span class="ruby-comment"># File lib/forker/output.rb, line 31</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">before_work</span> <span class="ruby-identifier">events</span>
   <span class="ruby-identifier">open</span>(<span class="ruby-ivar">@log_file</span>, <span class="ruby-string">&#39;a&#39;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span>(<span class="ruby-node">&quot;\n-------------------I have found #{events.size} events------------- #{Time.now}\n&quot;</span>)
@@ -250,7 +250,7 @@
 
           
           <div class="method-source-code" id="comparer_log-source">
-            <pre><span class="ruby-comment"># File lib/forker/output.rb, line 56</span>
+            <pre><span class="ruby-comment"># File lib/forker/output.rb, line 65</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">comparer_log</span> <span class="ruby-identifier">first</span>, <span class="ruby-identifier">second</span>, <span class="ruby-identifier">forks</span>
   <span class="ruby-identifier">open</span>(<span class="ruby-ivar">@log_file</span>, <span class="ruby-string">&#39;a&#39;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span>(<span class="ruby-node">&quot;\ncomparing #{first} and #{second}\n&quot;</span>)
@@ -288,7 +288,7 @@
 
           
           <div class="method-source-code" id="parsed_bookies-source">
-            <pre><span class="ruby-comment"># File lib/forker/output.rb, line 36</span>
+            <pre><span class="ruby-comment"># File lib/forker/output.rb, line 45</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">parsed_bookies</span> <span class="ruby-identifier">data</span>
   <span class="ruby-identifier">open</span>(<span class="ruby-ivar">@log_file</span>, <span class="ruby-string">&#39;a&#39;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span>(<span class="ruby-node">&quot;\n############################\n&quot;</span>)
@@ -329,7 +329,7 @@
 
           
           <div class="method-source-code" id="thrown_forks-source">
-            <pre><span class="ruby-comment"># File lib/forker/output.rb, line 48</span>
+            <pre><span class="ruby-comment"># File lib/forker/output.rb, line 57</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">thrown_forks</span> <span class="ruby-identifier">data</span>
   <span class="ruby-identifier">open</span>(<span class="ruby-ivar">@log_file</span>, <span class="ruby-string">&#39;a&#39;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span>(<span class="ruby-string">&quot;\nThrown forks are: \n&quot;</span>)
@@ -379,7 +379,16 @@
     <span class="ruby-keyword">end</span>
     <span class="ruby-identifier">to_screen</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot;\n&quot;</span>
   <span class="ruby-keyword">end</span>
-  <span class="ruby-node">%x`kdialog --passivepopup &quot;#{to_screen}&quot; 30`</span>
+  <span class="ruby-keyword">case</span> <span class="ruby-constant">ENV</span>[<span class="ruby-string">&#39;XDG_CURRENT_DESKTOP&#39;</span>]
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;KDE&#39;</span>
+    <span class="ruby-node">%x`kdialog --passivepopup &quot;#{to_screen}&quot; 30`</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;XFCE&#39;</span>
+    <span class="ruby-node">%x`notify-send -t 30000 &quot;#{to_screen}&quot;`</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;GNOME&#39;</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;GNOME output not ready yet&quot;</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-identifier">to_screen</span>
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
