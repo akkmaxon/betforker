@@ -16,7 +16,16 @@ class Output
       end
       to_screen += "\n"
     end
-    `kdialog --passivepopup "#{to_screen}" 30`
+    case ENV['XDG_CURRENT_DESKTOP']
+    when 'KDE'
+      `kdialog --passivepopup "#{to_screen}" 30`
+    when 'XFCE'
+      `notify-send -t 30000 "#{to_screen}"`
+    when 'GNOME'
+      puts "GNOME output not ready yet"
+    else
+      puts to_screen
+    end
   end
 
   def before_work events
