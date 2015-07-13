@@ -11,16 +11,28 @@ output = Output.new
 time_of_beginning = Time.now.to_i
 while (Time.now.to_i - time_of_beginning) < $config[:time_of_work]
   beginning_loop = Time.now.to_i
-  events = Eventsfinder.new({
-                              bookies: $config[:bookies],
-                              downloader: Downloader.new
-                            }).events
+  tries = 0
+  begin
+    tries += 1
+    events = Eventsfinder.new({
+                                bookies: $config[:bookies],
+                                downloader: Downloader.new
+                              }).events
+  rescue
+    retry if tries < 3
+  end
   output.before_work(events)
   events.each do |key,arr|
-    forker = Forksfinder.new({
-                               downloader: Downloader.new
-                             })
-    forker.parse(arr)
+    tries = 0
+    begin
+      tries += 1
+      forker = Forksfinder.new({
+                                 downloader: Downloader.new
+                               })
+      forker.parse(arr)
+    rescue
+      retry if tries < 3
+    end
     output.parsed_bookies(forker.parsed_bookies)
     forker.forking
     output.to_screen(forker.forks) unless forker.forks.empty?

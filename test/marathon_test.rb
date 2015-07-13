@@ -12,7 +12,7 @@ $live_page = open('test/html/mar_live.html').read
 class TestMarathon < Test::Unit::TestCase
 
   def setup
-    @wh = Marathon.new
+    @mar = Marathon.new
   end
 
   def teardown
@@ -20,8 +20,8 @@ class TestMarathon < Test::Unit::TestCase
 
   def test_mar_event_parsed
     $event_pages.each do |event_page|
-      @wh = Marathon.new
-      res = @wh.event_parsed(open(event_page).read)
+      @mar = Marathon.new
+      res = @mar.event_parsed(open(event_page).read)
 #      p res
       assert_equal(String, res[:home_player][:name].class)
       assert_equal(String, res[:away_player][:name].class)
@@ -33,7 +33,7 @@ class TestMarathon < Test::Unit::TestCase
   end
 
   def test_mar_live_page
-    result = @wh.live_page_parsed($live_page)
+    result = @mar.live_page_parsed($live_page)
 #    result.each {|k,r| puts k; puts r}
     assert_equal(Hash, result.class)
     result.each do |addr, who|
