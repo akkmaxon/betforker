@@ -9,18 +9,20 @@ open(File.dirname(__FILE__) + '/../config.yml') {|f| $config = YAML.load(f)}
 ####################let's go
 output = Output.new
 time_of_beginning = Time.now.to_i
-events = Eventsfinder.new({
-                            bookies: $config[:bookies],
-                            downloader: Downloader.new
-                          }).events
-output.before_work(events) #writing to log
-events.each do |key,arr|
-  forker = Forksfinder.new({
-                             downloader: Downloader.new
-                           })
-  forker.parse(arr)
-  output.parsed_bookies(forker.parsed_bookies)
-  forker.forking
-  output.to_screen(forker.forks) unless forker.forks.empty?
+while (Time.now.to_i - time_of_beginning) < 3600
+  events = Eventsfinder.new({
+                              bookies: $config[:bookies],
+                              downloader: Downloader.new
+                            }).events
+  output.before_work(events) #writing to log
+  events.each do |key,arr|
+    forker = Forksfinder.new({
+                               downloader: Downloader.new
+                             })
+    forker.parse(arr)
+    output.parsed_bookies(forker.parsed_bookies)
+    forker.forking
+    output.to_screen(forker.forks) unless forker.forks.empty?
+  end
+  output.after_work(time_of_beginning) #writing to log
 end
-output.after_work(time_of_beginning) #writing to log
