@@ -18,9 +18,9 @@ class Output
     end
     case ENV['XDG_CURRENT_DESKTOP']
     when 'KDE'
-      `kdialog --passivepopup "#{to_screen}" 30`
+      `kdialog --passivepopup "#{to_screen}" #{$config[:time_of_notification]}`
     when 'XFCE'
-      `notify-send -t 30000 "#{to_screen}"`
+      `notify-send -t #{$config[:time_of_notification] * 1000} "#{to_screen}"`
     when 'GNOME'
       puts "GNOME output not ready yet"
     else
