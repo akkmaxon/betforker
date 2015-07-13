@@ -1,5 +1,6 @@
 ---
 :min_percent: 1.99
+:time_of_work: 3600 #time in seconds
 :log_file: /path/to/your/forker_log #for example /home/user/forker_log
 :filtering: true #or false if you want to see all found forks
 :bookies:
