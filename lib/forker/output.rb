@@ -22,9 +22,9 @@ class Output
     when 'XFCE'
       `notify-send -t #{$config[:time_of_notification] * 1000} "#{to_screen}"`
     when 'GNOME'
-      puts "GNOME output not ready yet"
+      `notify-send -t #{$config[:time_of_notification] * 1000} "#{to_screen}"`
     else
-      puts to_screen
+      puts "output to somewhere"
     end
   end
 

@@ -381,13 +381,13 @@
   <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">case</span> <span class="ruby-constant">ENV</span>[<span class="ruby-string">&#39;XDG_CURRENT_DESKTOP&#39;</span>]
   <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;KDE&#39;</span>
-    <span class="ruby-node">%x`kdialog --passivepopup &quot;#{to_screen}&quot; 30`</span>
+    <span class="ruby-node">%x`kdialog --passivepopup &quot;#{to_screen}&quot; #{$config[:time_of_notification]}`</span>
   <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;XFCE&#39;</span>
-    <span class="ruby-node">%x`notify-send -t 30000 &quot;#{to_screen}&quot;`</span>
+    <span class="ruby-node">%x`notify-send -t #{$config[:time_of_notification] * 1000} &quot;#{to_screen}&quot;`</span>
   <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;GNOME&#39;</span>
-    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;GNOME output not ready yet&quot;</span>
+    <span class="ruby-node">%x`notify-send -t #{$config[:time_of_notification] * 1000} &quot;#{to_screen}&quot;`</span>
   <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">puts</span> <span class="ruby-identifier">to_screen</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;output to somewhere&quot;</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
