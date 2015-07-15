@@ -24,7 +24,16 @@ class Parimatch < Bookmaker
   end
 
   def event_parsed html_source
-
+    nok = Nokogiri::HTML(html_source)
+    score = nok.css('.l .l').text
+    games = score.split(')')[-1].strip
+    sets = score.split(')')[0].slice(-3..-1)
+    home_set = sets.scan(/\d+/)[0]
+    away_set = sets.scan(/\d+/)[-1]
+    home_game = games.scan(/\d+/)[0]
+    away_game = games.scan(/\d+/)[-1]
+    @parsed_event[:score] = "#{home_game}:#{away_game} (#{home_set}:#{away_set})"
+    
   end
 
   def unified_names who

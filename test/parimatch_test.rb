@@ -33,7 +33,7 @@ class TestParimatch < Test::Unit::TestCase
 
   def test_pm_live_page
     result = @pm.live_page_parsed($live_page)
-    result.each {|k,r| puts k; puts r}
+#    result.each {|k,r| puts k; puts r}
     assert_equal(Hash, result.class)
     result.each do |addr, who|
       assert(addr.include? 'parimatch.com')
