@@ -8,8 +8,8 @@ $config = YAML.load(open('config.yml'))
 $addresses = Hash.new
 (1..8).each do |num|
   $addresses[num.to_s] = []
-  $addresses[num.to_s] << "test/html/williamhill#{num}.html"
-  $addresses[num.to_s] << "test/html/betfair#{num}.html"
+  $addresses[num.to_s] << "test/html/williamhill/williamhill#{num}.html"
+  $addresses[num.to_s] << "test/html/betfair/betfair#{num}.html"
 end
 
 class LocalDownloader

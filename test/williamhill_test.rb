@@ -5,10 +5,10 @@ require 'forker'
 # $live_page = open('html/wh_live.html').read
 $event_pages = []
 (1..8).each do |num|
-  $event_pages << "test/html/williamhill#{num}.html"
+  $event_pages << "test/html/williamhill/williamhill#{num}.html"
 end
 
-$live_page = open('test/html/wh_live.htm').read
+$live_page = open('test/html/williamhill/wh_live.htm').read
 class TestWilliamHill < Test::Unit::TestCase
 
   def setup
