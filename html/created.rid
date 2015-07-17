@@ -1,15 +1,17 @@
-Tue, 14 Jul 2015 00:06:15 +0300
+Fri, 17 Jul 2015 18:53:55 +0300
 README.rdoc	Mon, 18 May 2015 11:27:28 +0300
-lib/forker.rb	Sat, 11 Jul 2015 12:21:04 +0300
-lib/forker/betfair.rb	Fri, 10 Jul 2015 15:10:11 +0300
+lib/forker.rb	Wed, 15 Jul 2015 12:39:39 +0300
+lib/forker/betfair.rb	Thu, 16 Jul 2015 17:50:34 +0300
 lib/forker/bookmaker.rb	Wed, 08 Jul 2015 11:50:50 +0300
-lib/forker/comparer.rb	Sat, 11 Jul 2015 17:42:49 +0300
-lib/forker/downloader.rb	Tue, 14 Jul 2015 00:03:52 +0300
+lib/forker/comparer.rb	Fri, 17 Jul 2015 12:07:08 +0300
+lib/forker/downloader.rb	Fri, 17 Jul 2015 12:04:35 +0300
 lib/forker/eventsfinder.rb	Tue, 07 Jul 2015 12:49:23 +0300
 lib/forker/forksfinder.rb	Sat, 11 Jul 2015 18:07:32 +0300
 lib/forker/macros_downloader.rb	Thu, 02 Jul 2015 19:04:55 +0300
-lib/forker/marathon.rb	Sat, 11 Jul 2015 12:38:45 +0300
-lib/forker/output.rb	Mon, 13 Jul 2015 23:44:51 +0300
-lib/forker/version.rb	Mon, 13 Jul 2015 20:08:38 +0300
-lib/forker/williamhill.rb	Wed, 08 Jul 2015 11:50:00 +0300
-bin/forker	Mon, 13 Jul 2015 19:40:08 +0300
+lib/forker/marathon.rb	Thu, 16 Jul 2015 17:50:49 +0300
+lib/forker/output.rb	Fri, 17 Jul 2015 18:11:54 +0300
+lib/forker/parimatch.rb	Fri, 17 Jul 2015 18:50:43 +0300
+lib/forker/version.rb	Fri, 17 Jul 2015 18:53:02 +0300
+lib/forker/williamhill.rb	Thu, 16 Jul 2015 17:51:02 +0300
+bin/f	Fri, 17 Jul 2015 12:14:12 +0300
+bin/forker	Fri, 17 Jul 2015 12:22:26 +0300

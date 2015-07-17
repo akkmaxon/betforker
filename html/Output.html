@@ -235,7 +235,7 @@
         
         <div class="method-heading">
           <span class="method-name">comparer_log</span><span
-            class="method-args">(first, second, forks)</span>
+            class="method-args">(first, second, forks, break_now)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -251,9 +251,11 @@
           
           <div class="method-source-code" id="comparer_log-source">
             <pre><span class="ruby-comment"># File lib/forker/output.rb, line 65</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">comparer_log</span> <span class="ruby-identifier">first</span>, <span class="ruby-identifier">second</span>, <span class="ruby-identifier">forks</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">comparer_log</span> <span class="ruby-identifier">first</span>, <span class="ruby-identifier">second</span>, <span class="ruby-identifier">forks</span>, <span class="ruby-identifier">break_now</span>
   <span class="ruby-identifier">open</span>(<span class="ruby-ivar">@log_file</span>, <span class="ruby-string">&#39;a&#39;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span>(<span class="ruby-node">&quot;\ncomparing #{first} and #{second}\n&quot;</span>)
+    <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span>(<span class="ruby-node">&quot; Break is #{break_now}\n&quot;</span>)
+    <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span>(<span class="ruby-string">&quot; Forks are:\n&quot;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">forks</span>.<span class="ruby-identifier">empty?</span>
     <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span>(<span class="ruby-node">&quot; #{forks}\n&quot;</span>)
     <span class="ruby-identifier">f</span>.<span class="ruby-identifier">close</span>
   <span class="ruby-keyword">end</span>
