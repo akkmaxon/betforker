@@ -63,7 +63,7 @@ class Comparer
     end
     score_analyzer(filtering)
 
-    @output.comparer_log(first[:bookie], second[:bookie], @forks_found.clone)
+    @output.comparer_log(first[:bookie], second[:bookie], @forks_found.clone, break_now)
 
     @forks_found
   end

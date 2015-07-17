@@ -22,7 +22,7 @@ class TestWilliamHill < Test::Unit::TestCase
     $event_pages.each do |event_page|
       @wh = WilliamHill.new
       res = @wh.event_parsed(open(event_page).read)
-#      p res
+      p res
       assert_equal(String, res[:home_player][:name].class)
       assert_equal(String, res[:away_player][:name].class)
       assert_equal(Hash, res[:home_player].class)
@@ -34,7 +34,7 @@ class TestWilliamHill < Test::Unit::TestCase
 
   def test_wh_live_page
     result = @wh.live_page_parsed($live_page)
-#    result.each {|k,r| puts k; puts r}
+    result.each {|k,r| puts k; puts r}
     assert_equal(Hash, result.class)
     result.each do |addr, who|
       assert(addr.include? 'williamhill.com')

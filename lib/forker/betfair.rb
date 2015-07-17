@@ -41,7 +41,7 @@ class Betfair < Bookmaker
     end
     @parsed_event[:home_player][:name] ||= 'HomePlayer'
     @parsed_event[:away_player][:name] ||= 'AwayPlayer'
-    @parsed_event.clone
+    @parsed_event
   end
 
   def unified_names who

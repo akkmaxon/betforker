@@ -62,9 +62,10 @@ class Output
     end
   end
 
-  def comparer_log first, second, forks
+  def comparer_log first, second, forks, break_now
     open(@log_file, 'a') do |f|
       f.write("\ncomparing #{first} and #{second}\n")
+      f.write(" Break is #{break_now}\n")
       f.write(" #{forks}\n")
       f.close
     end
