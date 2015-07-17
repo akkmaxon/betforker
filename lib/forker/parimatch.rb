@@ -66,20 +66,28 @@ class Parimatch < Bookmaker
           when '2' then second = i
           end
         end
-        ####win match
-        unless line.css('td.l').empty?
-          new_line = []
-          line.css('td').each do |l|
-            if l.attribute('colspan')
-              t = nil
-              l.attribute('colspan').value.to_i.times {|f| new_line << t}
-            else
-              new_line << l.text
-            end
+        new_line = []
+        line.css('td').each do |l|
+          if l.attribute('colspan')
+            t = nil
+            l.attribute('colspan').value.to_i.times {|f| new_line << t}
+          else
+            new_line << l.text
           end
-          @parsed_event[:home_player][:match] = new_line[first].to_f if new_line[first]
-          @parsed_event[:away_player][:match] = new_line[second].to_f if new_line[second]
-          #here put set constructing
+        end
+        if new_line[first] and new_line[second]
+        ####win match
+          if not line.css('td.l').empty?
+            @parsed_event[:home_player][:match] = new_line[first].to_f
+            @parsed_event[:away_player][:match] = new_line[second].to_f
+            ###win set
+          elsif line.css('td')[1].text.include?(' set:')
+            num = line.css('td')[1].inner_html[0]
+            @parsed_event[:home_player][:set] ||= Hash.new
+            @parsed_event[:away_player][:set] ||= Hash.new
+            @parsed_event[:home_player][:set][num] = new_line[first].to_f
+            @parsed_event[:away_player][:set][num] = new_line[second].to_f
+          end
         end
       else
         next if games_line.text =~ /point|score|who/i

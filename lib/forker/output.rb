@@ -66,6 +66,7 @@ class Output
     open(@log_file, 'a') do |f|
       f.write("\ncomparing #{first} and #{second}\n")
       f.write(" Break is #{break_now}\n")
+      f.write(" Forks are:\n") unless forks.empty?
       f.write(" #{forks}\n")
       f.close
     end
