@@ -38,4 +38,5 @@ while (Time.now.to_i - time_of_beginning) < $config[:time_of_work]
     output.to_screen(forker.forks) unless forker.forks.empty?
   end
   output.after_work(beginning_loop)
+  break if $config[:falling_phantomjs]
 end
