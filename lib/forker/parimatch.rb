@@ -53,11 +53,34 @@ class Parimatch < Bookmaker
       @parsed_event[:home_player][:name] = unified_names(h_pl)
       @parsed_event[:away_player][:name] = unified_names(a_pl)
     end
-    nok.css('.gray tr').each do |line|
+    ##########################
+    table_header = nil
+    first, second = 0, 0
+    nok.css('.gray tr').each_with_index do |line|
+      table_header ||= line
       games_line = line.css('.dyn')
       if games_line.empty?
-        next
-        #wins & sets processing
+        table_header.css('th').each_with_index do |head,i|
+          case head.text
+          when '1' then first = i
+          when '2' then second = i
+          end
+        end
+        ####win match
+        unless line.css('td.l').empty?
+          new_line = []
+          line.css('td').each do |l|
+            if l.attribute('colspan')
+              t = nil
+              l.attribute('colspan').value.to_i.times {|f| new_line << t}
+            else
+              new_line << l.text
+            end
+          end
+          @parsed_event[:home_player][:match] = new_line[first].to_f if new_line[first]
+          @parsed_event[:away_player][:match] = new_line[second].to_f if new_line[second]
+          #here put set constructing
+        end
       else
         next if games_line.text =~ /point|score|who/i
         num = games_line.css('.p2r').text.scan(/\d+/)[-1]
