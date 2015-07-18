@@ -101,6 +101,8 @@ class Marathon < Bookmaker
       nn.each do |n|
         w << n.scan(/\w+/)[-1]
       end
+    elsif names.include?('Doubles')
+      w << names.scan(/\w+/)[-2]
     else
       w << names.split(',')[0].scan(/\w+/)[-1]
     end

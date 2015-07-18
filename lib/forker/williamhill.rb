@@ -56,6 +56,8 @@ class WilliamHill < Bookmaker
     names.gsub!('-', ' ')
     if names.include? '/'
       names.split('/').each {|n| w << n.scan(/\w+/)[-1]}
+    elsif names.include?('Doubles')
+      w << names.scan(/\w+/)[-2]
     else
       w << names.scan(/\w+/)[-1]
     end
