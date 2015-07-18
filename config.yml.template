@@ -8,7 +8,7 @@
 :time_of_notification: 40
 
  #where the log file is, for example /home/user/forker_log
-:log_file: /path/to/your/forker_log
+:log_file: forker_log
 
  #filter temporary forks
 :filtering: true
