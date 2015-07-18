@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo 'alias forker="cd ~/forker/; bin/f"' >> ~/.bashrc
+echo 'alias forker_log="cd ~/forker/; tail -f forker_log"' >> ~/.bashrc
 cp config.yml.template config.yml
 source ~/.bashrc
 
