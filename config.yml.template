@@ -16,6 +16,9 @@
 #use in process of development
 :falling_phantomjs: true
 
+#notification with sound
+:sound_notification: true
+
 :bookies:
 - Marathon
 - Parimatch

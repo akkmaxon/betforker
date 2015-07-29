@@ -26,6 +26,7 @@ class Output
     else
       puts "output to somewhere"
     end
+    `paplay /usr/share/sounds/freedesktop/stereo/complete.oga` if $config[:sound_notification]
   end
 
   def before_work events
