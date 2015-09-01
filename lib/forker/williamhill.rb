@@ -4,7 +4,7 @@ class WilliamHill < Bookmaker
     @live_address = 'http://sports.williamhill.com/bet/en-gb/betlive/all'
     @parsed_event = {
       bookie: 'WilliamHill',
-      score: '',
+      score: '0:0 (0:0)',
       home_player: Hash.new,
       away_player: Hash.new
     }

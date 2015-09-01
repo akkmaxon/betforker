@@ -5,7 +5,7 @@ class Sbobet < Bookmaker
     @live_address = 'https://www.sbobet.com/euro/live-betting/tennis'
     @parsed_event = {
       bookie: 'Sbobet',
-      score: '',
+      score: '0:0 (0:0)',
       home_player: Hash.new,
       away_player: Hash.new
     }
