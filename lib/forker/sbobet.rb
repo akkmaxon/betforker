@@ -15,8 +15,14 @@ class Sbobet < Bookmaker
     nok = Nokogiri::HTML(html_source)
     links = Hash.new
     nok.css('tr').each do |event|
-      href = ""
-      event.css('.IconMarkets').map { |link| href = link['href'] }
+      href = "https://www.sbobet.com"
+      event.css('.IconMarkets').map do |link|
+        unless link['href'].include?(href)
+          href += link['href']
+        else
+          href = link['href']
+        end
+      end
       h_p, a_p = event.css('.OddsL').map {|name| name.text }
       who = h_p + ' v ' + a_p
       links[href] = unified_names(who)

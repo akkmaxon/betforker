@@ -21,7 +21,7 @@ class Downloader
 
   def download address
     puts "Processing #{address}"
-    if address.include?('williamhill')
+    if address =~ /williamhill|sbobet/
       @browser = Capybara
       cookie_setter('phantomjs')
       headers_setter
