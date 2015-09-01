@@ -16,6 +16,7 @@ class TestDown < Test::Unit::TestCase
       bf: 'https://www.betfair.com/sport/inplay',
       ya: 'http://ya.ru',
       pn: 'http://pinnaclesports.com',
+      sb: 'https://www.sbobet.com/euro/live-betting/tennis',
       mar: 'https://www.betmarathon.com/en/live/popular'
     }
     2.times do

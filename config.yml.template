@@ -5,7 +5,7 @@
 :time_of_work: 3600
 
  #time in seconds
-:time_of_notification: 40
+:time_of_notification: 20
 
  #where the log file is, for example /home/user/forker_log
 :log_file: forker_log
@@ -17,10 +17,12 @@
 :falling_phantomjs: true
 
 #notification with sound
-:sound_notification: true
+#:sound_notification: true
+:sound_notification: false
 
 :bookies:
 - Marathon
 - Parimatch
 - Betfair
 - WilliamHill
+- Sbobet
