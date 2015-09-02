@@ -1,7 +1,6 @@
 require 'forker/version.rb'
 require 'forker/bookmaker.rb'
 require 'forker/downloader.rb'
-#require 'forker/macros_downloader'
 require 'forker/eventsfinder.rb'
 require 'forker/forksfinder.rb'
 require 'forker/comparer.rb'

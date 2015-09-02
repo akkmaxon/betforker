@@ -21,7 +21,7 @@ class TestSbobet < Test::Unit::TestCase
     $event_pages.each do |event_page|
       @sb = Sbobet.new
       res = @sb.event_parsed(open(event_page).read)
-#      p res
+      p res
       assert_equal(String, res[:home_player][:name].class)
       assert_equal(String, res[:away_player][:name].class)
       assert_equal(Hash, res[:home_player].class)

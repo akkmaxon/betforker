@@ -38,7 +38,11 @@ class Sbobet < Bookmaker
       #without scores and only bet on wins
       h_p_info = what.css('.OddsTabL')
       a_p_info = what.css('.OddsTabR')
-      not_handicap = h_p_info.css('.OddsM').text.to_f == 0.0 && a_p_info.css('.OddsM').text.to_f == 0.0
+      if h_p_info.css('.OddsR') and a_p_info.css('.OddsR')
+        not_handicap = h_p_info.css('.OddsM').text.to_f == 0.0 && a_p_info.css('.OddsM').text.to_f == 0.0
+      else
+        not_handicap = false
+      end
       if not_handicap
         @parsed_event[:home_player][:match] = h_p_info.css('.OddsR').text.to_f
         @parsed_event[:away_player][:match] = a_p_info.css('.OddsR').text.to_f
