@@ -38,7 +38,7 @@ class Sbobet < Bookmaker
       #without scores and only bet on wins
       h_p_info = what.css('.OddsTabL')
       a_p_info = what.css('.OddsTabR')
-      if h_p_info.css('.OddsR') and a_p_info.css('.OddsR')
+      if h_p_info.css('.OddsR').text.to_f != 0 and a_p_info.css('.OddsR').text.to_f != 0
         not_handicap = h_p_info.css('.OddsM').text.to_f == 0.0 && a_p_info.css('.OddsM').text.to_f == 0.0
       else
         not_handicap = false
