@@ -114,7 +114,7 @@ class Winlinebet < Bookmaker
   def changed_name name
     en_name = name
     Winline::NAMES.each do |rus,en|
-#      en_name = en if name.eql? rus
+      en_name = en if name.eql?(rus) and not en.empty?
     end
     en_name
   end
