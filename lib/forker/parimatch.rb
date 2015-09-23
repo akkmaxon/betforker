@@ -122,7 +122,7 @@ class Parimatch < Bookmaker
 
   def second_names_finder names
     w = []
-    names.gsub!('-', ' ')
+    #names.gsub!('-', ' ') do not drop second name
     if names.include?('/')
       nn = names.split(/\//)
       nn.each do |n|
