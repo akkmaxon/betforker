@@ -53,10 +53,10 @@ class Winlinebet < Bookmaker
         @parsed_event[:away_player][:match] = a_coeff.text.split('#')[0].to_f
       elsif what =~ /\d сет/i
         @parsed_event[:home_player][:set] ||= Hash.new
-        @parsed_event[:home_player][:set][what.to_i] = h_coeff.text.split('#')[0].to_f
+        @parsed_event[:home_player][:set][what.to_i.to_s] = h_coeff.text.split('#')[0].to_f
 
         @parsed_event[:away_player][:set] ||= Hash.new
-        @parsed_event[:away_player][:set][what.to_i] = a_coeff.text.split('#')[0].to_f
+        @parsed_event[:away_player][:set][what.to_i.to_s] = a_coeff.text.split('#')[0].to_f
       elsif what =~/\d+ гейм/i
         if scores.size > 4 and what.to_i >= 6
           #home_player 40 6 3 1  =>  %w[40 6 3 1 30 3 6 4]
@@ -72,10 +72,10 @@ class Winlinebet < Bookmaker
           num_of_game = what.to_i
         end
         @parsed_event[:home_player][:game] ||= Hash.new
-        @parsed_event[:home_player][:game][num_of_game] = h_coeff.text.split('#')[0].to_f
+        @parsed_event[:home_player][:game][num_of_game.to_s] = h_coeff.text.split('#')[0].to_f
 
         @parsed_event[:away_player][:game] ||= Hash.new
-        @parsed_event[:away_player][:game][num_of_game] = a_coeff.text.split('#')[0].to_f
+        @parsed_event[:away_player][:game][num_of_game.to_s] = a_coeff.text.split('#')[0].to_f
       end
     end
     @parsed_event[:home_player][:name] ||= 'HomePlayer'
