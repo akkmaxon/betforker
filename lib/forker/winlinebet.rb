@@ -58,7 +58,7 @@ class Winlinebet < Bookmaker
         @parsed_event[:away_player][:set] ||= Hash.new
         @parsed_event[:away_player][:set][what.to_i.to_s] = a_coeff.text.split('#')[0].to_f
       elsif what =~/\d+ гейм/i
-        if scores.size > 4 and what.to_i >= 6
+        if scores.size > 4 and what.to_i >= 6 and (what.to_i - (scores[(scores.size/2)-1].to_i + scores[-1].to_i)) != 2
           #home_player 40 6 3 1  =>  %w[40 6 3 1 30 3 6 4]
           #away_player 30 3 6 4
           scores.slice!(scores.size / 2)# removing away player game score

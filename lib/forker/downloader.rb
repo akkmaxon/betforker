@@ -21,7 +21,7 @@ class Downloader
 
   def download address
     puts "Processing #{address}"
-    if address =~ /williamhill|sbobet|winlinebet/##cookie filter for winlinebet!!!
+    if address =~ /williamhill|sbobet|winlinebet/
       @browser = Capybara
       cookie_setter('phantomjs')
       headers_setter
@@ -71,7 +71,11 @@ class Downloader
       'http://rnengage.com',
       'https://betfair.it',
       'http://dgmdigital.com',
-      'http://googletagmanager.com'
+      'http://googletagmanager.com',
+      #winlinebet
+      'http://livetex.ru',
+      'https://www.betradar.com',
+      'http://ctnsnet.com'
     ]
   end
 end
