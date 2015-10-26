@@ -2,7 +2,7 @@ class Marathon < Bookmaker
 
   def initialize
     #only tennis live page!!
-    @live_address = 'https://www.betmarathon.com/en/live/22723'
+    @live_address = 'http://www.betmarathon.com/en/live/22723'
     @parsed_event = {
       bookie: 'Marathon',
       score: '',

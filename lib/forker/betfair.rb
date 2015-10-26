@@ -1,7 +1,7 @@
 class Betfair < Bookmaker
 
   def initialize
-    @live_address = 'https://www.betfair.com/sport/inplay'
+    @live_address = 'http://www.betfair.com/sport/inplay'
     @parsed_event = {
       bookie: 'Betfair',
       score: '',

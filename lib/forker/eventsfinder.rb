@@ -7,11 +7,14 @@ class Eventsfinder
   end
 
   def events
+    bookie_under_filter = Array.new
     @bookies.each do |bookmaker|
       who = eval("#{bookmaker}.new")
       html = @downloader.download(who.live_address)
       @ev.merge! who.live_page_parsed(html) #hash addr => players
+      bookie_under_filter << bookmaker if html.include?('minjust.ru')
     end
+    Output.new.provider_filter(bookie_under_filter) unless bookie_under_filter.empty?
     @ev = events_structured
     remove_single_events
   end
@@ -19,7 +22,7 @@ class Eventsfinder
   private
 
   def events_structured
-    #change hash from bookie => events view to event => bookies view
+    #change hash from address => event view to event => address view
     new_evs = Hash.new
     @ev.each do |key, value|
       unless new_evs[value]

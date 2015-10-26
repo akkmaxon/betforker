@@ -2,7 +2,7 @@ class Sbobet < Bookmaker
 
   def initialize
     #with tennis works only!!
-    @live_address = 'https://www.sbobet.com/euro/live-betting/tennis'
+    @live_address = 'http://www.sbobet.com/euro/live-betting/tennis'
     @parsed_event = {
       bookie: 'Sbobet',
       score: '0:0 (0:0)',

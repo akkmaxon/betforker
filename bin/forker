@@ -19,8 +19,10 @@ while (Time.now.to_i - time_of_beginning) < $config[:time_of_work]
                                 downloader: Downloader.new
                               }).events
   rescue
+    puts "Error in bin/forker!!!"
     retry if tries < 3
   end
+  events ||= Hash.new
   output.before_work(events)
   events.each do |key,arr|
     tries = 0

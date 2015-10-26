@@ -71,6 +71,12 @@ class Output
       f.write(" #{forks}\n")
       f.close
     end
+  end
 
+  def provider_filter bookies
+    open(@log_file, 'a') do |f|
+      f.write("\nProvider does not let you download: #{bookies.join(', ')} \n")
+      f.close
+    end
   end
 end
