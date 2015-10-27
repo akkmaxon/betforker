@@ -90,7 +90,7 @@ class Parimatch < Bookmaker
           end
         end
       else
-        next if games_line.text =~ /point|score|who/i
+        next if games_line.text =~ /point|score|who|deuce/i
         num = games_line.css('.p2r').text.scan(/\d+/)[-1]
         c1, c2 = games_line.css('nobr')
         coeff1 = c1.text.split(/ /)[-1].to_f
