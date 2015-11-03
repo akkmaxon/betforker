@@ -58,7 +58,7 @@ class Marathon < Bookmaker
     end
     #find games
     nok.css('.block-market-wrapper').each do |chunk|
-      next unless chunk.attribute('data-mutable-id').text == "B82"
+      next unless chunk.attribute('data-mutable-id').text =~ /B82|Block_82/
       chunk.css('.market-inline-block-table-wrapper').each do |ch|
         next unless ch.css('.name-field').text.include? 'To Win Game'
         ch.css('table tr').each do |t|
