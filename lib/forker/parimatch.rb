@@ -75,7 +75,7 @@ class Parimatch < Bookmaker
             new_line << l.text
           end
         end
-        if new_line[first] and new_line[second]
+        if (new_line[first] and new_line[second]) and (new_line[first].to_f < 100.0 and new_line[second].to_f < 100.0)
         ####win match
           if not line.css('td.l').empty?
             @parsed_event[:home_player][:match] = new_line[first].to_f
