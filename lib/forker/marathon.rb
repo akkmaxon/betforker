@@ -14,14 +14,14 @@ class Marathon < Bookmaker
   def live_page_parsed html_source
     nok = Nokogiri::HTML(html_source)
     links = Hash.new
-    nok.css('.live-today-name .command').each do |link|
-      next unless link.attribute('onclick')
-      num = link.attribute('onclick').text.scan(/\d+/)
-      number = num.first if num.class == Array
+    nok.css('tbody').each do |table|
+      next unless table.attribute('data-event-treeid')
+      number = table.attribute('data-event-treeid').text.to_i
       href = "https://www.betmarathon.com/en/live/#{number}?openedMarkets=#{number}"
-      who = link.css('.live-today-member-name')[0].text.strip + " v " + link.css('.live-today-member-name')[1].text.strip
+      who = table.css('.live-today-member-name')[0].text.strip + " v " + table.css('.live-today-member-name')[1].text.strip
       links[href] = unified_names(who)
     end
+    p links
     links
   end
 
