@@ -49,6 +49,8 @@ class Forksfinder
   def check_bookmaker address
     bookie = ""
     $config[:bookies].each {|b| bookie = b if address.include?(b.downcase)}
+    #####if whbetting.com 
+    bookie = "WilliamHill" if bookie.empty?
     who = eval("#{bookie}.new")
   end
 

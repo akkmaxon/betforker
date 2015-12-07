@@ -1,7 +1,8 @@
 class WilliamHill < Bookmaker
 
   def initialize
-    @live_address = 'http://sports.williamhill.com/bet/en-gb/betlive/all'
+   #@live_address = 'http://sports.williamhill.com/bet/en-gb/betlive/all'
+    @live_address = 'http://sports.whbetting.com/bet/en-gb/betlive/all'
     @parsed_event = {
       bookie: 'WilliamHill',
       score: '0:0 (0:0)',
