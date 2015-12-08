@@ -21,7 +21,6 @@ class Marathon < Bookmaker
       who = table.css('.live-today-member-name')[0].text.strip + " v " + table.css('.live-today-member-name')[1].text.strip
       links[href] = unified_names(who)
     end
-    p links
     links
   end
 

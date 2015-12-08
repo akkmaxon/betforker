@@ -50,6 +50,8 @@ class Downloader
     when 'mechanize'
       @browser.cookie_jar << Mechanize::Cookie.new(domain: 'www.betmarathon.com', name: 'panbet.oddstype', value: 'Decimal', path: '/')
       @browser.cookie_jar << Mechanize::Cookie.new(domain: '.betfair.com', name: 'vid', value: '20691c80-5359-4b9a-98ab-20c363ae65bb', path: '/')
+      @browser.cookie_jar << Mechanize::Cookie.new(domain: '.whbetting.com', name: 'cust_lang', value: 'en-gb', path: '/')
+      @browser.cookie_jar << Mechanize::Cookie.new(domain: '.whbetting.com', name: 'cust_prefs', value: 'en|DECIMAL|form|TYPE|PRICE|||0|SB|0|0||0|en|0|TIME|TYPE|0|31|A|0||0|1|0||TYPE|', path: '/')
     end
   end
 

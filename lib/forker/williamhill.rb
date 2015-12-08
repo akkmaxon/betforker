@@ -26,12 +26,12 @@ class WilliamHill < Bookmaker
   def event_parsed html_source
     nok = Nokogiri::HTML(html_source)
     nok.css('script').remove
-    nok.css('#primaryCollectionContainer .marketHolderExpanded .tableData').each do |event|
-      event.css('thead div').remove
-      what = event.css('thead span').text
-      next if what =~ /Total|Point|Deuce|Score/
-      target_filler(event, what, 'home')
-      target_filler(event, what, 'away')
+    nok.css('#primaryCollectionContainer .marketHolderExpanded .tableData').each do |market|
+      market.css('thead div').remove
+      title = market.css('thead span').text
+      next if title =~ /Total|Point|Deuce|Score/
+      target_filler(market, title, 'home')
+      target_filler(market, title, 'away')
     end
     @parsed_event[:home_player][:name] ||= 'HomePlayer'
     @parsed_event[:away_player][:name] ||= 'AwayPlayer'
@@ -65,7 +65,7 @@ class WilliamHill < Bookmaker
     w
   end
 
-  def target_filler event, what, h_or_a
+  def target_filler market, title, h_or_a
     case h_or_a
     when 'home'
       priceholder = '.eventpriceholder-left'
@@ -76,18 +76,18 @@ class WilliamHill < Bookmaker
       pricecoeff = 'div.eventpricedown'
       player = :away_player
     end
-    chunk = event.css("tbody #{priceholder}").each do |pl|
+    chunk = market.css("tbody #{priceholder}").each do |pl|
       name = pl.css('div.eventselection').text.strip
       coeff = pl.css('div.eventprice').text.strip.to_f
       coeff = pl.css(pricecoeff).text.strip.to_f if coeff == 0.0
       unless coeff == 0.0
         @parsed_event[player][:name] ||= unified_names(name)
-        if what.include? 'Match Betting'
+        if title.include? 'Match Betting'
           @parsed_event[player][:match] = coeff
-        elsif what.include? ' Set - Game '
+        elsif title.include? ' Set - Game '
           @parsed_event[player][:game] ||= Hash.new
-          @parsed_event[player][:game].merge!({what.scan(/\w+/)[-1] => coeff})
-        elsif what.include? ' Set Betting Live'
+          @parsed_event[player][:game].merge!({title.scan(/\w+/)[-1] => coeff})
+        elsif title.include? ' Set Betting Live'
           @parsed_event[player][:set] ||= Hash.new
           @parsed_event[player][:set].merge!({what.scan(/\w+/)[0].to_i.to_s => coeff})
         end
