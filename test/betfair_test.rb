@@ -1,24 +1,30 @@
-require 'test/unit'
-require 'nokogiri'
-require 'forker'
+require_relative 'test_helper'
 
-$event_pages = []
-(1..8).each do |num|
-  $event_pages << "test/html/betfair/betfair#{num}.html"
-end
-
-$live_page = open('test/html/betfair/bf_live.htm').read
-class TestWilliamHill < Test::Unit::TestCase
+class BetfairTest < Minitest::Test
 
   def setup
     @bf = Betfair.new
+    @html_folder = 'test/html/betfair/'
   end
 
-  def teardown
+  def test_betfair_live_page_parsing
+    html = open("#{@html_folder}bf_live.htm").read
+    result = @bf.live_page_parsed(html)
+#    result.each {|k,r| puts k; puts r}
+    assert_equal Hash, result.class
+    result.each do |addr, who|
+      assert addr.include?('www.betfair.com')
+      assert_equal String, addr.class
+      assert_equal String, who.class
+    end
   end
 
-  def test_bf_event_parsed
-    $event_pages.each do |event_page|
+  def test_betfair_event_parsing
+    events = []
+    (1..4).each do |num|
+      events << "#{@html_folder}betfair#{num}.html"
+    end
+    events.each do |event_page|
       @bf = Betfair.new
       res = @bf.event_parsed(open(event_page).read)
 #      p res
@@ -28,16 +34,6 @@ class TestWilliamHill < Test::Unit::TestCase
       assert_equal(Hash, res[:away_player].class)
       assert_equal(String, res[:score].class)
       assert_equal('Betfair', res[:bookie])
-    end
-  end
-
-  def test_bf_live_page
-    result = @bf.live_page_parsed($live_page)
-#    result.each {|k,r| puts k; puts r}
-    assert_equal(Hash, result.class)
-    result.each do |addr, who|
-      assert(addr.include? 'www.betfair.com')
-      assert_equal(String, who.class)
     end
   end
 end

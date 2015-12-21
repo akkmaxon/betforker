@@ -1,5 +1,4 @@
 require 'forker/version.rb'
-require 'forker/bookmaker.rb'
 require 'forker/downloader.rb'
 require 'forker/eventsfinder.rb'
 require 'forker/forksfinder.rb'

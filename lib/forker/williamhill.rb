@@ -1,7 +1,8 @@
-class WilliamHill < Bookmaker
+class WilliamHill
+  attr_reader :live_address
 
   def initialize
-   #@live_address = 'http://sports.williamhill.com/bet/en-gb/betlive/all'
+   #@live_address = 'http://sports.williamhill.com/bet/en-gb/betlive/all' 
     @live_address = 'http://sports.whbetting.com/bet/en-gb/betlive/all'
     @parsed_event = {
       bookie: 'WilliamHill',
@@ -37,6 +38,8 @@ class WilliamHill < Bookmaker
     @parsed_event[:away_player][:name] ||= 'AwayPlayer'
     @parsed_event
   end
+
+  private
 
   def unified_names who
     w = []

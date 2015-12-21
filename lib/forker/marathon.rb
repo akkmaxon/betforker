@@ -1,8 +1,9 @@
-class Marathon < Bookmaker
+class Marathon
+  attr_reader :live_address
 
   def initialize
     #only tennis live page!!
-    @live_address = 'http://www.betmarathon.com/en/live/22723'
+    @live_address = 'https://www.marathonbet.com/en/live/22723'
     @parsed_event = {
       bookie: 'Marathon',
       score: '',
@@ -17,7 +18,7 @@ class Marathon < Bookmaker
     nok.css('tbody').each do |table|
       next unless table.attribute('data-event-treeid')
       number = table.attribute('data-event-treeid').text.to_i
-      href = "https://www.betmarathon.com/en/live/#{number}?openedMarkets=#{number}"
+      href = "https://www.marathonbet.com/en/live/#{number}?openedMarkets=#{number}"
       who = table.css('.live-today-member-name')[0].text.strip + " v " + table.css('.live-today-member-name')[1].text.strip
       links[href] = unified_names(who)
     end
@@ -77,6 +78,8 @@ class Marathon < Bookmaker
     @parsed_event[:away_player][:name] ||= 'AwayPlayer'
     @parsed_event
   end
+
+  private
 
   def unified_names who
     w = []

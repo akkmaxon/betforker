@@ -1,4 +1,5 @@
-class Parimatch < Bookmaker
+class Parimatch
+  attr_reader :live_address
 
   def initialize
     @live_address = 'http://www.parimatch.com/en/live.html'

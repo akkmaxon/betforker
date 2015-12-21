@@ -1,4 +1,5 @@
-class Betfair < Bookmaker
+class Betfair
+  attr_reader :live_address
 
   def initialize
     @live_address = 'http://www.betfair.com/sport/inplay'
@@ -43,6 +44,8 @@ class Betfair < Bookmaker
     @parsed_event[:away_player][:name] ||= 'AwayPlayer'
     @parsed_event
   end
+
+  private
 
   def unified_names who
     w = []

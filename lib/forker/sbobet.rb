@@ -1,4 +1,5 @@
-class Sbobet < Bookmaker
+class Sbobet
+  attr_reader :live_address
 
   def initialize
     #with tennis works only!!

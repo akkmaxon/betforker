@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
-class Winlinebet < Bookmaker
+class Winlinebet
+  attr_reader :live_address
 
   def initialize
     @live_address = 'http://winlinebet.com/stavki/sport/tennis'
