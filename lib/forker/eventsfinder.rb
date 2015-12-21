@@ -1,44 +1,50 @@
 class Eventsfinder
+  attr_reader :bookies, :downloader
 
   def initialize(args)
     @bookies = args[:bookies]
     @downloader = args[:downloader]
-    @ev = Hash.new
   end
 
-  def events
-    bookie_under_filter = Array.new
-    @bookies.each do |bookmaker|
-      who = eval("#{bookmaker}.new")
-      html = @downloader.download(who.live_address)
-      @ev.merge! who.live_page_parsed(html) #hash addr => players
-      bookie_under_filter << bookmaker if html.include?('minjust.ru')
-    end
-    Output.new.provider_filter(bookie_under_filter) unless bookie_under_filter.empty?
-    @ev = events_structured
-    remove_single_events
+  def well_structured_events(all_events = get_live_events)
+    events = events_structured all_events
+    remove_single_events events
   end
 
   private
 
-  def events_structured
-    #change hash from address => event view to event => address view
-    new_evs = Hash.new
-    @ev.each do |key, value|
-      unless new_evs[value]
-        new_evs[value] = [key]
-      else
-        new_evs[value].push(key)
-      end
+  def get_live_events
+    # returns hash addr => players
+    events = Hash.new
+    bookie_under_filter = Array.new
+    bookies.each do |bookmaker|
+      who = eval "#{bookmaker}.new"
+      html = downloader.download who.live_address
+      events.merge! who.live_page_parsed html
+      bookie_under_filter << bookmaker if html.include? 'minjust.ru'
     end
-    new_evs
+    Output.new.provider_filter(bookie_under_filter) unless bookie_under_filter.empty?
+    events
   end
 
-  def remove_single_events
-    new_evs = Hash.new
-    @ev.each do |key, val|
-      new_evs[key] = val if val.size > 1
+  def events_structured(unstructured)
+    #change hash from address => players view to players => address view
+    structured = Hash.new
+    unstructured.each do |key, value|
+      unless structured[value]
+        structured[value] = [key]
+      else
+        structured[value].push(key)
+      end
     end
-    new_evs
+    structured
+  end
+
+  def remove_single_events(events)
+    unique = Hash.new
+    events.each do |key, val|
+      unique[key] = val if val.size > 1
+    end
+    unique
   end
 end

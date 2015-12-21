@@ -13,7 +13,7 @@ while (Time.now.to_i - time_of_beginning) < $config[:time_of_work]
     events = Eventsfinder.new({
                                 bookies: $config[:bookies],
                                 downloader: Downloader.new
-                              }).events
+                              }).well_structured_events
   rescue
     puts "Error in bin/forker!!!"
     retry if tries < 3
