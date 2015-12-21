@@ -11,6 +11,7 @@ class ParimatchTest < Minitest::Test
     html = open("#{@html_folder}pm_live.html").read
     result = @pm.live_page_parsed(html)
     assert_equal Hash, result.class
+    assert_equal 16, result.size
     result.each do |addr, who|
       assert addr.include?('parimatch.com')
       assert_equal String, addr.class

@@ -1,6 +1,6 @@
 class Eventsfinder
 
-  def initialize args
+  def initialize(args)
     @bookies = args[:bookies]
     @downloader = args[:downloader]
     @ev = Hash.new

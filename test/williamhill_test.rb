@@ -11,6 +11,7 @@ class WilliamHillTest < MiniTest::Test
     page = open("#{@html_folder}wh_live.htm").read
     result = @wh.live_page_parsed(page)
     assert_equal(Hash, result.class)
+    assert_equal 2, result.size
     result.each do |addr, who|
       assert addr.include?('whbetting.com')
       assert_equal(String, who.class)

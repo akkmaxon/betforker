@@ -11,6 +11,7 @@ class SbobetTest < Minitest::Test
     html = open("#{@html_folder}sbobet_live.htm").read
     result = @sb.live_page_parsed(html)
     assert_equal Hash, result.class
+    assert_equal 8, result.size
     result.each do |addr, who|
       assert addr.include?('sbobet')
       assert_equal String, addr.class

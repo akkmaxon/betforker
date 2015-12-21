@@ -11,6 +11,7 @@ class MarathonTest < Minitest::Test
     html_source = open("#{@html_folder}mar_live.htm").read
     result_hash = @mar.live_page_parsed(html_source)
     assert_equal Hash, result_hash.class
+    assert_equal 2, result_hash.size
     result_hash.each do |addr, who|
       assert addr.include?('marathon')
       assert_equal String, addr.class

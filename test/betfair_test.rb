@@ -10,13 +10,14 @@ class BetfairTest < Minitest::Test
   def test_betfair_live_page_parsing
     html = open("#{@html_folder}bf_live.htm").read
     result = @bf.live_page_parsed(html)
-#    result.each {|k,r| puts k; puts r}
     assert_equal Hash, result.class
+    assert_equal 6, result.size
     result.each do |addr, who|
       assert addr.include?('www.betfair.com')
       assert_equal String, addr.class
       assert_equal String, who.class
     end
+#    result.each {|k,r| puts k; puts r}
   end
 
   def test_betfair_event_parsing

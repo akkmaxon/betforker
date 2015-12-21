@@ -1,4 +1,3 @@
-require 'test/unit'
 require 'forker'
 require 'capybara/poltergeist'
 require 'mechanize'
@@ -36,7 +35,7 @@ if $local
     end
   end
 end
-class TestEvFinder < Test::Unit::TestCase
+class EventsFinderTest < Minitest::Test
 
   def setup
     downloader = $local ? LocalDownloader.new : Downloader.new
