@@ -1,13 +1,3 @@
-=begin
-forks_hash = {
-bookies: 'wh' - 'betfair',      String
-players: 'First' - 'Second',    String
-score: '0:0',                  String
-what: 'game 4',                 String
-percent: '2.2'                  String
- }
-=end
-
 class Comparer
 
   def initialize

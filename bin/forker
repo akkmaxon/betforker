@@ -20,20 +20,27 @@ while (Time.now.to_i - time_of_beginning) < $config[:time_of_work]
   end
   events ||= Hash.new
   output.before_work(events)
+  parsed_events = []
   events.each do |key,arr|
     tries = 0
     begin
       tries += 1
-      forker = Forksfinder.new({
-                                 downloader: Downloader.new
-                               })
-      forker.parse(arr)
+      downloader = Downloader.new
+      arr.each do |addr|
+        html = downloader.download(addr)
+        bookmaker = Forksfinder::init_bookmaker(addr)
+        preparsed_event = bookmaker.event_parsed(html)
+	if preparsed_event[:home_player][:name] < preparsed_event[:away_player][:name]
+	  parsed_event = Forksfinder::change_names(preparsed_event)
+	end
+        parsed_events << parsed_event
+      end
     rescue
       retry if tries < 3
     end
-    output.parsed_bookies(forker.parsed_bookies)
-    forker.forking
-    output.to_screen(forker.forks) unless forker.forks.empty?
+    output.parsed_bookies(parsed_events)
+    forks = forker.forking(parsed_events, Comparer.new)
+    output.to_screen(forks) unless forks.empty?
   end
   output.after_work(beginning_loop)
   break if $config[:falling_phantomjs]
