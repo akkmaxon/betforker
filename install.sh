@@ -1,9 +1,5 @@
 #!/bin/bash
-
-echo 'alias forker="cd ~/forker/; bin/f"' >> ~/.bashrc
-echo 'alias forker_log="cd ~/forker/; tail -f forker_log"' >> ~/.bashrc
 cp config.yml.template config.yml
-source ~/.bashrc
 
 ruby -v
 
@@ -33,7 +29,9 @@ gem install nokogiri capybara poltergeist mechanize
 
 echo "We are ready!"
 
-forker
-if [ "$?" != 0 ]; then
-    echo "Close terminal and open it again"
-fi
+echo 'alias forker="cd ~/forker/; bin/f"' >> ~/.bashrc
+echo 'alias forker_log="cd ~/forker/; tail -f forker_log"' >> ~/.bashrc
+
+source ~/.bashrc
+
+echo "Type 'forker' for beginning"

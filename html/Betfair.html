@@ -58,7 +58,7 @@
   <h3>Parent</h3>
 
   
-  <p class="link"><a href="Bookmaker.html">Bookmaker</a>
+  <p class="link">Object
   
 </div>
 
@@ -75,12 +75,6 @@
     <li ><a href="#method-i-event_parsed">#event_parsed</a>
     
     <li ><a href="#method-i-live_page_parsed">#live_page_parsed</a>
-    
-    <li ><a href="#method-i-second_names_finder">#second_names_finder</a>
-    
-    <li ><a href="#method-i-target_filler">#target_filler</a>
-    
-    <li ><a href="#method-i-unified_names">#unified_names</a>
     
   </ul>
 </div>
@@ -107,6 +101,27 @@
 
     
 
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-live_address" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">live_address</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+    </section>
     
 
     
@@ -135,9 +150,9 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/forker/betfair.rb, line 3</span>
+            <pre><span class="ruby-comment"># File lib/forker/betfair.rb, line 4</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>
-  <span class="ruby-ivar">@live_address</span> = <span class="ruby-string">&#39;https://www.betfair.com/sport/inplay&#39;</span>
+  <span class="ruby-ivar">@live_address</span> = <span class="ruby-string">&#39;http://www.betfair.com/sport/inplay&#39;</span>
   <span class="ruby-ivar">@parsed_event</span> = {
     <span class="ruby-identifier">bookie</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;Betfair&#39;</span>,
     <span class="ruby-identifier">score</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;&#39;</span>,
@@ -182,7 +197,7 @@
 
           
           <div class="method-source-code" id="event_parsed-source">
-            <pre><span class="ruby-comment"># File lib/forker/betfair.rb, line 28</span>
+            <pre><span class="ruby-comment"># File lib/forker/betfair.rb, line 29</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">event_parsed</span> <span class="ruby-identifier">html_source</span>
   <span class="ruby-identifier">nok</span> = <span class="ruby-constant">Nokogiri</span><span class="ruby-operator">::</span><span class="ruby-constant">HTML</span>(<span class="ruby-identifier">html_source</span>)
   <span class="ruby-identifier">nok</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&#39;script&#39;</span>).<span class="ruby-identifier">remove</span>
@@ -230,7 +245,7 @@
 
           
           <div class="method-source-code" id="live_page_parsed-source">
-            <pre><span class="ruby-comment"># File lib/forker/betfair.rb, line 13</span>
+            <pre><span class="ruby-comment"># File lib/forker/betfair.rb, line 14</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">live_page_parsed</span> <span class="ruby-identifier">html_source</span>
   <span class="ruby-identifier">nok</span> = <span class="ruby-constant">Nokogiri</span><span class="ruby-operator">::</span><span class="ruby-constant">HTML</span>(<span class="ruby-identifier">html_source</span>)
   <span class="ruby-identifier">links</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
@@ -244,155 +259,6 @@
     <span class="ruby-identifier">links</span>[<span class="ruby-identifier">href</span>] = <span class="ruby-identifier">unified_names</span>(<span class="ruby-node">&quot;#{who_home} v #{who_away}&quot;</span>)
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">links</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-second_names_finder" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">second_names_finder</span><span
-            class="method-args">(names)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="second_names_finder-source">
-            <pre><span class="ruby-comment"># File lib/forker/betfair.rb, line 61</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">second_names_finder</span> <span class="ruby-identifier">names</span>
-  <span class="ruby-identifier">w</span> = []
-  <span class="ruby-identifier">names</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-string">&#39;-&#39;</span>, <span class="ruby-string">&#39; &#39;</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">names</span>.<span class="ruby-identifier">include?</span> <span class="ruby-string">&#39;,&#39;</span> <span class="ruby-comment">#remove names for beginning</span>
-    <span class="ruby-identifier">ss</span> = <span class="ruby-identifier">names</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/,/</span>)
-    <span class="ruby-identifier">w</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ss</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">/\w+/</span>)[<span class="ruby-value">-1</span>] <span class="ruby-comment">#if singles play</span>
-    <span class="ruby-identifier">ss</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span>
-      <span class="ruby-identifier">w</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">/\w+/</span>)[<span class="ruby-value">-1</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">include?</span> <span class="ruby-string">&#39;/&#39;</span>
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">names</span>.<span class="ruby-identifier">include?</span> <span class="ruby-string">&#39;/&#39;</span>
-    <span class="ruby-identifier">ss</span> = <span class="ruby-identifier">names</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/\//</span>)
-    <span class="ruby-identifier">ss</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span>
-      <span class="ruby-identifier">w</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">/\w+/</span>)[<span class="ruby-value">-1</span>]
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">w</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">names</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">/\w+/</span>)[<span class="ruby-value">-1</span>]
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">w</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-target_filler" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">target_filler</span><span
-            class="method-args">(event, what, h_or_a)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="target_filler-source">
-            <pre><span class="ruby-comment"># File lib/forker/betfair.rb, line 81</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">target_filler</span> <span class="ruby-identifier">event</span>, <span class="ruby-identifier">what</span>, <span class="ruby-identifier">h_or_a</span>
-  <span class="ruby-keyword">case</span> <span class="ruby-identifier">h_or_a</span>
-  <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;home&#39;</span>
-    <span class="ruby-identifier">num</span> = <span class="ruby-value">0</span>
-    <span class="ruby-identifier">player</span> = <span class="ruby-value">:home_player</span>
-  <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;away&#39;</span>
-    <span class="ruby-identifier">num</span> = <span class="ruby-value">1</span>
-    <span class="ruby-identifier">player</span> = <span class="ruby-value">:away_player</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">name</span> = <span class="ruby-identifier">event</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&#39;.minimarketview-content .runner-item .runner-name&#39;</span>)[<span class="ruby-identifier">num</span>]
-  <span class="ruby-identifier">name</span> = <span class="ruby-identifier">name</span>.<span class="ruby-identifier">text</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">name</span>
-  <span class="ruby-ivar">@parsed_event</span>[<span class="ruby-identifier">player</span>][<span class="ruby-value">:name</span>] <span class="ruby-operator">||=</span> <span class="ruby-identifier">unified_names</span>(<span class="ruby-identifier">name</span>)
-  <span class="ruby-identifier">coeff</span> = <span class="ruby-identifier">event</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&#39;.minimarketview-content .runner-item span.ui-runner-price&#39;</span>)[<span class="ruby-identifier">num</span>]
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">coeff</span>
-    <span class="ruby-identifier">coeff</span> = <span class="ruby-identifier">coeff</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">to_f</span>
-    <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">coeff</span> <span class="ruby-operator">==</span> <span class="ruby-value">0.0</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">what</span>.<span class="ruby-identifier">include?</span> <span class="ruby-string">&#39;Match Odds&#39;</span>
-      <span class="ruby-ivar">@parsed_event</span>[<span class="ruby-identifier">player</span>][<span class="ruby-value">:match</span>] = <span class="ruby-identifier">coeff</span>
-    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">what</span>.<span class="ruby-identifier">include?</span> <span class="ruby-string">&#39;Game &#39;</span>
-      <span class="ruby-ivar">@parsed_event</span>[<span class="ruby-identifier">player</span>][<span class="ruby-value">:game</span>] <span class="ruby-operator">||=</span> <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
-      <span class="ruby-ivar">@parsed_event</span>[<span class="ruby-identifier">player</span>][<span class="ruby-value">:game</span>].<span class="ruby-identifier">merge!</span>({<span class="ruby-identifier">what</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">/\w+/</span>)[<span class="ruby-value">-2</span>] =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">coeff</span>})
-    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">what</span>.<span class="ruby-identifier">include?</span> <span class="ruby-string">&#39;Set&#39;</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">what</span>.<span class="ruby-identifier">include?</span> <span class="ruby-string">&#39;Winner&#39;</span>
-      <span class="ruby-ivar">@parsed_event</span>[<span class="ruby-identifier">player</span>][<span class="ruby-value">:set</span>] <span class="ruby-operator">||=</span> <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
-      <span class="ruby-ivar">@parsed_event</span>[<span class="ruby-identifier">player</span>][<span class="ruby-value">:set</span>].<span class="ruby-identifier">merge!</span>({<span class="ruby-identifier">what</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">/\w+/</span>)[<span class="ruby-value">-2</span>].<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">coeff</span>})
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-unified_names" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">unified_names</span><span
-            class="method-args">(who)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="unified_names-source">
-            <pre><span class="ruby-comment"># File lib/forker/betfair.rb, line 47</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">unified_names</span> <span class="ruby-identifier">who</span>
-  <span class="ruby-identifier">w</span> = []
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">who</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-string">&#39; v &#39;</span>)
-    <span class="ruby-identifier">who</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39; v &#39;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pl</span><span class="ruby-operator">|</span>
-      <span class="ruby-identifier">w</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">second_names_finder</span>(<span class="ruby-identifier">pl</span>)
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">w</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">second_names_finder</span>(<span class="ruby-identifier">who</span>)
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">who</span> = <span class="ruby-string">&quot;&quot;</span>
-  <span class="ruby-identifier">w</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">wh</span><span class="ruby-operator">|</span> <span class="ruby-identifier">who</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">wh</span>}
-  <span class="ruby-identifier">who</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           

@@ -87,13 +87,6 @@
 
   <section class="description">
     
-<p>forks_hash = { bookies: &#39;wh&#39; - &#39;betfair&#39;,      String
-players: &#39;First&#39; - &#39;Second&#39;,    String score:
-&#39;0:0&#39;,                  String what: &#39;game 4&#39;,             
-String percent: &#39;2.2&#39;                  String</p>
-
-<pre>}</pre>
-
   </section>
 
   
@@ -134,7 +127,7 @@ String percent: &#39;2.2&#39;                  String</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/forker/comparer.rb, line 13</span>
+            <pre><span class="ruby-comment"># File lib/forker/comparer.rb, line 3</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>
   <span class="ruby-ivar">@forks_found</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
   <span class="ruby-ivar">@output</span> = <span class="ruby-constant">Output</span>.<span class="ruby-identifier">new</span>
@@ -176,7 +169,7 @@ String percent: &#39;2.2&#39;                  String</p>
 
           
           <div class="method-source-code" id="compare-source">
-            <pre><span class="ruby-comment"># File lib/forker/comparer.rb, line 18</span>
+            <pre><span class="ruby-comment"># File lib/forker/comparer.rb, line 8</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">compare</span> <span class="ruby-identifier">first</span>, <span class="ruby-identifier">second</span>
   <span class="ruby-ivar">@forks_found</span> = [] <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@forks_found</span>.<span class="ruby-identifier">empty?</span>
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">first</span>[<span class="ruby-value">:home_player</span>][<span class="ruby-value">:name</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">second</span>[<span class="ruby-value">:home_player</span>][<span class="ruby-value">:name</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">first</span>[<span class="ruby-value">:away_player</span>][<span class="ruby-value">:name</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">second</span>[<span class="ruby-value">:away_player</span>][<span class="ruby-value">:name</span>]

@@ -58,7 +58,7 @@
   <h3>Parent</h3>
 
   
-  <p class="link"><a href="Bookmaker.html">Bookmaker</a>
+  <p class="link">Object
   
 </div>
 
@@ -106,6 +106,27 @@
     
 
     
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-live_address" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">live_address</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+    </section>
+    
 
     
      <section id="public-class-5Buntitled-5D-method-details" class="method-section">
@@ -133,7 +154,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/forker/parimatch.rb, line 3</span>
+            <pre><span class="ruby-comment"># File lib/forker/parimatch.rb, line 4</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>
   <span class="ruby-ivar">@live_address</span> = <span class="ruby-string">&#39;http://www.parimatch.com/en/live.html&#39;</span>
   <span class="ruby-ivar">@parsed_event</span> = {
@@ -180,7 +201,7 @@
 
           
           <div class="method-source-code" id="event_parsed-source">
-            <pre><span class="ruby-comment"># File lib/forker/parimatch.rb, line 28</span>
+            <pre><span class="ruby-comment"># File lib/forker/parimatch.rb, line 29</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">event_parsed</span> <span class="ruby-identifier">html_source</span>
   <span class="ruby-identifier">nok</span> = <span class="ruby-constant">Nokogiri</span><span class="ruby-operator">::</span><span class="ruby-constant">HTML</span>(<span class="ruby-identifier">html_source</span>)
   <span class="ruby-identifier">score</span> = <span class="ruby-identifier">nok</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&#39;.l .l&#39;</span>).<span class="ruby-identifier">text</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/\(|\)|,/</span>)
@@ -231,7 +252,7 @@
           <span class="ruby-identifier">new_line</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">l</span>.<span class="ruby-identifier">text</span>
         <span class="ruby-keyword">end</span>
       <span class="ruby-keyword">end</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-identifier">new_line</span>[<span class="ruby-identifier">first</span>] <span class="ruby-keyword">and</span> <span class="ruby-identifier">new_line</span>[<span class="ruby-identifier">second</span>]
+      <span class="ruby-keyword">if</span> (<span class="ruby-identifier">new_line</span>[<span class="ruby-identifier">first</span>] <span class="ruby-keyword">and</span> <span class="ruby-identifier">new_line</span>[<span class="ruby-identifier">second</span>]) <span class="ruby-keyword">and</span> (<span class="ruby-identifier">new_line</span>[<span class="ruby-identifier">first</span>].<span class="ruby-identifier">to_f</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">100.0</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">new_line</span>[<span class="ruby-identifier">second</span>].<span class="ruby-identifier">to_f</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">100.0</span>)
       <span class="ruby-comment">####win match</span>
         <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">line</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&#39;td.l&#39;</span>).<span class="ruby-identifier">empty?</span>
           <span class="ruby-ivar">@parsed_event</span>[<span class="ruby-value">:home_player</span>][<span class="ruby-value">:match</span>] = <span class="ruby-identifier">new_line</span>[<span class="ruby-identifier">first</span>].<span class="ruby-identifier">to_f</span>
@@ -246,7 +267,7 @@
         <span class="ruby-keyword">end</span>
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">else</span>
-      <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">games_line</span>.<span class="ruby-identifier">text</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/point|score|who/i</span>
+      <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">games_line</span>.<span class="ruby-identifier">text</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/point|score|who|deuce|race/i</span>
       <span class="ruby-identifier">num</span> = <span class="ruby-identifier">games_line</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&#39;.p2r&#39;</span>).<span class="ruby-identifier">text</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">/\d+/</span>)[<span class="ruby-value">-1</span>]
       <span class="ruby-identifier">c1</span>, <span class="ruby-identifier">c2</span> = <span class="ruby-identifier">games_line</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&#39;nobr&#39;</span>)
       <span class="ruby-identifier">coeff1</span> = <span class="ruby-identifier">c1</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/ /</span>)[<span class="ruby-value">-1</span>].<span class="ruby-identifier">to_f</span>
@@ -290,7 +311,7 @@
 
           
           <div class="method-source-code" id="live_page_parsed-source">
-            <pre><span class="ruby-comment"># File lib/forker/parimatch.rb, line 13</span>
+            <pre><span class="ruby-comment"># File lib/forker/parimatch.rb, line 14</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">live_page_parsed</span> <span class="ruby-identifier">html_source</span>
   <span class="ruby-identifier">nok</span> = <span class="ruby-constant">Nokogiri</span><span class="ruby-operator">::</span><span class="ruby-constant">HTML</span>(<span class="ruby-identifier">html_source</span>)
   <span class="ruby-identifier">links</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
@@ -334,10 +355,10 @@
 
           
           <div class="method-source-code" id="second_names_finder-source">
-            <pre><span class="ruby-comment"># File lib/forker/parimatch.rb, line 123</span>
+            <pre><span class="ruby-comment"># File lib/forker/parimatch.rb, line 124</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">second_names_finder</span> <span class="ruby-identifier">names</span>
   <span class="ruby-identifier">w</span> = []
-  <span class="ruby-identifier">names</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-string">&#39;-&#39;</span>, <span class="ruby-string">&#39; &#39;</span>)
+  <span class="ruby-comment">#names.gsub!(&#39;-&#39;, &#39; &#39;) do not drop second name</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">names</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-string">&#39;/&#39;</span>)
     <span class="ruby-identifier">nn</span> = <span class="ruby-identifier">names</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/\//</span>)
     <span class="ruby-identifier">nn</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span>
@@ -377,7 +398,7 @@
 
           
           <div class="method-source-code" id="unified_names-source">
-            <pre><span class="ruby-comment"># File lib/forker/parimatch.rb, line 109</span>
+            <pre><span class="ruby-comment"># File lib/forker/parimatch.rb, line 110</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">unified_names</span> <span class="ruby-identifier">who</span>
   <span class="ruby-identifier">w</span> = []
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">who</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-string">&#39; - &#39;</span>)
