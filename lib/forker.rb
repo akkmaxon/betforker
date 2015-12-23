@@ -15,4 +15,3 @@ require 'capybara/poltergeist'
 require 'yaml'
 require 'nokogiri'
 require 'mechanize'
-include Forksfinder
