@@ -25,13 +25,11 @@ if [ "$?" != 0 ]; then
 fi
 
 gem install nokogiri capybara poltergeist mechanize
-cp config.yml.template config.yml
 
-echo "We are ready!"
+cp config.yml.template config.yml
 
 echo 'alias forker="cd ~/forker/; bin/f"' >> ~/.bashrc
 echo 'alias forker_log="cd ~/forker/; tail -f forker_log"' >> ~/.bashrc
 
-source ~/.bashrc
-
+echo "If you see that gems are not installed, you should install them(nokogiri, capybara, poltergeist, mechanize) manually. NOT RUN THIS SCRIPT ANYMORE."
 echo "Change forker/config.yml and type 'forker' for beginning"
