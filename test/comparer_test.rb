@@ -1,31 +1,27 @@
-require 'test/unit'
-require 'forker'
+require_relative 'test_helper'
 
 $config = { min_percent: 1.1, filtering: true, log_file: "/home/gentoo/Temp/mmm"}
-class TestComparer < Test::Unit::TestCase
+class ComparerTest < Minitest::Test
 
   def setup
     @comparer = Comparer.new
     @first = {
-      bookie: WilliamHill,
+      bookie: 'WilliamHill',
       score: "",
       home_player: { name: "Home_Player", match: 1.6, game: {"5" => 2.2 }, set: {"1" => 1.4 }},
       away_player: { name: "Away_Player", match: 2.3, game: {"5" => 1.7 }, set: {"1" => 2.9 }}
     }
     @second = {
-      bookie: Betfair,
+      bookie: 'Betfair',
       score: "0:0 (2:1)",
       home_player: { name: "Home_Player", match: 1.3, game: {"5" => 2.9 }, set: {"1" => 1.6 }},
       away_player: { name: "Away_Player", match: 3.3, game: {"5" => 1.4 }, set: {"1" => 2.2 }}
     }
   end
 
-  def teardown
-  end
-
   def test_all_forks
     forks = @comparer.compare(@first, @second)
-    refute(forks.empty?)
+    refute forks.empty?
     forks.each do |fork|
       assert_equal("WilliamHill - Betfair", fork[:bookies])
       assert_equal("Home_Player  VS  Away_Player", fork[:players])
