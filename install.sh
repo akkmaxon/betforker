@@ -1,5 +1,4 @@
 #!/bin/bash
-cp config.yml.template config.yml
 
 ruby -v
 
@@ -26,6 +25,7 @@ if [ "$?" != 0 ]; then
 fi
 
 gem install nokogiri capybara poltergeist mechanize
+cp config.yml.template config.yml
 
 echo "We are ready!"
 
@@ -34,4 +34,4 @@ echo 'alias forker_log="cd ~/forker/; tail -f forker_log"' >> ~/.bashrc
 
 source ~/.bashrc
 
-echo "Type 'forker' for beginning"
+echo "Change forker/config.yml and type 'forker' for beginning"
