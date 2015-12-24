@@ -7,13 +7,10 @@ spec = Gem::Specification.new do |s|
   s.email = 'akkmaxon2307@gmail.com'
   s.homepage = ''
   s.platform = Gem::Platform::RUBY
-  s.summary = "An app that looking for available bukmeker's forks"
+  s.summary = "No comments..."
   s.files = `git ls-files`.split("
 ")
   s.require_paths << 'lib'
-#  s.has_rdoc = true
-#  s.extra_rdoc_files = ['README.rdoc','forker.rdoc']
-#  s.rdoc_options << '--title' << 'forker' << '--main' << 'README.rdoc' << '-ri'
   s.bindir = 'bin'
   s.executables << 'forker'
   s.add_dependency('nokogiri')
@@ -22,5 +19,4 @@ spec = Gem::Specification.new do |s|
   s.add_dependency('mechanize')
   s.add_development_dependency('rake', '~> 10.4.2')
   s.add_development_dependency('rdoc', '~> 4.2')
-  s.add_development_dependency('aruba', '~> 0.7.4')
 end
