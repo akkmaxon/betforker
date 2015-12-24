@@ -19,7 +19,12 @@ class Eventsfinder
     bookie_under_filter = Array.new
     bookies.each do |bookmaker|
       who = eval "#{bookmaker}.new"
-      html = downloader.download who.live_address
+      begin
+        html = downloader.download who.live_address
+      rescue Mechanize::ResponseCodeError
+        puts "#{bookmaker} is not available now"
+	next
+      end
       events.merge! who.live_page_parsed html
       bookie_under_filter << bookmaker if html.include? 'minjust.ru'
     end

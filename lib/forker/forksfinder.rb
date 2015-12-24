@@ -11,7 +11,11 @@ class Forksfinder
 
   def parse addresses
     addresses.each do |addr|
-      html = @downloader.download(addr)
+      begin
+        html = @downloader.download(addr)
+      rescue Mechanize::ResponseCodeError
+        puts "#{address} is not accessible"
+      end
       @parsed_bookies << construct_hash(html, addr)
     end
   end

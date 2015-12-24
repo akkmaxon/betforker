@@ -14,8 +14,9 @@ while (Time.now.to_i - time_of_beginning) < $config[:time_of_work]
                                 bookies: $config[:bookies],
                                 downloader: Downloader.new
                               }).well_structured_events
-  rescue
+  rescue => e
     puts "Error in bin/forker!!!"
+    puts e
     retry if tries < 3
   end
   events ||= Hash.new
@@ -28,7 +29,8 @@ while (Time.now.to_i - time_of_beginning) < $config[:time_of_work]
                                  downloader: Downloader.new
                                })
       forker.parse(arr)
-    rescue
+    rescue => e
+      puts e
       retry if tries < 3
     end
     output.parsed_bookies(forker.parsed_bookies)
