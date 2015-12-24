@@ -36,7 +36,7 @@ GEM
     multi_json (1.11.2)
     net-http-digest_auth (1.4)
     net-http-persistent (2.9.4)
-    nokogiri (1.6.7)
+    nokogiri (1.6.7.1)
       mini_portile2 (~> 2.0.0.rc2)
     ntlm-http (0.1.1)
     poltergeist (1.8.1)
@@ -48,7 +48,7 @@ GEM
     rack-test (0.6.3)
       rack (>= 1.0)
     rake (10.4.2)
-    rdoc (4.2.0)
+    rdoc (4.2.1)
       json (~> 1.4)
     unf (0.1.4)
       unf_ext
