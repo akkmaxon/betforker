@@ -6,9 +6,9 @@ App for search of forks in live. Currently works only with tennis events.
 
 == Install
 
-If your linux system is Arch based, then you can use install.sh script inside app folder. After all actions you will run the program 'forker'. You will be able to watching the log file by typing 'forker_log' in other terminal.
+If your linux system is Manjaro, then you can use install.sh script inside app folder. After all actions you will run the program 'forker'. You will be able to watching the log file by typing 'forker_log' in other terminal.
 In other cases you should install next things manually:
- - ruby and phantomjs
- - bundler for install all necessary gems
- - after all add gems executables path(most likely $HOME/.gem/ruby/2.2.0/bin) to $PATH for using bundle and install gems
+* ruby and phantomjs
+* bundler for install all necessary gems
+* after all add gems executables path(most likely $HOME/.gem/ruby/2.2.0/bin) to $PATH for using bundle and install gems
 Copy config.yml.example to config.yml and change config.yml as you want. Add alias for bin/f in ~/.bashrc file. Use it.
