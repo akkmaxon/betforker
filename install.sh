@@ -1,31 +1,31 @@
 #!/bin/bash
-# - Installing this terrible app on your archlinux based computer.
+# - Installing this terrible app in your Manjaro Linux system.
 
-ruby -v
+ruby -v 2>/dev/null
 
 if [ "$?" != 0 ]; then
-    sudo pacman -S ruby
+    sudo pacman -S --noconfirm ruby
     if [ "$?" != 0 ]; then
-	echo "Use Arch Linux, please, or install ruby manually"
+	echo "Use Manjaro Linux, please, or install ruby manually"
 	exit 1
     else
 	echo "Ok, we installed ruby"
     fi
 fi
 
-phantomjs -v
+phantomjs -v 2>/dev/null
 
 if [ "$?" != 0 ]; then
-    sudo pacman -S phantomjs
+    sudo pacman -S --noconfirm phantomjs
     if [ "$?" != 0 ]; then
-	echo "Use Arch Linux, please, or install phantomjs manually"
+	echo "Use Manjaro Linux, please, or install phantomjs manually"
 	exit 1
     else
 	echo "Ok, we installed phantomjs"
     fi
 fi
 
-bundle --version
+bundle --version 2>/dev/null
 
 if [ "$?" != 0 ]; then
     gem install bundler
