@@ -1,0 +1,8 @@
+#!/bin/bash
+cp config.yml.template config.yml
+echo 'export PATH=$PATH:$HOME/.gem/ruby/2.2.0/bin' >> ~/.bashrc
+echo 'alias forker="cd ~/forker/; bin/f"' >> ~/.bashrc
+echo 'alias forker_log="cd ~/forker/; tail -f forker_log"' >> ~/.bashrc
+
+echo "Installation completed. Change forker/config.yml and type 'forker' for beginning"
+exec bash
