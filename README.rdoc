@@ -1,14 +1,26 @@
 = forker
 
-== Description
+== Описание
 
-App for search of forks in live. Currently works only with tennis events.
+Программа ищет вилки в лайве. На данный момент работает только с теннисом в следующих букмекерах
+ * Marathonbet
+ * Williamhill
+ * Betfair
+ * Parimatch
+ * Sbobet
+ * Winlinebet(ограниченно)
 
-== Install
+== Установка
 
-If your linux system is Manjaro, then you can use install.sh script inside app folder. After all actions you will run the program 'forker'. You will be able to watching the log file by typing 'forker_log' in other terminal.
-In other cases you should install next things manually:
-* ruby and phantomjs
-* bundler for install all necessary gems
-* after all add gems executables path(most likely $HOME/.gem/ruby/2.2.0/bin) to $PATH for using bundle and install gems
-Copy config.yml.example to config.yml and change config.yml as you want. Add alias for bin/f in ~/.bashrc file. Use it.
+Чтобы установить сие изделие на компьютер, желательно, чтобы тот работал под Linux(в идеале Manjaro Linux http://manjaro.github.io/download/). На других системах приложение не тестировалось.
+Для установки в Manjaro нужно в папке с исходниками запустить скрипт install.sh. Если вылезут ошибки, или система отличается, нужно убедиться, что проделаны следующие шаги:
+* установлены ruby и phantomjs
+* установлен bundler(gem install bundle)
+* запустить bundle install в папке с исходным кодом
+* запустить last_steps в папке с исходным кодом
+После всех манипуляций нужно сделать правки в конфигурационном файле config.yml. 
+
+== Использование
+
+forker - для запуска программы
+forker_log - для просмотра журнала в follow режиме(сам журнал - файл forker_log в папке с исходниками)
