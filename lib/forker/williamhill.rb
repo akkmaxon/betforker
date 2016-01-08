@@ -2,8 +2,7 @@ class WilliamHill
   attr_reader :live_address
 
   def initialize
-   #@live_address = 'http://sports.williamhill.com/bet/en-gb/betlive/all' 
-    @live_address = 'http://sports.whbetting.com/bet/en-gb/betlive/all'
+    @live_address = 'http://sports.whbetting.com/bet/en-ie/betlive/all'
     @parsed_event = {
       bookie: 'WilliamHill',
       score: '0:0 (0:0)',
@@ -92,7 +91,7 @@ class WilliamHill
           @parsed_event[player][:game].merge!({title.scan(/\w+/)[-1] => coeff})
         elsif title.include? ' Set Betting Live'
           @parsed_event[player][:set] ||= Hash.new
-          @parsed_event[player][:set].merge!({what.scan(/\w+/)[0].to_i.to_s => coeff})
+          @parsed_event[player][:set].merge!({title.scan(/\w+/)[0].to_i.to_s => coeff})
         end
       end
     end

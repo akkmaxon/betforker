@@ -3,7 +3,8 @@ class Marathon
 
   def initialize
     #only tennis live page!!
-    @live_address = 'https://www.marathonbet.com/en/live/22723'
+    @mirror_base = 'https://www.mbet.com/en/'
+    @live_address = "#{@mirror_base}live/22723"
     @parsed_event = {
       bookie: 'Marathon',
       score: '',
@@ -18,7 +19,7 @@ class Marathon
     nok.css('tbody').each do |table|
       next unless table.attribute('data-event-treeid')
       number = table.attribute('data-event-treeid').text.to_i
-      href = "https://www.marathonbet.com/en/live/#{number}?openedMarkets=#{number}"
+      href = "#{@mirror_base}live/#{number}?openedMarkets=#{number}"
       who = table.css('.live-today-member-name')[0].text.strip + " v " + table.css('.live-today-member-name')[1].text.strip
       links[href] = unified_names(who)
     end

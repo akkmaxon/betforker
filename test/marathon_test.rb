@@ -11,9 +11,9 @@ class MarathonTest < Minitest::Test
     html_source = open("#{@html_folder}mar_live.htm").read
     result_hash = @mar.live_page_parsed(html_source)
     assert_equal Hash, result_hash.class
-    assert_equal 2, result_hash.size
+    assert_equal 10, result_hash.size
     result_hash.each do |addr, who|
-      assert addr.include?('marathon')
+      assert addr.include?('mbet')
       assert_equal String, addr.class
       assert_equal String, who.class
     end
@@ -53,4 +53,17 @@ class MarathonTest < Minitest::Test
     assert_equal 1.77, result[:away_player][:game]["8"]
   end
 
+  def test_marathon2_page
+  #####Humberg vs Haylaz##########
+    address = "#{@html_folder}marathon2.htm"
+    result = @mar.event_parsed(open(address).read)
+    assert_equal 'Humbert', result[:home_player][:name]
+    assert_equal 'Haylaz', result[:away_player][:name]
+    assert_equal 1.009, result[:home_player][:match]
+    assert_equal 20.00, result[:away_player][:match]
+    assert_equal 1.055, result[:home_player][:set]["2"]
+    assert_equal 9.00, result[:away_player][:set]["2"]
+    assert_equal 1.25, result[:home_player][:game]["6"]
+    assert_equal 3.90, result[:away_player][:game]["6"]
+  end
 end

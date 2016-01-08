@@ -36,18 +36,17 @@ class Downloader
     when 'phantomjs'
       @browser.page.driver.set_cookie('cust_lang', 'en-gb', {domain: '.williamhill.com'})
       @browser.page.driver.set_cookie('cust_prefs', 'en|DECIMAL|form|TYPE|PRICE|||0|SB|0|0||0|en|0|TIME|TYPE|0|31|A|0||0|1|0||TYPE|', {domain: '.williamhill.com'})
-      @browser.page.driver.set_cookie('cust_lang', 'en-gb', {domain: '.whbetting.com'})
-      @browser.page.driver.set_cookie('cust_prefs', 'en|DECIMAL|form|TYPE|PRICE|||0|SB|0|0||0|en|0|TIME|TYPE|0|31|A|0||0|1|0||TYPE|', {domain: '.whbetting.com'})
+      @browser.page.driver.set_cookie('cust_lang', 'en-ie', {domain: '.whbetting.com'})
+      @browser.page.driver.set_cookie('cust_prefs', 'ie|DECIMAL|form|TYPE|PRICE|||0|SB|0|0||1|ie|0|TIME|TYPE|0|10|A|0||0|1|0||TYPE|', {domain: '.whbetting.com'})
     when 'mechanize'
-      @browser.cookie_jar << Mechanize::Cookie.new(domain: 'www.marathonbet.com', name: 'panbet.oddstype', value: 'Decimal', path: '/')
+      @browser.cookie_jar << Mechanize::Cookie.new(domain: 'www.mbet.com', name: 'panbet.oddstype', value: 'Decimal', path: '/')
       @browser.cookie_jar << Mechanize::Cookie.new(domain: '.betfair.com', name: 'vid', value: '20691c80-5359-4b9a-98ab-20c363ae65bb', path: '/')
-      @browser.cookie_jar << Mechanize::Cookie.new(domain: '.whbetting.com', name: 'cust_lang', value: 'en-gb', path: '/')
-      @browser.cookie_jar << Mechanize::Cookie.new(domain: '.whbetting.com', name: 'cust_prefs', value: 'en|DECIMAL|form|TYPE|PRICE|||0|SB|0|0||0|en|0|TIME|TYPE|0|31|A|0||0|1|0||TYPE|', path: '/')
+      @browser.cookie_jar << Mechanize::Cookie.new(domain: '.whbetting.com', name: 'cust_lang', value: 'en-ie', path: '/')
+      @browser.cookie_jar << Mechanize::Cookie.new(domain: '.whbetting.com', name: 'cust_prefs', value: 'ie|DECIMAL|form|TYPE|PRICE|||0|SB|0|0||0|ie|0|TIME|TYPE|0|31|A|0||0|1|0||TYPE|', path: '/')
     end
   end
 
   def headers_setter
-    @browser.page.driver.headers = { 'User-Agent' => 'Opera/9.80 (X11; Linux x86_64; Edition Linux Mint) Presto/2.12.388 Version/12.16'}
     @browser.page.driver.browser.url_blacklist = [
       'https://zz.connextra.com',
       'http://envoytransfers.com',
@@ -58,6 +57,7 @@ class Downloader
       'http://scoreboards.williamhill.com',
       'http://amazonaws.com',
       'http://whdn.williamhill.com',
+      'http://whdn.whbetting.com',
       'https://cdnbf.net',
       'https://uservoice.com',
       'http://mediaplex.com',
@@ -65,6 +65,9 @@ class Downloader
       'https://betfair.it',
       'http://dgmdigital.com',
       'http://googletagmanager.com',
+      'https://mpsnare.iesnare.com/snare.js',
+      'https://mpsnare.iesnare.com/script/logo.js',
+      'https://mpsnare.iesnare.com/stmgwb2.swf',
       #winlinebet
       'http://livetex.ru',
       'https://www.betradar.com',
