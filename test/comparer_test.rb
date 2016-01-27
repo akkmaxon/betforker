@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-$config = { min_percent: 1.1, filtering: true, log_file: "/home/gentoo/Temp/mmm"}
+$config = { min_percent: 1.1, filtering: true, log_file: "test/logfile"}
 class ComparerTest < Minitest::Test
 
   def setup

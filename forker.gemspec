@@ -15,6 +15,8 @@ spec = Gem::Specification.new do |s|
   s.executables << 'forker'
   s.add_dependency('nokogiri')
   s.add_dependency('capybara')
+  s.add_dependency('minitest')
+  s.add_dependency('minitest-reporters')
   s.add_dependency('poltergeist')
   s.add_dependency('mechanize')
   s.add_development_dependency('rake', '~> 10.4.2')
