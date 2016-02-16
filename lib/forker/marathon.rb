@@ -64,7 +64,7 @@ class Marathon
         next unless ch.css('.name-field').text.include? 'To Win Game'
         ch.css('table tr').each do |t|
           next if t.to_s.include?('<th')
-          num = t.css('.aleft .market-table-name b').text
+          num = t.css('.market-table-name b').text
           coeff1, coeff2 = t.css('.price .selection-link').collect {|c| c.text.to_f}
           if coeff1 and coeff2
             @parsed_event[:home_player][:game] ||= Hash.new

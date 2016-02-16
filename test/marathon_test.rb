@@ -66,4 +66,18 @@ class MarathonTest < Minitest::Test
     assert_equal 1.25, result[:home_player][:game]["6"]
     assert_equal 3.90, result[:away_player][:game]["6"]
   end
+
+  def test_marathon3_page
+  ######Dominguez Lino vs Larsson##############
+    address = "#{@html_folder}marathon3.htm"
+    result = @mar.event_parsed(open(address).read)
+    assert_equal 'Lino', result[:home_player][:name]
+    assert_equal 'Larsson', result[:away_player][:name]
+    assert_equal 6.10, result[:home_player][:match]
+    assert_equal 1.125, result[:away_player][:match]
+    assert_equal 2.92, result[:home_player][:set]["2"]
+    assert_equal 1.41, result[:away_player][:set]["2"]
+    assert_equal 3.125, result[:home_player][:game]["2"]
+    assert_equal 1.363, result[:away_player][:game]["2"]
+  end
 end
