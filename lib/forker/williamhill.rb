@@ -2,7 +2,7 @@ class WilliamHill
   attr_reader :live_address
 
   def initialize
-    @live_address = 'http://sports.whbetting.com/bet/en-ie/betlive/all'
+    @live_address = "http://sports#{Forker::WILLIAMHILL_ADDRESS}/bet/en-ie/betlive/all"
     @parsed_event = {
       bookie: 'WilliamHill',
       score: '0:0 (0:0)',

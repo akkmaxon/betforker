@@ -13,7 +13,7 @@ class WilliamHillTest < MiniTest::Test
     assert_equal(Hash, result.class)
     assert_equal 11, result.size
     result.each do |addr, who|
-      assert addr.include?('whbetting.com')
+      assert addr.include? Forker::WILLIAMHILL_ADDRESS
       assert_equal(String, who.class)
     end
 #   result.each {|k,r| puts k; puts r}

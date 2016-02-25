@@ -19,13 +19,13 @@ class DownloaderTest < Minitest::Test
   end
 
   def test_download_williamhill_with_proper_cookies
-    address = "http://sports.whbetting.com/bet/en-ie/betlive/all"
+    address = "http://sports#{Forker::WILLIAMHILL_ADDRESS}/bet/en-ie/betlive/all"
     page = @downloader.download(address)
     assert page.size > 1000
-    assert page.include?('whbetting.com'), "I can't find 'whbetting.com'"
+    assert page.include?(Forker::WILLIAMHILL_ADDRESS), "I can't find #{Forker::WILLIAMHILL_ADDRESS}"
     assert page.include?('Join Now'), "Language is not english(williamhill)"
     assert page.include?('priceFormat: "decimal"'), "WilliamHill cookies not found"
-    assert_equal "https://sports.whbetting.com/bet/en-ie",
+    assert_equal "https://sports#{Forker::WILLIAMHILL_ADDRESS}/bet/en-ie",
     	Nokogiri::HTML(page).css("#login").attribute("action").text
   end
 =begin
