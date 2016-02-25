@@ -13,7 +13,7 @@ class MarathonTest < Minitest::Test
     assert_equal Hash, result_hash.class
     assert_equal 10, result_hash.size
     result_hash.each do |addr, who|
-      assert addr.include?('mbet128')
+      assert addr.include? Forker::MARATHON_ADDRESS
       assert_equal String, addr.class
       assert_equal String, who.class
     end

@@ -3,7 +3,7 @@ class Marathon
 
   def initialize
     #only tennis live page!!
-    @mirror_base = 'https://www.mbet128.com/en/'
+    @mirror_base = "https://#{Forker::MARATHON_ADDRESS}/en/"
     @live_address = "#{@mirror_base}live/22723"
     @parsed_event = {
       bookie: 'Marathon',

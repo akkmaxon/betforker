@@ -39,7 +39,7 @@ class Downloader
       @browser.page.driver.set_cookie('cust_lang', 'en-ie', {domain: '.whbetting.com'})
       @browser.page.driver.set_cookie('cust_prefs', 'ie|DECIMAL|form|TYPE|PRICE|||0|SB|0|0||1|ie|0|TIME|TYPE|0|10|A|0||0|1|0||TYPE|', {domain: '.whbetting.com'})
     when 'mechanize'
-      @browser.cookie_jar << Mechanize::Cookie.new(domain: 'www.mbet128.com', name: 'panbet.oddstype', value: 'Decimal', path: '/')
+      @browser.cookie_jar << Mechanize::Cookie.new(domain: Forker::MARATHON_ADDRESS, name: 'panbet.oddstype', value: 'Decimal', path: '/')
       @browser.cookie_jar << Mechanize::Cookie.new(domain: '.betfair.com', name: 'vid', value: '20691c80-5359-4b9a-98ab-20c363ae65bb', path: '/')
       @browser.cookie_jar << Mechanize::Cookie.new(domain: '.whbetting.com', name: 'cust_lang', value: 'en-ie', path: '/')
       @browser.cookie_jar << Mechanize::Cookie.new(domain: '.whbetting.com', name: 'cust_prefs', value: 'ie|DECIMAL|form|TYPE|PRICE|||0|SB|0|0||0|ie|0|TIME|TYPE|0|31|A|0||0|1|0||TYPE|', path: '/')

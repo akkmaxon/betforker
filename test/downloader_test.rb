@@ -4,17 +4,17 @@ class DownloaderTest < Minitest::Test
 
   def setup
     @downloader = Downloader.new
-    @mar_domain = "https://www.mbet128.com"
+    @mar_domain = Forker::MARATHON_ADDRESS
   end
 
   def test_download_marathon_with_proper_cookies
-    address = "#{@mar_domain}/en/live"
+    address = "https://#{@mar_domain}/en/live"
     page = @downloader.download(address)
     assert page.size > 1000
     assert page.include?('Marathonbet'), "There is no 'Marathonbet' in the page"
     assert page.include?('"oddsType":"Decimal"'), "Marathon cookies not found"
     assert page.include?('"locale_name":"en"'), "Language is not english(marathon)"
-    assert_equal "#{@mar_domain}:443/en/login.htm",
+    assert_equal "https://#{@mar_domain}:443/en/login.htm",
     	Nokogiri::HTML(page).css("#auth").attribute("action").text
   end
 
