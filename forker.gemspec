@@ -13,12 +13,11 @@ spec = Gem::Specification.new do |s|
   s.require_paths << 'lib'
   s.bindir = 'bin'
   s.executables << 'forker'
-  s.add_dependency('nokogiri')
-  s.add_dependency('capybara')
-  s.add_dependency('minitest')
-  s.add_dependency('minitest-reporters')
-  s.add_dependency('poltergeist')
-  s.add_dependency('mechanize')
-  s.add_development_dependency('rake', '~> 10.4.2')
-  s.add_development_dependency('rdoc', '~> 4.2')
+  s.add_dependency('nokogiri', '~> 1.6')
+  s.add_dependency('capybara', '2.5.0')
+  s.add_dependency('minitest', '~> 5.8')
+  s.add_dependency('minitest-reporters', '~> 1.1')
+  s.add_dependency('poltergeist', '~> 1.8')
+  s.add_dependency('mechanize', '~> 2.7')
+  s.add_development_dependency('rake')
 end
