@@ -1,5 +1,16 @@
 module WilliamHill
 
+  def self.parse(html, sport, type)
+    case type
+    when :live
+      parse_live_page html, sport
+    when :event
+      parse_event html, sport
+    else
+      raise 'Not clever!'
+    end
+  end
+
   def self.parse_live_page(html, sport)
     nok = Nokogiri::HTML(html)
     links = Hash.new

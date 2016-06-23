@@ -1,12 +1,23 @@
 module Marathon
 
-  def self.parse_live_page(html, sport = 'tennis')
+  def self.parse(html, sport, type)
+    case type
+    when :live
+      parse_live_page html, sport
+    when :event
+      parse_event html, sport
+    else
+      raise 'Not clever!'
+    end
+  end
+
+  def self.parse_live_page(html, sport)
     nok = Nokogiri::HTML(html)
     links = {}
     nok.css('tbody').each do |table|
       next unless table.attribute('data-event-treeid')
       number = table.attribute('data-event-treeid').text.to_i
-      href = "#{Forker::MARATHON_ADDRESS}live/#{number}?openedMarkets=#{number}"
+      href = "#{Forker::MARATHON_BASE_ADDRESS}live/#{number}?openedMarkets=#{number}"
       players = table.css('.live-today-member-name')[0].text.strip + " v " + table.css('.live-today-member-name')[1].text.strip
       links[href] = concatenated_names(players)
     end

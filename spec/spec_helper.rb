@@ -1,6 +1,6 @@
 require 'forker'
 module MyHelpers
-  HTML_PATH = File.expand_path('../html', __FILE__)
+  HTML_PATH = File.expand_path('../support/html', __FILE__)
 
   def open_right_live_page(bookmaker)
     open("#{HTML_PATH}/#{bookmaker}/live_page.html").read

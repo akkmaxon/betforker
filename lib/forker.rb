@@ -17,6 +17,8 @@ require 'nokogiri'
 require 'mechanize'
 
 module Forker
-  MARATHON_ADDRESS = 'https://www.mirrormarafonbet.com/en/'
-  WILLIAMHILL_ADDRESS = 'http://sports.bukstavki77.com/bet/en-ie/'
+  MARATHON_BASE_ADDRESS = 'https://www.mirrormarafonbet.com/en/'
+  MARATHON_TENNIS_LIVE_PAGE_ADDRESS = MARATHON_BASE_ADDRESS + 'live/22723'
+  WILLIAMHILL_BASE_ADDRESS = 'http://sports.bukstavki77.com/bet/en-ie/'
+  WILLIAMHILL_LIVE_PAGE_ADDRESS = WILLIAMHILL_BASE_ADDRESS + 'betlive/all'
 end
