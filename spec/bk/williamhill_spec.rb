@@ -1,7 +1,9 @@
-require_relative 'test_helper'
+require 'spec_helper'
 
-class WilliamHillTest < MiniTest::Test
+RSpec.describe WilliamHill do
+end
 
+__END__
   def setup
     @wh = WilliamHill.new
     @html_folder = 'test/html/williamhill/'

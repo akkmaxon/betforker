@@ -10,8 +10,3 @@ RDoc::Task.new do |rdoc|
   rdoc.rdoc_files.include("README.rdoc", "lib/**/*.rb", "bin/**/*")
   rdoc.title = 'Forker doc'
 end
-
-Rake::TestTask.new do |t|
-  t.libs << "test"
-  t.test_files = FileList['test/*_test.rb']
-end

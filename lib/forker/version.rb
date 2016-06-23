@@ -1,0 +1,3 @@
+module Forker
+  VERSION = '0.1.0'
+end

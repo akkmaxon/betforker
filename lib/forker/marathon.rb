@@ -1,59 +1,47 @@
-class Marathon
-  attr_reader :live_address
+module Marathon
 
-  def initialize
-    #only tennis live page!!
-    @mirror_base = "https://#{Forker::MARATHON_ADDRESS}/en/"
-    @live_address = "#{@mirror_base}live/22723"
-    @parsed_event = {
-      bookie: 'Marathon',
-      score: '',
-      home_player: Hash.new,
-      away_player: Hash.new
-    }
-  end
-
-  def live_page_parsed html_source
-    nok = Nokogiri::HTML(html_source)
-    links = Hash.new
+  def self.parse_live_page(html, sport = 'tennis')
+    nok = Nokogiri::HTML(html)
+    links = {}
     nok.css('tbody').each do |table|
       next unless table.attribute('data-event-treeid')
       number = table.attribute('data-event-treeid').text.to_i
-      href = "#{@mirror_base}live/#{number}?openedMarkets=#{number}"
-      who = table.css('.live-today-member-name')[0].text.strip + " v " + table.css('.live-today-member-name')[1].text.strip
-      links[href] = unified_names(who)
+      href = "#{Forker::MARATHON_ADDRESS}live/#{number}?openedMarkets=#{number}"
+      players = table.css('.live-today-member-name')[0].text.strip + " v " + table.css('.live-today-member-name')[1].text.strip
+      links[href] = concatenated_names(players)
     end
     links
   end
 
-  def event_parsed html_source
-    nok = Nokogiri::HTML(html_source)
+  def self.parse_event(html, sport)
+    result = init_result
+    nok = Nokogiri::HTML(html)
     nok.css('script').remove
     games_score = nok.css('.cl-left .result-description-part').text.strip[1...-1]
     nok.css('.cl-left .result-description-part').remove
     sets_score = nok.css('.cl-left').text.strip
-    @parsed_event[:score] = "#{games_score} (#{sets_score})"
+    result[:score] = "#{games_score} (#{sets_score})"
     h_pl = nok.css('.live-today-name .live-today-member-name')[0].text.strip
     a_pl = nok.css('.live-today-name .live-today-member-name')[1].text.strip
     unless h_pl.empty? or a_pl.empty?
-      @parsed_event[:home_player][:name] = unified_names(h_pl)
-      @parsed_event[:away_player][:name] = unified_names(a_pl)
+      result[:home_player][:name] = concatenated_names(h_pl)
+      result[:away_player][:name] = concatenated_names(a_pl)
     end
     #find sets & match
     sets_nums = %w{ 1st 2nd 3rd 4th 5th }
     nok.css('span.selection-link').each do |link|
       if link.attribute('data-selection-key').text.include? 'Match_Result.1'
-        @parsed_event[:home_player][:match] = link.text.to_f
+        result[:home_player][:match] = link.text.to_f
       elsif link.attribute('data-selection-key').text.include? 'Match_Result.3'
-        @parsed_event[:away_player][:match] = link.text.to_f
+        result[:away_player][:match] = link.text.to_f
       end
       sets_nums.each do |v|
         if link.attribute('data-selection-key').text.include? "#{v}_Set_Result.RN_H"
-          @parsed_event[:home_player][:set] ||= Hash.new
-          @parsed_event[:home_player][:set][v[0]] = link.text.to_f
+          result[:home_player][:set] ||= Hash.new
+          result[:home_player][:set][v[0]] = link.text.to_f
         elsif link.attribute('data-selection-key').text.include? "#{v}_Set_Result.RN_A"
-          @parsed_event[:away_player][:set] ||= Hash.new
-          @parsed_event[:away_player][:set][v[0]] = link.text.to_f
+          result[:away_player][:set] ||= Hash.new
+          result[:away_player][:set][v[0]] = link.text.to_f
         end
       end
     end
@@ -67,49 +55,53 @@ class Marathon
           num = t.css('.market-table-name b').text
           coeff1, coeff2 = t.css('.price .selection-link').collect {|c| c.text.to_f}
           if coeff1 and coeff2
-            @parsed_event[:home_player][:game] ||= Hash.new
-            @parsed_event[:away_player][:game] ||= Hash.new
-            @parsed_event[:home_player][:game][num] = coeff1
-            @parsed_event[:away_player][:game][num] = coeff2
+            result[:home_player][:game] ||= Hash.new
+            result[:away_player][:game] ||= Hash.new
+            result[:home_player][:game][num] = coeff1
+            result[:away_player][:game][num] = coeff2
           end
         end
       end
     end
-    @parsed_event[:home_player][:name] ||= 'HomePlayer'
-    @parsed_event[:away_player][:name] ||= 'AwayPlayer'
-    @parsed_event
+    result[:home_player][:name] ||= 'HomePlayer'
+    result[:away_player][:name] ||= 'AwayPlayer'
+    result
   end
 
-  private
-
-  def unified_names who
+  def self.concatenated_names(string)
     w = []
-    if who.include?(' v ')
-      who.split(' v ').each do |pl|
+    if string.include?(' v ')
+      string.split(' v ').each do |pl|
         w += second_names_finder(pl)
       end
     else
-      w += second_names_finder(who)
+      w += second_names_finder(string)
     end
     who = ""
-    w.sort.each {|wh| who << wh}
+    w.sort.each { |wh| who << wh }
     who
   end
 
-  def second_names_finder names
-    w = []
-    #names.gsub!('-', ' ') do not drop second name
+  def self.second_names_finder(names)
+    second_name = []
     if names.include?('/')
       nn = names.split(/\//)
       nn.each do |n|
-        w << n.scan(/\w+/)[-1]
+        second_name << n.scan(/\w+/)[-1]
       end
     elsif names.include?('Doubles')
-      w << names.scan(/\w+/)[-2]
+      second_name << names.scan(/\w+/)[-2]
     else
-      w << names.split(',')[0].scan(/\w+/)[-1]
+      second_name << names.split(',')[0].scan(/\w+/)[-1]
     end
-    w
+    second_name
+  end
+
+  def self.init_result
+    { bookie: 'Marathon',
+      score: '',
+      home_player: {},
+      away_player: {} }
   end
 
 end

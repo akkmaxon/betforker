@@ -1,4 +1,4 @@
-require 'forker/constants.rb'
+require 'forker/version.rb'
 require 'forker/downloader.rb'
 require 'forker/eventsfinder.rb'
 require 'forker/forksfinder.rb'
@@ -15,3 +15,8 @@ require 'capybara/poltergeist'
 require 'yaml'
 require 'nokogiri'
 require 'mechanize'
+
+module Forker
+  MARATHON_ADDRESS = 'https://www.mirrormarafonbet.com/en/'
+  WILLIAMHILL_ADDRESS = '.bukstavki77.com'
+end
