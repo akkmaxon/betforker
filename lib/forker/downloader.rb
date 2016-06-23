@@ -15,7 +15,7 @@ class Downloader
 
   def download address
     puts "Processing #{address}"
-    if address =~ /williamhill|sbobet|winlinebet|whbetting/
+    if address =~ /williamhill|sbobet|winlinebet|whbetting|bukstavki/
       @browser = Capybara
       cookie_setter('phantomjs')
       headers_setter
@@ -39,8 +39,8 @@ class Downloader
     when 'mechanize'
       @browser.cookie_jar << Mechanize::Cookie.new(domain: Forker::MARATHON_ADDRESS, name: 'panbet.oddstype', value: 'Decimal', path: '/')
       @browser.cookie_jar << Mechanize::Cookie.new(domain: '.betfair.com', name: 'vid', value: '20691c80-5359-4b9a-98ab-20c363ae65bb', path: '/')
-      @browser.cookie_jar << Mechanize::Cookie.new(domain: '.whbetting.com', name: 'cust_lang', value: 'en-ie', path: '/')
-      @browser.cookie_jar << Mechanize::Cookie.new(domain: '.whbetting.com', name: 'cust_prefs', value: 'ie|DECIMAL|form|TYPE|PRICE|||0|SB|0|0||0|ie|0|TIME|TYPE|0|31|A|0||0|1|0||TYPE|', path: '/')
+      @browser.cookie_jar << Mechanize::Cookie.new(domain: Forker::WILLIAMHILL_ADDRESS, name: 'cust_lang', value: 'en-ie', path: '/')
+      @browser.cookie_jar << Mechanize::Cookie.new(domain: Forker::WILLIAMHILL_ADDRESS, name: 'cust_prefs', value: 'ie|DECIMAL|form|TYPE|PRICE|||0|SB|0|0||0|ie|0|TIME|TYPE|0|31|A|0||0|1|0||TYPE|', path: '/')
     end
   end
 

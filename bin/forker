@@ -2,7 +2,7 @@
 $LOAD_PATH << File.expand_path(File.dirname(__FILE__) + '/../lib')
 require 'forker'
 open(File.dirname(__FILE__) + '/../config.yml') {|f| $config = YAML.load(f)}
-####################let's go
+
 output = Output.new
 time_of_beginning = Time.now.to_i
 while (Time.now.to_i - time_of_beginning) < $config[:time_of_work]

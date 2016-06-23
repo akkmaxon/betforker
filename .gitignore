@@ -1,5 +1,6 @@
 pkg/
 config.yml
-forker_log
+logs/
 *.swp
 test/logfile
+tmp/

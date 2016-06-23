@@ -1,4 +1,4 @@
-require 'forker/helper.rb'
+require 'forker/constants.rb'
 require 'forker/downloader.rb'
 require 'forker/eventsfinder.rb'
 require 'forker/forksfinder.rb'
