@@ -1,23 +1,23 @@
 require 'forker'
 module MyHelpers
   HTML_PATH = File.expand_path('../html', __FILE__)
-  def marathon_right_live_page
-    open("#{HTML_PATH}/marathon/live_page.html").read
+
+  def open_right_live_page(bookmaker)
+    open("#{HTML_PATH}/#{bookmaker}/live_page.html").read
+  end
+
+  def open_event_page(bookmaker, file_name)
+    open("#{HTML_PATH}/#{bookmaker}/#{file_name}").read
   end
 
   def marathon_live_page_without_events
-    html = marathon_right_live_page
+    html = open_right_live_page 'marathon'
     nok = Nokogiri::HTML html
     nok.css('tbody').remove
     nok.to_html
   end
 
-  def marathon_event_page(file_name)
-    open("#{HTML_PATH}/marathon/#{file_name}").read
-  end
-
-  def williamhill_right_live_page
-    open("#{HTML_PATH}/williamhill/live_page.html").read
+  def williamhill_live_page_without_events
   end
 end
 

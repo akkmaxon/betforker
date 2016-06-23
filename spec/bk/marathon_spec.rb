@@ -6,7 +6,7 @@ RSpec.describe Marathon do
     let(:result) { Marathon.parse_live_page(webpage, sport) }
 
     context 'tennis successfully' do
-      let(:webpage) { marathon_right_live_page }
+      let(:webpage) { open_right_live_page 'marathon' }
 
       specify { expect(result.instance_of?(Hash)).to be true }
       specify { expect(result.size).not_to eq 0 }
@@ -24,7 +24,7 @@ RSpec.describe Marathon do
     end
 
     context 'tennis with wrong webpage' do
-      let(:webpage) { williamhill_right_live_page }
+      let(:webpage) { open_right_live_page 'williamhill' }
       specify { expect(result.size).to eq 0 }
     end
   end
@@ -33,7 +33,7 @@ RSpec.describe Marathon do
     let(:sport) { 'tennis' }
     let(:result) { Marathon.parse_event(webpage, sport) }
     context 'tennis Pliskova vs Beygelzimer' do
-      let(:webpage) { marathon_event_page('plis_beyg.html') }
+      let(:webpage) { open_event_page('marathon', 'plis_beyg.html') }
       it 'all must be good' do
 	expect(result[:home_player][:name]).to eq 'Pliskova'
 	expect(result[:away_player][:name]).to eq 'Beygelzimer'
@@ -48,7 +48,7 @@ RSpec.describe Marathon do
     end
 
     context 'tennis Humbert vs Haylaz' do
-      let(:webpage) { marathon_event_page('humb_hayl.html') }
+      let(:webpage) { open_event_page('marathon', 'humb_hayl.html') }
       it 'all must be good' do
 	expect(result[:home_player][:name]).to eq 'Humbert'
 	expect(result[:away_player][:name]).to eq 'Haylaz'

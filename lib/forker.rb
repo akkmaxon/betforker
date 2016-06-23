@@ -18,5 +18,5 @@ require 'mechanize'
 
 module Forker
   MARATHON_ADDRESS = 'https://www.mirrormarafonbet.com/en/'
-  WILLIAMHILL_ADDRESS = '.bukstavki77.com'
+  WILLIAMHILL_ADDRESS = 'http://sports.bukstavki77.com/bet/en-ie/'
 end

@@ -1,60 +1,55 @@
-class WilliamHill
-  attr_reader :live_address
+module WilliamHill
 
-  def initialize
-    @live_address = "http://sports#{Forker::WILLIAMHILL_ADDRESS}/bet/en-ie/betlive/all"
-    @parsed_event = {
-      bookie: 'WilliamHill',
-      score: '0:0 (0:0)',
-      home_player: Hash.new,
-      away_player: Hash.new
-    }
-  end
-
-  def live_page_parsed html_source
-    nok = Nokogiri::HTML(html_source)
+  def self.parse_live_page(html, sport)
+    nok = Nokogiri::HTML(html)
     links = Hash.new
     nok.css('#ip_sport_24_types .CentrePad a').each do |link|
       next unless link['href']
       href = link['href']
-      who = link.text
-      links[href] = unified_names(who)
+      players = link.text
+      links[href] = concatenated_names players
     end
     links
   end
 
-  def event_parsed html_source
-    nok = Nokogiri::HTML(html_source)
+  def self.parse_event(html, sport)
+    result = init_result
+    nok = Nokogiri::HTML(html)
     nok.css('script').remove
     nok.css('#primaryCollectionContainer .marketHolderExpanded .tableData').each do |market|
       market.css('thead div').remove
       title = market.css('thead span').text
       next if title =~ /Total|Point|Deuce|Score/
-      target_filler(market, title, 'home')
-      target_filler(market, title, 'away')
+      target_filler(market, title, 'home', result)
+      target_filler(market, title, 'away', result)
     end
-    @parsed_event[:home_player][:name] ||= 'HomePlayer'
-    @parsed_event[:away_player][:name] ||= 'AwayPlayer'
-    @parsed_event
+    result[:home_player][:name] ||= 'HomePlayer'
+    result[:away_player][:name] ||= 'AwayPlayer'
+    result
   end
 
-  private
+  def self.init_result
+    { bookie: 'WilliamHill',
+      score: '0:0 (0:0)',
+      home_player: {},
+      away_player: {} }
+  end
 
-  def unified_names who
+  def self.concatenated_names(string)
     w = []
-    if who.include?(' v ')
-      who.split(' v ').each do |pl|
+    if string.include?(' v ')
+      string.split(' v ').each do |pl|
         w += second_names_finder(pl)
       end
     else
-      w += second_names_finder(who)
+      w += second_names_finder(string)
     end
-    who = ""
-    w.sort.each {|wh| who << wh}
-    who
+    result = ""
+    w.sort.each {|wh| result << wh}
+    result
   end
 
-  def second_names_finder names
+  def self.second_names_finder(names)
     w = []
     names.gsub!('-', ' ')
     if names.include? '/'
@@ -67,8 +62,9 @@ class WilliamHill
     w
   end
 
-  def target_filler market, title, h_or_a
-    case h_or_a
+  def self.target_filler(market, title, home_away, result)
+    result = result
+    case home_away
     when 'home'
       priceholder = '.eventpriceholder-left'
       pricecoeff = 'div.eventpriceup'
@@ -83,18 +79,19 @@ class WilliamHill
       coeff = pl.css('div.eventprice').text.strip.to_f
       coeff = pl.css(pricecoeff).text.strip.to_f if coeff == 0.0
       unless coeff == 0.0
-        @parsed_event[player][:name] ||= unified_names(name)
+        result[player][:name] ||= concatenated_names name
         if title.include? 'Match Betting'
-          @parsed_event[player][:match] = coeff
+          result[player][:match] = coeff
         elsif title.include? ' Set - Game '
-          @parsed_event[player][:game] ||= Hash.new
-          @parsed_event[player][:game].merge!({title.scan(/\w+/)[-1] => coeff})
+          result[player][:game] ||= {}
+          result[player][:game].merge!({title.scan(/\w+/)[-1] => coeff})
         elsif title.include? ' Set Betting Live'
-          @parsed_event[player][:set] ||= Hash.new
-          @parsed_event[player][:set].merge!({title.scan(/\w+/)[0].to_i.to_s => coeff})
+          result[player][:set] ||= {}
+          result[player][:set].merge!({title.scan(/\w+/)[0].to_i.to_s => coeff})
         end
       end
     end
+    result
   end
 
 end
