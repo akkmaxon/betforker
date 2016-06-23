@@ -1,16 +1,16 @@
 ---
 :min_percent: 1.99
 
- #time in seconds
+#time in seconds
 :time_of_work: 3600
 
- #time in seconds
+#time in seconds
 :time_of_notification: 20
 
- #where the log file is, for example /home/user/forker_log
+#where the log file is, for example /home/user/forker_log
 :log_file: forker_log
 
- #filter temporary forks
+#filter temporary forks
 :filtering: true
 
 #use in process of development
@@ -21,9 +21,9 @@
 :sound_notification: false
 
 :bookies:
-- Winlinebet
-- Marathon
-- Parimatch
-- Betfair
 - WilliamHill
-- Sbobet
+- Marathon
+# Parimatch
+# Winlinebet
+# Betfair
+# Sbobet

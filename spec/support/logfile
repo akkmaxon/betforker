@@ -313,3 +313,69 @@ Thrown forks are:
 comparing WilliamHill and Betfair
  Break is false
  []
+
+comparing WilliamHill and Betfair
+ Break is true
+ Forks are:
+ [{:bookies=>"WilliamHill - Betfair", :players=>"Home_Player  VS  Away_Player", :score=>"0:0 (2:1)", :what=>"match", :percent=>"7.76"}, {:bookies=>"WilliamHill - Betfair", :players=>"Home_Player  VS  Away_Player", :score=>"0:0 (2:1)", :what=>"set1", :percent=>"3.11"}, {:bookies=>"WilliamHill - Betfair", :players=>"Home_Player  VS  Away_Player", :score=>"0:0 (2:1)", :what=>"game5", :percent=>"7.17"}]
+
+comparing WilliamHill and Betfair
+ Break is false
+ Forks are:
+ [{:bookies=>"WilliamHill - Betfair", :players=>"Home_Player  VS  Away_Player", :score=>"15:0 (2:1)", :what=>"game5", :percent=>"7.17"}]
+
+comparing WilliamHill and Betfair
+ Break is false
+ Forks are:
+ [{:bookies=>"WilliamHill - Betfair", :players=>"Home_Player  VS  Away_Player", :score=>"30:0 (0:3)", :what=>"game5", :percent=>"7.17"}]
+
+comparing WilliamHill and Betfair
+ Break is false
+ Forks are:
+ [{:bookies=>"WilliamHill - Betfair", :players=>"Home_Player  VS  Away_Player", :score=>"0:0 (0:2)", :what=>"game5", :percent=>"7.17"}]
+
+comparing WilliamHill and Betfair
+ Break is false
+ Forks are:
+ [{:bookies=>"WilliamHill - Betfair", :players=>"Home_Player  VS  Away_Player", :score=>"0:0 (1:1)", :what=>"game5", :percent=>"7.17"}]
+
+comparing WilliamHill and Betfair
+ Break is true
+ Forks are:
+ [{:bookies=>"WilliamHill - Betfair", :players=>"Home_Player  VS  Away_Player", :score=>"0:0 (0:0)", :what=>"match", :percent=>"7.76"}, {:bookies=>"WilliamHill - Betfair", :players=>"Home_Player  VS  Away_Player", :score=>"0:0 (0:0)", :what=>"set1", :percent=>"3.11"}]
+
+comparing WilliamHill and Betfair
+ Break is true
+ Forks are:
+ [{:bookies=>"WilliamHill - Betfair", :players=>"Home_Player  VS  Away_Player", :score=>"0:0 (2:3)", :what=>"match", :percent=>"7.76"}, {:bookies=>"WilliamHill - Betfair", :players=>"Home_Player  VS  Away_Player", :score=>"0:0 (2:3)", :what=>"set1", :percent=>"3.11"}]
+
+comparing WilliamHill and Betfair
+ Break is true
+ Forks are:
+ [{:bookies=>"WilliamHill - Betfair", :players=>"Home_Player  VS  Away_Player", :score=>"0:0 (6:2)", :what=>"match", :percent=>"7.76"}, {:bookies=>"WilliamHill - Betfair", :players=>"Home_Player  VS  Away_Player", :score=>"0:0 (6:2)", :what=>"set1", :percent=>"3.11"}]
+
+comparing WilliamHill and Betfair
+ Break is true
+ Forks are:
+ [{:bookies=>"WilliamHill - Betfair", :players=>"Home_Player  VS  Away_Player", :score=>"0:0 (5:7)", :what=>"match", :percent=>"7.76"}, {:bookies=>"WilliamHill - Betfair", :players=>"Home_Player  VS  Away_Player", :score=>"0:0 (5:7)", :what=>"set1", :percent=>"3.11"}]
+
+Thrown forks are: 
+ {:bookies=>"WilliamHill - Betfair", :players=>"Home_Player  VS  Away_Player", :score=>"0:0 (2:2)", :what=>"game5", :percent=>"7.17"}
+
+comparing WilliamHill and Betfair
+ Break is false
+ []
+
+Thrown forks are: 
+ {:bookies=>"WilliamHill - Betfair", :players=>"Home_Player  VS  Away_Player", :score=>"15:30 (2:3)", :what=>"game5", :percent=>"7.17"}
+
+comparing WilliamHill and Betfair
+ Break is false
+ []
+
+Thrown forks are: 
+ {:bookies=>"WilliamHill - Betfair", :players=>"Home_Player  VS  Away_Player", :score=>"0:0 (6:6)", :what=>"game5", :percent=>"7.17"}
+
+comparing WilliamHill and Betfair
+ Break is false
+ []

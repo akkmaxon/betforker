@@ -1,19 +1,11 @@
-class Eventsfinder
-  attr_reader :bookies, :downloader
+module Eventsfinder
 
-  def initialize(args)
-    @bookies = args[:bookies]
-    @downloader = args[:downloader]
-  end
-
-  def well_structured_events(all_events = get_live_events)
-    events = events_structured all_events
+  def self.events(all_events = get_live_events)
+    events = structured_events all_events
     remove_single_events events
   end
 
-  private
-
-  def get_live_events
+  def self.get_live_events
     # returns hash addr => players
     events = Hash.new
     bookie_under_filter = Array.new
@@ -32,7 +24,7 @@ class Eventsfinder
     events
   end
 
-  def events_structured(unstructured)
+  def self.structured_events(unstructured)
     #change hash from address => players view to players => address view
     structured = Hash.new
     unstructured.each do |key, value|
@@ -45,7 +37,7 @@ class Eventsfinder
     structured
   end
 
-  def remove_single_events(events)
+  def self.remove_single_events(events)
     unique = Hash.new
     events.each do |key, val|
       unique[key] = val if val.size > 1
