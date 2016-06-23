@@ -1,5 +1,9 @@
-require_relative 'test_helper'
+require 'spec_helper'
 
+RSpec.describe Events do
+end
+
+__END__
 class EventsFinderTest < Minitest::Test
 
   ALL_EVENTS = {

@@ -1,16 +1,14 @@
-class Comparer
+module Comparer
 
-  def initialize
-    @forks_found = Array.new
-    @output = Output.new
+  def self.same_players?(first, second)
+    first[:home_player][:name] == second[:home_player][:name] && first[:away_player][:name] == second[:away_player][:name]
   end
 
-  def compare first, second
-    @forks_found = [] unless @forks_found.empty?
-    unless first[:home_player][:name] == second[:home_player][:name] && first[:away_player][:name] == second[:away_player][:name]
-      return @forks_found
-    end
+  def self.compare(first, second)
+    forks = []
+    return forks unless same_players? first, second
 
+    # here is a header from message in output
     header = {
       bookies: "#{first[:bookie]} - #{second[:bookie]}",
       players: "#{first[:home_player][:name]}  VS  #{first[:away_player][:name]}",
@@ -29,7 +27,7 @@ class Comparer
       if first[:home_player][:match].class == Float and second[:home_player][:match].class == Float
         respond = match_win(first, second)
         unless respond.empty?
-          @forks_found << header.merge(respond)
+          forks << header.merge(respond)
         end
       end
     end
@@ -38,7 +36,7 @@ class Comparer
       respond = game_or_set_win(:set, first, second)
       unless respond.empty?
         respond.each do |set|
-          @forks_found << header.merge(set)
+          forks << header.merge(set)
         end
       end
     end
@@ -47,20 +45,17 @@ class Comparer
       respond = game_or_set_win(:game, first, second)
       unless respond.empty?
         respond.each do |game|
-          @forks_found << header.merge(game)
+          forks << header.merge(game)
         end
       end
     end
-    score_analyzer(filtering)
+    forks = score_analyzer(forks, filtering)
 
-    @output.comparer_log(first[:bookie], second[:bookie], @forks_found.clone, break_now)
-
-    @forks_found
+    Output.comparer_log(first[:bookie], second[:bookie], forks, break_now)
+    forks
   end
 
-  private
-
-  def calculate_forks x, y
+  def self.calculate_forks(x, y)
     return -3.5 if x == 0.0 or y == 0.0
     x_bet = 100.0
     sum_of_win = x * x_bet
@@ -72,7 +67,7 @@ class Comparer
     percent
   end
 
-  def match_win first, second
+  def self.match_win(first, second)
     respond = {}
     percent_straight = calculate_forks(first[:home_player][:match], second[:away_player][:match])
     percent_reverse = calculate_forks(first[:away_player][:match], second[:home_player][:match])
@@ -84,7 +79,7 @@ class Comparer
     respond
   end
 
-  def game_or_set_win param, first, second
+  def self.game_or_set_win(param, first, second)
     respond = []
     percent_straight = {}
     percent_reverse = {}
@@ -117,7 +112,7 @@ class Comparer
     respond
   end
 
-  def is_a_break? score
+  def self.is_a_break?(score)
     g1, g2, s1, s2 = score_parser(score)
     end_of_set = ((s1 + s2) == 12 and s1 != s2) || ((s1 == 6 and (s1 - s2) > 1) || (s2 == 6 and (s2 - s1) > 1))
     if (g1 + g2) == 0 and ((s1 + s2) == 0 or (s1 + s2).odd? or end_of_set)
@@ -127,21 +122,22 @@ class Comparer
     end
   end
 
-  def score_analyzer filtering
-    return if @forks_found.empty? or !filtering
-    @forks_found.each do |fork|
+  def self.score_analyzer(forks, filtering)
+    return if forks.empty? or !filtering
+    forks.each do |fork|
       next unless fork[:what].include?('game')
       g1, g2, s1, s2 = score_parser(fork[:score])
       game_in_fork = fork[:what].scan(/\d+/)[0].to_i
       not_a_time = game_in_fork > (s1 + s2 + 1) ? false : true
       if not_a_time
-        @output.thrown_forks(fork)
-        @forks_found.delete(fork)
+        Output.thrown_forks(fork)
+        forks.delete(fork)
       end
     end
+    forks
   end
 
-  def score_parser score
+  def self.score_parser(score)
     s = score.split(/\(|\)|,/)
     if s.size == 1 or score[0] == ' '
       games = '0:0'
