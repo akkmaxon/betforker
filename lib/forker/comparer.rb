@@ -4,6 +4,15 @@ module Comparer
     first[:home_player][:name] == second[:home_player][:name] && first[:away_player][:name] == second[:away_player][:name]
   end
 
+  def change_names hashik #!!!!!!!!LOOK AT THIS
+    new_hashik = {
+      bookie: hashik[:bookie],
+      score: hashik[:score],
+      home_player: hashik[:away_player],
+      away_player: hashik[:home_player]
+    }
+  end
+
   def self.compare(first, second)
     forks = []
     return forks unless same_players? first, second

@@ -66,6 +66,29 @@ RSpec.describe Forker::Event do
   end
 
 
-  describe '#find_forks'
+  describe '#forking' do
+    before do
+      3.times { event.parsed_webpages << ParsedPage.new }
+    end
 
+    it 'find forks' do
+      allow(Comparer).to receive(:compare).
+	and_return([Fork.new, Fork.new])
+      event.forking
+
+      expect(event.forks.size).to eq 3
+      expect(event.forks.flatten.size).to eq 6
+      event.forks.each do |f|
+	expect(f.class).to eq Array
+      end
+    end
+
+    it 'find no forks' do
+      allow(Comparer).to receive(:compare).
+	and_return([])
+      event.forking
+      expect(event.forks.size).to eq 3
+      expect(event.forks.flatten.size).to eq 0
+    end
+  end
 end
