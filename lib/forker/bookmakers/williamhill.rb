@@ -2,17 +2,6 @@ module Forker
   module Bookmakers
     module WilliamHill
 
-      def self.parse(html, sport, type)
-	case type
-	when :live
-	  parse_live_page html, sport
-	when :event
-	  parse_event html, sport
-	else
-	  raise 'Not clever!'
-	end
-      end
-
       def self.parse_live_page(html, sport)
 	nok = Nokogiri::HTML(html)
 	links = Hash.new
@@ -25,8 +14,9 @@ module Forker
 	links
       end
 
-      def self.parse_event(html, sport)
-	result = init_result
+      def self.parse_event(event, sport)
+	result = ParsedPage.new
+	html = extract_html_from(event)
 	nok = Nokogiri::HTML(html)
 	nok.css('script').remove
 	nok.css('#primaryCollectionContainer .marketHolderExpanded .tableData').each do |market|
@@ -36,9 +26,14 @@ module Forker
 	  target_filler(market, title, 'home', result)
 	  target_filler(market, title, 'away', result)
 	end
-	result[:home_player][:name] ||= 'HomePlayer'
-	result[:away_player][:name] ||= 'AwayPlayer'
-	result
+	result.home_player[:name] ||= 'HomePlayer'
+	result.away_player[:name] ||= 'AwayPlayer'
+	event.parsed_webpages << result
+      end
+
+      def self.extract_html_from(event)
+	arr = event.webpages.values_at 'williamhill'
+	arr.first
       end
 
       def self.init_result
@@ -81,26 +76,26 @@ module Forker
 	when 'home'
 	  priceholder = '.eventpriceholder-left'
 	  pricecoeff = 'div.eventpriceup'
-	  player = :home_player
+	  player = result.home_player
 	when 'away'
 	  priceholder = '.eventpriceholder-right'
 	  pricecoeff = 'div.eventpricedown'
-	  player = :away_player
+	  player = result.away_player
 	end
 	chunk = market.css("tbody #{priceholder}").each do |pl|
 	  name = pl.css('div.eventselection').text.strip
 	  coeff = pl.css('div.eventprice').text.strip.to_f
 	  coeff = pl.css(pricecoeff).text.strip.to_f if coeff == 0.0
 	  unless coeff == 0.0
-	    result[player][:name] ||= concatenated_names name
+	    player[:name] ||= concatenated_names name
 	    if title.include? 'Match Betting'
-	      result[player][:match] = coeff
+	      player[:match] = coeff
 	    elsif title.include? ' Set - Game '
-	      result[player][:game] ||= {}
-	      result[player][:game].merge!({title.scan(/\w+/)[-1] => coeff})
+	      player[:game] ||= {}
+	      player[:game].merge!({title.scan(/\w+/)[-1] => coeff})
 	    elsif title.include? ' Set Betting Live'
-	      result[player][:set] ||= {}
-	      result[player][:set].merge!({title.scan(/\w+/)[0].to_i.to_s => coeff})
+	      player[:set] ||= {}
+	      player[:set].merge!({title.scan(/\w+/)[0].to_i.to_s => coeff})
 	    end
 	  end
 	end

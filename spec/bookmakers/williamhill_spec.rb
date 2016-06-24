@@ -31,56 +31,36 @@ RSpec.describe Forker::Bookmakers::WilliamHill do
 
   describe '#parse_event' do
     let(:sport) { 'tennis' }
-    let(:result) { WilliamHill.parse_event(webpage, sport) }
+    let(:result) do 
+      event = Event.new [1,2,3]
+      event.webpages.merge!({ 'williamhill' => webpage })
+      WilliamHill.parse_event(event, sport)
+      event.parsed_webpages.first
+    end
 
     context 'tennis Motti/Peng vs Donati/Sonego' do
       let(:webpage) { open_event_page('williamhill', 'motpen_donson.html') }
       it 'all must be good' do
-	expect(result[:home_player][:name]).to eq 'MottiPeng'
-	expect(result[:away_player][:name]).to eq 'DonatiSonego'
-	expect(result[:home_player][:match]).to eq 3.75
-	expect(result[:away_player][:match]).to eq 1.25
-	expect(result[:home_player][:game]['4']).to eq 4.00
-	expect(result[:away_player][:game]['4']).to eq 1.22
+	expect(result.home_player[:name]).to eq 'MottiPeng'
+	expect(result.away_player[:name]).to eq 'DonatiSonego'
+	expect(result.home_player[:match]).to eq 3.75
+	expect(result.away_player[:match]).to eq 1.25
+	expect(result.home_player[:game]['4']).to eq 4.00
+	expect(result.away_player[:game]['4']).to eq 1.22
       end
     end
 
     context 'tennis Schmiedlova vs Argyelan' do
       let(:webpage) { open_event_page('williamhill', 'sch_arg.html') }
       it 'all must be good' do
-	expect(result[:home_player][:name]).to eq 'Schmiedlova'
-	expect(result[:away_player][:name]).to eq 'Argyelan'
-	expect(result[:home_player][:match]).to eq 1.73
-	expect(result[:away_player][:match]).to eq 2.00
-	expect(result[:home_player][:game]['1']).to eq 2.00
-	expect(result[:away_player][:game]['1']).to eq 1.73
-	expect(result[:home_player][:game]['2']).to eq 1.40
-	expect(result[:away_player][:game]['2']).to eq 2.75
-      end
-    end
-  end
-
-  describe '#parse' do
-    let(:sport) { 'tennis' }
-    let(:result) { WilliamHill.parse(webpage, sport, type) }
-    context 'live page' do
-      let(:webpage) { open_right_live_page 'williamhill' }
-      let(:type) { :live }
-
-      it 'use #parse_live_page' do
-	result.keys.each do |key|
-	  expect(key).to include Forker::WILLIAMHILL_BASE_ADDRESS
-	end
-      end
-    end
-
-    context 'event page' do
-      let(:webpage) { open_event_page 'williamhill', 'sch_arg.html' }
-      let(:type) { :event }
-
-      it 'use #parse_event' do
-	expect(result[:home_player][:name]).to eq 'Schmiedlova'
-	expect(result[:away_player][:name]).to eq 'Argyelan'
+	expect(result.home_player[:name]).to eq 'Schmiedlova'
+	expect(result.away_player[:name]).to eq 'Argyelan'
+	expect(result.home_player[:match]).to eq 1.73
+	expect(result.away_player[:match]).to eq 2.00
+	expect(result.home_player[:game]['1']).to eq 2.00
+	expect(result.away_player[:game]['1']).to eq 1.73
+	expect(result.home_player[:game]['2']).to eq 1.40
+	expect(result.away_player[:game]['2']).to eq 2.75
       end
     end
   end
