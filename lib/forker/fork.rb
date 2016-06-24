@@ -1,5 +1,6 @@
 module Forker
   class Fork
+    attr_reader :bookmakers, :players, :score, :what, :percent
 
     def initialize(bookmakers: '', players: '', score: '', what: '', percent: '')
       @bookmakers = bookmakers

@@ -1,8 +1,9 @@
 module Forker
   class ParsedPage
-    attr_accessor :home_player, :away_player, :score
+    attr_accessor :bookie, :home_player, :away_player, :score
 
-    def initialize()
+    def initialize(bookie: '')
+      @bookie = bookie
       @home_player = {}
       @away_player = {}
       @score = ''

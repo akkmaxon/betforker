@@ -40,7 +40,7 @@ module Forker
       while @parsed_webpages.size > 1
 	first = @parsed_webpages.shift
 	@parsed_webpages.each do |second|
-	  @forks << Comparer.compare(first, second)
+	  @forks << Forker::Comparer.compare(first, second)
 	end
       end
     end

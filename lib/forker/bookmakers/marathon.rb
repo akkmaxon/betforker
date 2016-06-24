@@ -16,7 +16,7 @@ module Forker
       end
 
       def self.parse_event(event, sport)
-	result = ParsedPage.new
+	result = Forker::ParsedPage.new bookie: 'Marathon'
 	html = extract_html_from(event)
 	return event if html.nil?
 	nok = Nokogiri::HTML(html)
@@ -105,14 +105,6 @@ module Forker
 	end
 	second_name
       end
-
-      def self.init_result
-	{ bookie: 'Marathon',
-	  score: '',
-	  home_player: {},
-	  away_player: {} }
-      end
-
     end
   end
 end

@@ -15,7 +15,7 @@ module Forker
       end
 
       def self.parse_event(event, sport)
-	result = ParsedPage.new
+	result = Forker::ParsedPage.new bookie: 'WilliamHill'
 	html = extract_html_from(event)
 	return event if html.nil?
 	nok = Nokogiri::HTML(html)
@@ -35,13 +35,6 @@ module Forker
       def self.extract_html_from(event)
 	arr = event.webpages.values_at 'williamhill'
 	arr.first
-      end
-
-      def self.init_result
-	{ bookie: 'WilliamHill',
-	  score: '0:0 (0:0)',
-	  home_player: {},
-	  away_player: {} }
       end
 
       def self.concatenated_names(string)
