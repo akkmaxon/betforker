@@ -13,9 +13,6 @@ events.each do |event|
   end
 end
     
-module Forker
-end
-
 class Event
   def find_forks
     #returns [Fork, Fork, Fork]

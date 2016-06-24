@@ -1,7 +1,11 @@
+require 'capybara/poltergeist'
+require 'yaml'
+require 'nokogiri'
+require 'mechanize'
 require 'forker/version.rb'
 require 'forker/event.rb'
+require 'forker/parsed_page.rb'
 require 'forker/downloader.rb'
-require 'forker/eventsfinder.rb'
 require 'forker/forksfinder.rb'
 require 'forker/comparer.rb'
 require 'forker/output.rb'
@@ -12,12 +16,11 @@ require 'forker/bookmakers/parimatch.rb'
 require 'forker/bookmakers/sbobet.rb'
 require 'forker/bookmakers/winlinebet.rb'
 require 'forker/names_winlinebet.rb'
-require 'capybara/poltergeist'
-require 'yaml'
-require 'nokogiri'
-require 'mechanize'
 
 module Forker
+  include Bookmakers
+  include Downloader
+
   MARATHON_BASE_ADDRESS = 'https://www.mirrormarafonbet.com/en/'
   MARATHON_TENNIS_LIVE_PAGE_ADDRESS = MARATHON_BASE_ADDRESS + 'live/22723'
   WILLIAMHILL_BASE_ADDRESS = 'http://sports.bukstavki77.com/bet/en-ie/'

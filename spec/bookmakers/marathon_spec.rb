@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Marathon do
+RSpec.describe Forker::Bookmakers::Marathon do
   describe '#parse_live_page' do
     let(:sport) { 'tennis' }
     let(:result) { Marathon.parse_live_page(webpage, sport) }

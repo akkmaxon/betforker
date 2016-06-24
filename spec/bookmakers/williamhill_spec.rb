@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe WilliamHill do
+RSpec.describe Forker::Bookmakers::WilliamHill do
   describe '#parse_live_page' do
     let(:sport) { 'tennis' }
     let(:result) { WilliamHill.parse_live_page(webpage, sport) }

@@ -1,4 +1,5 @@
 require 'forker'
+
 module MyHelpers
   HTML_PATH = File.expand_path('../support/html', __FILE__)
 
@@ -18,6 +19,18 @@ module MyHelpers
   end
 
   def williamhill_live_page_without_events
+    html = open_right_live_page 'williamhill'
+    nok = Nokogiri::HTML html
+    nok.css('#sports_holder').remove
+    nok.to_html
+  end
+
+  def fake_event_webpage
+    open_event_page('fake', 'fake.html')
+  end
+
+  def updated_event(event)
+    event.parsed_webpages << Forker::ParsedPage.new
   end
 end
 
