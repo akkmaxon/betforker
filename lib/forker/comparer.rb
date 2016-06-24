@@ -13,7 +13,7 @@ module Forker
     
     def self.check_sorting(first, second)
       [first, second].each do |k|
-	if k.home_player[:name] < k.away_player[:name]
+	if k.home_player[:name] > k.away_player[:name]
 	  change_names k
 	end
       end
@@ -150,10 +150,7 @@ module Forker
 	g1, g2, s1, s2 = score_parser(f[:score])
 	game_in_fork = f[:what].scan(/\d+/)[0].to_i
 	not_a_time = game_in_fork > (s1 + s2 + 1) ? false : true
-	if not_a_time
-	  Output.thrown_forks(f)
-	  forks.delete(f)
-	end
+	forks.delete(f) if not_a_time
       end
       forks
     end

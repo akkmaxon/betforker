@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe Forker::Comparer do
-  $config = { min_percent: 1.1, filtering: true, log_file: "/tmp/forker_test_#{Time.now.to_i}"}
+  $config = { min_percent: 1.1, filtering: true }
 
   describe '#compare' do
     let(:first) do
@@ -25,12 +25,12 @@ RSpec.describe Forker::Comparer do
     end
 
     it 'find forks' do
-      forks = Forker::Comparer.compare first, second
+      forks = Comparer.compare first, second
       expect(forks).not_to be_empty
       forks.each do |f|
 	expect(f.class).to eq Fork
 	expect(f.bookmakers).to eq 'WilliamHill - Betfair'
-	expect(f.players).to eq 'Home_Player  VS  Away_Player'
+	expect(f.players).to eq 'Away_Player  VS  Home_Player'
 	expect(f.score).to eq '0:0 (2:1)'
 	expect(f.what).to match /match|game5|set1/
       end
@@ -78,7 +78,83 @@ RSpec.describe Forker::Comparer do
     end
   end
 
-  describe '#check_sorting'
-  describe '#calculate'
-  describe '#is_a_break?'
+  describe '#check_sorting' do
+    let(:homeplayer) { 'Aaaa' }
+    let(:awayplayer) { 'Zzzz' }
+    let(:first) do
+      parsed = ParsedPage.new bookie: 'First'
+      parsed.home_player[:name] = homeplayer
+      parsed.away_player[:name] = awayplayer
+      parsed
+    end
+    let(:second) do
+      parsed = ParsedPage.new bookie: 'Second'
+      parsed.home_player[:name] = homeplayer
+      parsed.away_player[:name] = awayplayer
+      parsed
+    end
+
+    it 'will not change anything' do
+      Comparer.check_sorting first, second
+      
+      expect(first.home_player[:name]).to eq homeplayer
+      expect(first.away_player[:name]).to eq awayplayer
+      expect(second.home_player[:name]).to eq homeplayer
+      expect(second.away_player[:name]).to eq awayplayer
+    end
+
+    it 'will change players' do
+      Comparer.change_names(first)
+      expect(first.home_player[:name]).to_not eq homeplayer
+      expect(first.away_player[:name]).to_not eq awayplayer
+      expect(second.home_player[:name]).to eq homeplayer
+      expect(second.away_player[:name]).to eq awayplayer
+      Comparer.check_sorting first, second
+      expect(first.home_player[:name]).to eq homeplayer
+      expect(first.away_player[:name]).to eq awayplayer
+      expect(second.home_player[:name]).to eq homeplayer
+      expect(second.away_player[:name]).to eq awayplayer
+    end
+  end
+
+  describe '#calculate' do
+    it 'when it is a fork' do
+      x, y = 1.5, 4.0
+      percent = Comparer.calculate x, y
+      expect(percent).to be > 2.0
+    end
+
+    it 'when it is a fork(reverted x and y)' do
+      x, y = 4.0, 1.5
+      percent = Comparer.calculate x, y
+      expect(percent).to be > 2.0
+    end
+
+    it 'when it is not a fork' do
+      x, y = 1.2, 4.0
+      percent = Comparer.calculate x, y
+      expect(percent).to be < 2.0
+    end
+
+    it 'when x or y are 0' do
+      x, y = 0.0, 0.0
+      percent = Comparer.calculate x, y
+      expect(percent).to be == -3.5
+    end
+  end
+
+  describe '#is_a_break?' do
+    it 'when a break' do
+      ['0:0 (2:3)', '0:0 (5:2)', '0:0 (0:0)'].each do |score|
+	state = Comparer.is_a_break? score
+	expect(state).to be_truthy
+      end
+    end
+    it 'when not a break' do
+      ['0:0 (4:4)', '0:0 (6:6)', '30:15 (0:1)'].each do |score|
+	state = Comparer.is_a_break? score
+	expect(state).to be_falsey
+      end
+    end 
+  end
 end
