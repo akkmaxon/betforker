@@ -17,6 +17,7 @@ module Forker
       def self.parse_event(event, sport)
 	result = ParsedPage.new
 	html = extract_html_from(event)
+	return event if html.nil?
 	nok = Nokogiri::HTML(html)
 	nok.css('script').remove
 	nok.css('#primaryCollectionContainer .marketHolderExpanded .tableData').each do |market|

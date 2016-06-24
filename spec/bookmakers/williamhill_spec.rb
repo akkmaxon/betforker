@@ -32,7 +32,7 @@ RSpec.describe Forker::Bookmakers::WilliamHill do
   describe '#parse_event' do
     let(:sport) { 'tennis' }
     let(:result) do 
-      event = Event.new [1,2,3]
+      event = Event.new [1,2,3], sport
       event.webpages.merge!({ 'williamhill' => webpage })
       WilliamHill.parse_event(event, sport)
       event.parsed_webpages.first

@@ -18,6 +18,7 @@ module Forker
       def self.parse_event(event, sport)
 	result = ParsedPage.new
 	html = extract_html_from(event)
+	return event if html.nil?
 	nok = Nokogiri::HTML(html)
 	nok.css('script').remove
 	games_score = nok.css('.cl-left .result-description-part').text.strip[1...-1]
