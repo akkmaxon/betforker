@@ -2,17 +2,6 @@ module Forker
   module Bookmakers
     module Marathon
 
-      def self.parse(html, sport, type)
-	case type
-	when :live
-	  parse_live_page html, sport
-	when :event
-	  parse_event html, sport
-	else
-	  raise 'Not clever!'
-	end
-      end
-
       def self.parse_live_page(html, sport)
 	nok = Nokogiri::HTML(html)
 	links = {}
@@ -26,35 +15,36 @@ module Forker
 	links
       end
 
-      def self.parse_event(event) #!!!!!!!!!!!!REWRITE IT 
-	result = init_result
+      def self.parse_event(event, sport)
+	result = ParsedPage.new
+	html = extract_html_from(event)
 	nok = Nokogiri::HTML(html)
 	nok.css('script').remove
 	games_score = nok.css('.cl-left .result-description-part').text.strip[1...-1]
 	nok.css('.cl-left .result-description-part').remove
 	sets_score = nok.css('.cl-left').text.strip
-	result[:score] = "#{games_score} (#{sets_score})"
+	result.score = "#{games_score} (#{sets_score})"
 	h_pl = nok.css('.live-today-name .live-today-member-name')[0].text.strip
 	a_pl = nok.css('.live-today-name .live-today-member-name')[1].text.strip
 	unless h_pl.empty? or a_pl.empty?
-	  result[:home_player][:name] = concatenated_names(h_pl)
-	  result[:away_player][:name] = concatenated_names(a_pl)
+	  result.home_player[:name] = concatenated_names(h_pl)
+	  result.away_player[:name] = concatenated_names(a_pl)
 	end
 	#find sets & match
 	sets_nums = %w{ 1st 2nd 3rd 4th 5th }
 	nok.css('span.selection-link').each do |link|
 	  if link.attribute('data-selection-key').text.include? 'Match_Result.1'
-	    result[:home_player][:match] = link.text.to_f
+	    result.home_player[:match] = link.text.to_f
 	  elsif link.attribute('data-selection-key').text.include? 'Match_Result.3'
-	    result[:away_player][:match] = link.text.to_f
+	    result.away_player[:match] = link.text.to_f
 	  end
 	  sets_nums.each do |v|
 	    if link.attribute('data-selection-key').text.include? "#{v}_Set_Result.RN_H"
-	      result[:home_player][:set] ||= Hash.new
-	      result[:home_player][:set][v[0]] = link.text.to_f
+	      result.home_player[:set] ||= Hash.new
+	      result.home_player[:set][v[0]] = link.text.to_f
 	    elsif link.attribute('data-selection-key').text.include? "#{v}_Set_Result.RN_A"
-	      result[:away_player][:set] ||= Hash.new
-	      result[:away_player][:set][v[0]] = link.text.to_f
+	      result.away_player[:set] ||= Hash.new
+	      result.away_player[:set][v[0]] = link.text.to_f
 	    end
 	  end
 	end
@@ -68,17 +58,22 @@ module Forker
 	      num = t.css('.market-table-name b').text
 	      coeff1, coeff2 = t.css('.price .selection-link').collect {|c| c.text.to_f}
 	      if coeff1 and coeff2
-		result[:home_player][:game] ||= Hash.new
-		result[:away_player][:game] ||= Hash.new
-		result[:home_player][:game][num] = coeff1
-		result[:away_player][:game][num] = coeff2
+		result.home_player[:game] ||= {}
+		result.away_player[:game] ||= {}
+		result.home_player[:game][num] = coeff1
+		result.away_player[:game][num] = coeff2
 	      end
 	    end
 	  end
 	end
-	result[:home_player][:name] ||= 'HomePlayer'
-	result[:away_player][:name] ||= 'AwayPlayer'
-	result
+	result.home_player[:name] ||= 'HomePlayer'
+	result.away_player[:name] ||= 'AwayPlayer'
+	event.parsed_webpages << result
+      end
+
+      def self.extract_html_from(event)
+	arr = event.webpages.values_at 'marathon'
+	arr.first
       end
 
       def self.concatenated_names(string)

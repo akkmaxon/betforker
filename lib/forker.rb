@@ -36,7 +36,7 @@ module Forker
     result = {}
     bookmakers.each do |bookie|
       page = download_live_page_for bookie
-      result.merge eval("#{bookie}::parse_live_page #{page}")
+      result.merge eval("#{bookie}.parse_live_page #{page}")
     end
     result
   end
