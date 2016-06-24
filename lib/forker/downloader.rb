@@ -1,4 +1,4 @@
-class Downloader
+module Downloader
 
   def initialize
     Capybara.register_driver :poltergeist do |app|
@@ -11,6 +11,9 @@ class Downloader
     end
     Capybara.default_driver = :poltergeist
     @browser = Object.new
+  end
+
+  def self.download_live_page(bookmaker)
   end
 
   def download address
