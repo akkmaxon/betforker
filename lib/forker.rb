@@ -1,4 +1,5 @@
 require 'forker/version.rb'
+require 'forker/event.rb'
 require 'forker/downloader.rb'
 require 'forker/eventsfinder.rb'
 require 'forker/forksfinder.rb'
@@ -24,8 +25,8 @@ module Forker
 
   def build_events(bookmakers, sport)
     need_to_be_structured = pull_live_events bookmakers, sport
-    events = structure_events need_to_be_structured
-    events.map { |event| Event.new(event) }
+    structured_events = structure_events need_to_be_structured
+    structured_events.values.map { |addresses| Event.new(addresses) }
   end
 
   def pull_live_events(bookmakers, sport)
