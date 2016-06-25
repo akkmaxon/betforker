@@ -33,10 +33,10 @@ module Forker
       events
     end
 
-    def download_live_page(bookmaker)
+    def download_live_page(bookie) #string name of bookie
     end
 
-    def download_event_pages(event)
+    def download_event_pages(addresses) #array of all addresses of the event
     end
 
     def download address

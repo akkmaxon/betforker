@@ -32,6 +32,7 @@ module Forker
     end
 
     def self.compare(first, second)
+      return [] if first.bookie == second.bookie
       forks = []
       check_sorting first, second
       return forks unless same_players? first, second
@@ -73,8 +74,6 @@ module Forker
       end
       result
     end
-	    
-
 
     def self.calculate(x, y)
       return -3.5 if x == 0.0 or y == 0.0
@@ -144,7 +143,7 @@ module Forker
     end
 
     def self.score_analyzer(forks, filtering)
-      return if forks.empty? or !filtering
+      return forks if forks.empty? or not filtering
       forks.each do |f|
 	next unless f[:what].include?('game')
 	g1, g2, s1, s2 = score_parser(f[:score])

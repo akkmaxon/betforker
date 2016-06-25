@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 RSpec.describe Forker::Comparer do
-  $config = { min_percent: 1.1, filtering: true }
-
   describe '#compare' do
     let(:first) do
       parsed = ParsedPage.new bookie: 'WilliamHill'

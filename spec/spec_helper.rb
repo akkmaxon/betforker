@@ -1,6 +1,8 @@
 require 'forker'
 
 module MyHelpers
+  $config = { min_percent: 1.1, filtering: true }
+
   HTML_PATH = File.expand_path('../support/html', __FILE__)
 
   def open_right_live_page(bookmaker)
@@ -32,6 +34,46 @@ module MyHelpers
   def updated_event(event)
     event.parsed_webpages << Forker::ParsedPage.new
   end
+
+  def parsed_marathon
+    parsed = ParsedPage.new bookie: 'Marathon'
+    parsed.score = '0:0 (3:2)'
+    parsed.home_player = {
+      name: 'HomePlayer',
+      match: 1.5,
+      game: { '6' => 1.5,
+       '7' => 2.5 },
+       set: { '1' => 1.5,
+       '2' => 1.5 } }
+    parsed.away_player = {
+      name: 'AwayPlayer',
+      match: 2.5,
+      game: { '6' => 2.5,
+       '7' => 1.5 },
+       set: { '1' => 2.5,
+       '2' => 2.5 } }
+    parsed
+  end
+
+  def parsed_williamhill
+    parsed = ParsedPage.new bookie: 'WilliamHill'
+    parsed.home_player = {
+      name: 'HomePlayer',
+      match: 1.2,
+      game: { '6' => 1.2,
+       '7' => 4.0 },
+       set: { '1' => 1.2,
+       '2' => 1.2 } }
+    parsed.away_player = {
+      name: 'AwayPlayer',
+      match: 4.0,
+      game: { '6' => 4.0,
+       '7' => 1.2 },
+       set: { '1' => 4.0,
+       '2' => 4.0 } }
+    parsed
+  end
+
 end
 
 RSpec.configure do |config|

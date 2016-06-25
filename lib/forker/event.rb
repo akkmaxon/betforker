@@ -13,12 +13,10 @@ module Forker
 
     def find_forks
       # [Fork, Fork, Fork]
-      unless @parsed_webpages.empty?
-	get_webpages
-	parse_webpages
-	forking
-      end
-      @forks.flatten
+      get_webpages
+      parse_webpages all_bookmakers, kind_of_sport
+      forking
+      @forks.flatten!
     end
 
     def get_webpages
@@ -43,6 +41,14 @@ module Forker
 	  @forks << Forker::Comparer.compare(first, second)
 	end
       end
+    end
+
+    def all_bookmakers
+      $config[:bookmakers]
+    end
+
+    def kind_of_sport
+      $config[:sport]
     end
   end
 end

@@ -20,7 +20,9 @@
 #:sound_notification: true
 :sound_notification: false
 
-:bookies:
+:sport: tennis
+
+:bookmakers:
 - WilliamHill
 - Marathon
 # Parimatch
