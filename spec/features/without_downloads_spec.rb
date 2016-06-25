@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe 'Forker finds forks without downloads' do
   let(:sport) { 'tennis' }
-  let(:event) { Event.new [1,2,3], sport }
+  let(:event) { Forker::Event.new [1,2,3], sport }
 
   describe 'beginning with parsed webpages' do
     it 'with many forks' do

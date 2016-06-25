@@ -10,21 +10,26 @@ require 'forker/comparer'
 require 'forker/fork'
 require 'forker/output'
 require 'forker/bookmakers/williamhill'
-require 'forker/bookmakers/betfair'
 require 'forker/bookmakers/marathon'
-require 'forker/bookmakers/parimatch'
-require 'forker/bookmakers/sbobet'
-require 'forker/bookmakers/winlinebet'
+require 'forker/bookmakers/__to_change__/betfair'
+require 'forker/bookmakers/__to_change__/parimatch'
+require 'forker/bookmakers/__to_change__/sbobet'
+require 'forker/bookmakers/__to_change__/winlinebet'
 require 'forker/names_winlinebet'
 
 module Forker
   include Bookmakers
   include Downloader
 
-  MARATHON_BASE_ADDRESS = 'https://www.mirrormarafonbet.com/en/'
-  MARATHON_TENNIS_LIVE_PAGE_ADDRESS = MARATHON_BASE_ADDRESS + 'live/22723'
-  WILLIAMHILL_BASE_ADDRESS = 'http://sports.bukstavki77.com/bet/en-ie/'
-  WILLIAMHILL_LIVE_PAGE_ADDRESS = WILLIAMHILL_BASE_ADDRESS + 'betlive/all'
+  ##########################################################################
+  MARATHON_CHANGABLE = 'mirrormarafonbet.com'
+  WILLIAMHILL_CHANGABLE = 'bukstavki77.com'
+  ##########################################################################
+
+  MARATHON_BASE = "https://www.#{MARATHON_CHANGABLE}/en/"
+  MARATHON_TENNIS_LIVE = MARATHON_BASE + 'live/22723'
+  WILLIAMHILL_BASE = "http://sports.#{WILLIAMHILL_CHANGABLE}/bet/en-ie/"
+  WILLIAMHILL_LIVE = WILLIAMHILL_BASE + 'betlive/all'
 
   def build_events(bookmakers, sport)
     need_to_be_structured = pull_live_events bookmakers, sport
@@ -41,8 +46,8 @@ module Forker
     result
   end
 
-  def download_live_page_for(bookmaker)
-    Downloader::download_live_page bookmaker
+  def download_live_page_for(bookie)
+    Downloader.download_live_page bookie
   end
 
   def structure_events(unstructured)

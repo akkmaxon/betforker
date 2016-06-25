@@ -13,7 +13,7 @@ RSpec.describe Forker::Bookmakers::Marathon do
 
       it "every hash key contains address" do
 	result.keys.each do |key|
-	  expect(key).to include Forker::MARATHON_BASE_ADDRESS
+	  expect(key).to include Forker::MARATHON_BASE
 	end
       end
     end

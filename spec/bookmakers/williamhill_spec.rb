@@ -13,7 +13,7 @@ RSpec.describe Forker::Bookmakers::WilliamHill do
 
       it "every hash key contains address" do
 	result.keys.each do |key|
-	  expect(key).to include Forker::WILLIAMHILL_BASE_ADDRESS
+	  expect(key).to include Forker::WILLIAMHILL_BASE
 	end
       end
     end
