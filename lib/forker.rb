@@ -22,13 +22,13 @@ module Forker
   include Downloader
 
   ##########################################################################
-  MARATHON_CHANGABLE = 'mirrormarafonbet.com'
-  WILLIAMHILL_CHANGABLE = 'bukstavki77.com'
+  MARATHON_CHANGABLE = 'https://www.mirrormarafonbet.com'
+  WILLIAMHILL_CHANGABLE = 'http://sports.bukstavki77.com'
   ##########################################################################
 
-  MARATHON_BASE = "https://www.#{MARATHON_CHANGABLE}/en/"
+  MARATHON_BASE = MARATHON_CHANGABLE + "/en/"
   MARATHON_TENNIS_LIVE = MARATHON_BASE + 'live/22723'
-  WILLIAMHILL_BASE = "http://sports.#{WILLIAMHILL_CHANGABLE}/bet/en-ie/"
+  WILLIAMHILL_BASE = WILLIAMHILL_CHANGABLE + "/bet/en-ie/"
   WILLIAMHILL_LIVE = WILLIAMHILL_BASE + 'betlive/all'
 
   def build_events(bookmakers, sport)

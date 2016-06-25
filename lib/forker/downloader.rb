@@ -1,7 +1,6 @@
 module Forker
   module Downloader
-
-    def initialize_to_delete
+    def init_capybara
       Capybara.register_driver :poltergeist do |app|
 	opts = {
 	  js_errors: false,
@@ -10,8 +9,9 @@ module Forker
 	}
 	Capybara::Poltergeist::Driver.new(app, opts)
       end
+      Capybara.javascript_driver = :poltergeist
       Capybara.default_driver = :poltergeist
-      @browser = Object.new
+      Capybara::Poltergeist::Driver
     end
 
     def self.get_live_events
@@ -33,13 +33,36 @@ module Forker
       events
     end
 
-    def download_live_page(bookie) #string name of bookie
+    def download_live_page(bookie)
+      case bookie
+      when 'Marathon'
+	browser = Mechanize.new
+	browser = set_cookies_for browser
+	begin
+	  html = browser.get(MARATHON_TENNIS_LIVE).body
+	rescue => e
+	  raise e
+	end
+	html 
+      when 'WilliamHill'
+	browser = init_capybara
+	browser = set_cookies_for browser
+	browser = set_headers_for browser
+	begin
+	  html = browser.visit(WILLIAMHILL_LIVE).html
+	rescue => e
+	  raise e
+	end
+	html
+      end
     end
 
-    def download_event_pages(addresses) #array of all addresses of the event
+    def download_event_pages(addresses)
+      # [ 'http..', 'http..'..]
+      # returns { 'marathon' => html, 'williamhill' => html }
     end
 
-    def download address
+    def old_download address
       puts "Processing #{address}"
       if address =~ /williamhill|sbobet|winlinebet|whbetting|bukstavki/
 	@browser = Capybara
@@ -57,21 +80,22 @@ module Forker
       page
     end
 
-    def cookie_setter crawler
-      case crawler
-      when 'phantomjs'
-	@browser.page.driver.set_cookie('cust_lang', 'en-ie', {domain: Forker::WILLIAMHILL_ADDRESS})
-	@browser.page.driver.set_cookie('cust_prefs', 'ie|DECIMAL|form|TYPE|PRICE|||0|SB|0|0||1|ie|0|TIME|TYPE|0|10|A|0||0|1|0||TYPE|', {domain: Forker::WILLIAMHILL_ADDRESS})
-      when 'mechanize'
-	@browser.cookie_jar << Mechanize::Cookie.new(domain: Forker::MARATHON_ADDRESS, name: 'panbet.oddstype', value: 'Decimal', path: '/')
-	@browser.cookie_jar << Mechanize::Cookie.new(domain: '.betfair.com', name: 'vid', value: '20691c80-5359-4b9a-98ab-20c363ae65bb', path: '/')
-	@browser.cookie_jar << Mechanize::Cookie.new(domain: Forker::WILLIAMHILL_ADDRESS, name: 'cust_lang', value: 'en-ie', path: '/')
-	@browser.cookie_jar << Mechanize::Cookie.new(domain: Forker::WILLIAMHILL_ADDRESS, name: 'cust_prefs', value: 'ie|DECIMAL|form|TYPE|PRICE|||0|SB|0|0||0|ie|0|TIME|TYPE|0|31|A|0||0|1|0||TYPE|', path: '/')
+    def set_cookies_for(crawler)
+      case crawler.class
+      when Mechanize
+	crawler.cookie_jar << Mechanize::Cookie.new(domain: Forker::MARATHON_CHANGABLE, name: 'panbet.oddstype', value: 'Decimal', path: '/')
+	crawler.cookie_jar << Mechanize::Cookie.new(domain: '.betfair.com', name: 'vid', value: '20691c80-5359-4b9a-98ab-20c363ae65bb', path: '/')
+	crawler.cookie_jar << Mechanize::Cookie.new(domain: Forker::WILLIAMHILL_CHANGABLE, name: 'cust_lang', value: 'en-ie', path: '/')
+	crawler.cookie_jar << Mechanize::Cookie.new(domain: Forker::WILLIAMHILL_CHANGABLE, name: 'cust_prefs', value: 'ie|DECIMAL|form|TYPE|PRICE|||0|SB|0|0||0|ie|0|TIME|TYPE|0|31|A|0||0|1|0||TYPE|', path: '/')
+      else
+	crawler.page.driver.set_cookie('cust_lang', 'en-ie', {domain: Forker::WILLIAMHILL_CHANGABLE})
+	crawler.page.driver.set_cookie('cust_prefs', 'ie|DECIMAL|form|TYPE|PRICE|||0|SB|0|0||1|ie|0|TIME|TYPE|0|10|A|0||0|1|0||TYPE|', {domain: Forker::WILLIAMHILL_CHANGABLE})
       end
+      crawler
     end
 
-    def headers_setter
-      @browser.page.driver.browser.url_blacklist = [
+    def set_headers_for(crawler)
+      crawler.page.driver.browser.url_blacklist = [
 	'https://zz.connextra.com',
 	'http://envoytransfers.com',
 	'https://www.brightcove.com',
@@ -97,6 +121,7 @@ module Forker
 	'https://www.betradar.com',
 	'http://ctnsnet.com'
       ]
+      crawler
     end
   end
 end
