@@ -6,10 +6,10 @@ RSpec.describe Forker::Downloader do
       page = Downloader.download_live_page 'Marathon'
       login_attr = Nokogiri::HTML(page).css('#auth').attribute('action').text
       expect(page.size).to be > 1024
+      expect(login_attr).to eq MARATHON_CHANGABLE + ':443/en/login.htm'
       expect(page).to include 'Marathonbet'
       expect(page).to include '"oddsType":"Decimal"'
       expect(page).to include '"locale_name":"en"'
-      expect(login_attr).to be eq MARATHON_CHANGABLE + ':443/en/login.htm'
     end
 
     it 'for williamhill properly' do
@@ -19,9 +19,6 @@ RSpec.describe Forker::Downloader do
       expect(page).to include WILLIAMHILL_CHANGABLE
       expect(page).to include 'Join Now'
       expect(page).to include 'priceFormat: "decimal"'
-      expect(login_attr).to be eq WILLIAMHILL_BASE
     end
   end
-
-  describe '#download_event_pages'
 end

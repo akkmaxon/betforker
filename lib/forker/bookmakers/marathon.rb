@@ -105,6 +105,16 @@ module Forker
 	end
 	second_name
       end
+
+      def self.set_cookies
+	domain = Forker::MARATHON_CHANGABLE.gsub('https://www', '')
+	[{
+	  domain: domain,
+	  name: 'panbet.oddstype',
+	  value: 'Decimal',
+	  path: '/'
+	}]
+      end
     end
   end
 end
