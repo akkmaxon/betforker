@@ -22,7 +22,7 @@ module Forker
   include Downloader
 
   ##########################################################################
-  MARATHON_CHANGABLE = 'https://www.marathonbet.com'
+  MARATHON_CHANGABLE = 'https://www.marafonsportsbook.com'
   WILLIAMHILL_CHANGABLE = 'http://sports.bukstavki77.com'
   ##########################################################################
 
