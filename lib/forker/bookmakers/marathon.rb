@@ -1,7 +1,6 @@
 module Forker
   module Bookmakers
     module Marathon
-
       def self.parse_live_page(html, sport)
 	nok = Nokogiri::HTML(html)
 	links = {}

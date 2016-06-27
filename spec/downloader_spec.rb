@@ -5,7 +5,12 @@ RSpec.describe Forker::Downloader do
     Downloader.prepare_phantomjs
   end
 
+  after do
+    Capybara.current_session.reset!
+  end
+
   describe '#download_live_page' do
+
     it 'for marathon properly' do
       page = Downloader.download_live_page 'Marathon'
       login_attr = Nokogiri::HTML(page).css('#auth').attribute('action').text
@@ -24,6 +29,21 @@ RSpec.describe Forker::Downloader do
       expect(page).to include 'Join Now'
       expect(page).to include 'priceFormat: "decimal"'
     end
+
+    it 'marathon without cookies' do
+      allow(Marathon).to receive(:set_cookies).
+	and_return([])
+      page = Downloader.download_live_page 'Marathon'
+      expect(page).to include '"oddsType":"Fractions"'
+    end
+
+    it 'williamhill without cookies' do
+      allow(WilliamHill).to receive(:set_cookies).
+	and_return([])
+      Downloader.prepare_phantomjs
+      page = Downloader.download_live_page 'WilliamHill'
+      expect(page).to include 'priceFormat: "fraction"'
+    end
   end
 
   describe '#download_event_pages' do
@@ -38,27 +58,21 @@ RSpec.describe Forker::Downloader do
 
     it 'marathon properly' do
       result = Downloader.download_event_pages addresses
-      marathon = result['marathon']
-      expect(marathon.class).to eq String
-      expect(marathon.size).to be > 1024
-      expect(marathon).to include 'Marathonbet'
-      expect(marathon).to include 'live-today-member-name'
-      expect(marathon).to include 'result-description-part'
-      expect(marathon).to include 'All Markets'
+      page = result['marathon']
+      expect(page.class).to eq String
+      expect(page.size).to be > 1024
+      expect(page).to include 'Marathonbet'
+      expect(page).to include 'live-today-member-name'
+      expect(page).to include 'result-description-part'
+      expect(page).to include 'All Markets'
     end
 
     it 'williamhill properly' do
       result = Downloader.download_event_pages addresses
-      williamhill = result['williamhill']
-      expect(williamhill.class).to eq String
-      expect(williamhill).to include 'All Markets'
-      expect(williamhill).to include 'Match Betting Live'
+      page = result['williamhill']
+      expect(page.class).to eq String
+      expect(page).to include 'All Markets'
+      expect(page).to include 'Match Betting Live'
     end
-
-    it 'marathon without cookies' do
-    end
-
-    it 'williamhill without cookies'
-    it 'with wrong addresses'
   end
 end
