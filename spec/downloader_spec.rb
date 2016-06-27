@@ -44,6 +44,7 @@ RSpec.describe Forker::Downloader do
     end
 
     it 'williamhill properly' do
+      p addresses
       result = Downloader.download_event_pages addresses
       williamhill = result['williamhill']
       expect(williamhill.class).to eq String
