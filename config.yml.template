@@ -20,6 +20,9 @@
 #:sound_notification: true
 :sound_notification: false
 
+#print phantomjs logs in STDOUT
+:phantomjs_logger: false
+
 :sport: tennis
 
 :bookmakers:

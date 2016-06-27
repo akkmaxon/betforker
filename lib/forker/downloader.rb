@@ -39,9 +39,14 @@ module Forker
     end
 
     def prepare_phantomjs
+      logger = if $config[:phantomjs_logger]
+		 STDOUT
+	       else
+		 File.open('/dev/null', 'a')
+	       end
       Capybara.register_driver :poltergeist do |app|
 	opts = { js_errors: false,
-	  phantomjs_logger: File.open('/dev/null', 'a'),
+	  phantomjs_logger: logger,
 	  phantomjs_options: ['--load-images=false', '--ignore-ssl-errors=true'],
 	  timeout: 10 }
 	Capybara::Poltergeist::Driver.new(app, opts)
