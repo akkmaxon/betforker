@@ -7,7 +7,7 @@ module Forker
     end
 
     def download_from_williamhill(address)
-      browser= williamhill_cookies prepare_phantomjs
+      browser= williamhill_cookies Capybara.current_session
       browser.visit(address)
       approved_page browser.html
     end
@@ -41,38 +41,13 @@ module Forker
     def prepare_phantomjs
       Capybara.register_driver :poltergeist do |app|
 	opts = { js_errors: false,
+	  phantomjs_logger: File.open('/dev/null', 'a'),
 	  phantomjs_options: ['--load-images=false', '--ignore-ssl-errors=true'],
-	  timeout: 20 }
+	  timeout: 10 }
 	Capybara::Poltergeist::Driver.new(app, opts)
       end
       Capybara.default_driver = :poltergeist
-      blacklist_for_phantomjs Capybara.current_session
       Capybara.current_session
-    end
-
-    def blacklist_for_phantomjs(crawler)
-      crawler.driver.browser.url_blacklist = [
-      'https://zz.connextra.com',
-      'http://envoytransfers.com',
-      'https://www.brightcove.com',
-      'http://ethn.io',
-      'http://www.staticcache.org',
-      'http://www.ensighten.com',
-      'http://scoreboards.williamhill.com',
-      'http://amazonaws.com',
-      'http://whdn.williamhill.com',
-      'https://cdnbf.net',
-      'https://uservoice.com',
-      'http://mediaplex.com',
-      'http://rnengage.com',
-      'https://betfair.it',
-      'http://dgmdigital.com',
-      'http://googletagmanager.com',
-      #winlinebet
-      'http://livetex.ru',
-      'https://www.betradar.com',
-      'http://ctnsnet.com'
-      ]
     end
 
     def marathon_cookies(crawler)

@@ -32,6 +32,7 @@ module Forker
   WILLIAMHILL_LIVE = WILLIAMHILL_BASE + 'betlive/all'
 
   def build_events(bookmakers, sport)
+    Downloader.prepare_phantomjs
     need_to_be_structured = pull_live_events bookmakers, sport
     structured_events = structure_events need_to_be_structured
     structured_events.values.map { |addresses| Event.new(addresses, sport) }
@@ -41,7 +42,7 @@ module Forker
     result = {}
     bookmakers.each do |bookie|
       page = download_live_page_for bookie
-      result.merge eval("#{bookie}.parse_live_page #{page}")
+      result.merge! eval(bookie).parse_live_page(page, sport)
     end
     result
   end

@@ -1,13 +1,17 @@
 #!/usr/bin/env ruby
 $LOAD_PATH << File.expand_path(File.dirname(__FILE__) + '/../lib')
 require 'forker'
+require 'pry'
 include Forker
 open(File.dirname(__FILE__) + '/../config.yml') {|f| $config = YAML.load(f)}
 
-events = Forker::build_events $config[:bookies], $config[:sport]
+events = Forker::build_events $config[:bookmakers], $config[:sport]
 events.each do |event|
   forks = event.find_forks
   forks.each do |f|
-    f.show
+    f.desktop_show
   end
 end
+
+`notify-send -t #{$config[:time_of_notification] * 1000} " - next iteration!!!!!!!!"`
+`paplay /usr/share/sounds/freedesktop/stereo/complete.oga` if $config[:sound_notification]

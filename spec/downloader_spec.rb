@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 RSpec.describe Forker::Downloader do
+  before do
+    Downloader.prepare_phantomjs
+  end
+
   describe '#download_live_page' do
     it 'for marathon properly' do
       page = Downloader.download_live_page 'Marathon'
@@ -44,7 +48,6 @@ RSpec.describe Forker::Downloader do
     end
 
     it 'williamhill properly' do
-      p addresses
       result = Downloader.download_event_pages addresses
       williamhill = result['williamhill']
       expect(williamhill.class).to eq String
@@ -52,7 +55,9 @@ RSpec.describe Forker::Downloader do
       expect(williamhill).to include 'Match Betting Live'
     end
 
-    it 'marathon without cookies'
+    it 'marathon without cookies' do
+    end
+
     it 'williamhill without cookies'
     it 'with wrong addresses'
   end

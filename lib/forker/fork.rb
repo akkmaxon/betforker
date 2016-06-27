@@ -15,8 +15,14 @@ module Forker
       #{@bookmakers}
       #{@players}
       Score: #{@score}
-      On #{@what} percent: #{@percent}
+      Market: #{@what}
+      Percent: #{@percent}
       EOF
+    end
+
+    def desktop_show
+      `notify-send -t #{$config[:time_of_notification] * 1000} "#{show}"`
+      `paplay /usr/share/sounds/freedesktop/stereo/complete.oga` if $config[:sound_notification]
     end
   end
 end
