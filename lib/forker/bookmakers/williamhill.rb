@@ -99,16 +99,14 @@ module Forker
       def self.set_cookies
 	domain = Forker::WILLIAMHILL_CHANGABLE.split('//').last.gsub('sports', '')
 	[{
-	  domain: domain,
 	  name: 'cust_lang',
 	  value: 'en-gb',
-	  path: '/'
+	  attr: { domain: domain }
 	},
 	{
-	  domain: domain,
 	  name: 'cust_prefs',
 	  value: 'en|DECIMAL|form|TYPE|PRICE|||0|SB|0|0||0|en|0|TIME|TYPE|0|1|A|0||0|0||TYPE||-|0',
-	  path: '/'
+	  attr: { domain: domain }
 	}]
       end
     end

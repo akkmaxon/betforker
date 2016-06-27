@@ -1,17 +1,28 @@
 module Forker
   module Downloader
+    def prepare_phantomjs
+      Capybara.register_driver :poltergeist do |app|
+	opts = { js_errors: false,
+	  phantomjs_options: ['--load-images=false', '--ignore-ssl-errors=true'],
+	  timeout: 20 }
+	Capybara::Poltergeist::Driver.new(app, opts)
+      end
+      Capybara.default_driver = :poltergeist
+      Capybara.current_session
+    end
+
     def download_live_page(bookie)
-      browser, live_address = case bookie
-			      when 'Marathon'
-				[ marathon_cookies(Mechanize.new),
-				MARATHON_TENNIS_LIVE ]
-			      when 'WilliamHill'
-				[ williamhill_cookies(Mechanize.new),
-				WILLIAMHILL_LIVE ]
-			      end
       begin
-	html = browser.get(live_address).body
-	html = approved_page html
+	case bookie
+	when 'Marathon'
+	  browser, live_address = [marathon_cookies(Mechanize.new), MARATHON_TENNIS_LIVE]
+	  html = browser.get(live_address).body
+	when 'WilliamHill'
+	  browser, live_address = [williamhill_cookies(prepare_phantomjs), WILLIAMHILL_LIVE]
+	  browser.visit(live_address)
+	  html = browser.html
+	end
+	  html = approved_page html
       rescue OpenSSL::SSL::SSLError
 	raise 'You are blocked by provider!!!'
       rescue SocketError
@@ -21,8 +32,18 @@ module Forker
     end
 
     def download_event_pages(addresses)
-      # [ 'http..', 'http..'..]
-      # returns { 'marathon' => html, 'williamhill' => html }
+      result = {}
+      addresses.each do |address|
+	if address.include? MARATHON_BASE
+	  browser, live_address = [marathon_cookies(Mechanize.new), MARATHON_TENNIS_LIVE]
+	  result['marathon'] = browser.get(address).body
+	elsif address.include? WILLIAMHILL_BASE
+	  browser, live_address = [williamhill_cookies(prepare_phantomjs), WILLIAMHILL_LIVE]
+	  browser.visit(live_address)
+	  result['williamhill'] = browser.html
+	end
+      end
+      result
     end
 
     def marathon_cookies(crawler)
@@ -32,10 +53,9 @@ module Forker
       crawler
     end
 
-
     def williamhill_cookies(crawler)
       Forker::Bookmakers::WilliamHill.set_cookies.each do |cookie|
-	crawler.cookie_jar << Mechanize::Cookie.new(cookie)
+	crawler.driver.set_cookie cookie[:name], cookie[:value], cookie[:attr]
       end
       crawler
     end
