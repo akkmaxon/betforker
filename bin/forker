@@ -12,6 +12,3 @@ events.each do |event|
     f.desktop_show
   end
 end
-
-`notify-send -t #{$config[:time_of_notification] * 1000} " - next iteration!!!!!!!!"`
-`paplay /usr/share/sounds/freedesktop/stereo/complete.oga` if $config[:sound_notification]

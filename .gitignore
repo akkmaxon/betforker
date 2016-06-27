@@ -3,5 +3,5 @@ config.yml
 logs/
 *.swp
 tmp/
-.bundle
+.bundle/
 spec/support/logfile
