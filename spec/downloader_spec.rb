@@ -16,7 +16,7 @@ RSpec.describe Forker::Downloader do
       script_with_data = page.css('script').find {|s| s.text.include? 'initData'}.text
 
       expect(page.text.size).to be > 1024
-      expect(login_attr).to eq MARATHON_CHANGABLE + ':443/en/login.htm'
+      expect(login_attr).to eq Forker::MARATHON_CHANGABLE + ':443/en/login.htm'
       expect(page.title).to include 'betting odds'
       expect(script_with_data).to include '"oddsType":"Decimal"'
       expect(script_with_data).to include '"locale_name":"en"'
@@ -62,6 +62,13 @@ RSpec.describe Forker::Downloader do
 	live_page = Downloader.download_live_page bookie
 	links = eval(bookie).parse_live_page(live_page, sport)
 	links.keys.first
+      end
+    end
+
+    it 'addresses created properly' do
+      expect(addresses.size).to eq 2
+      addresses.each do |addr|
+	expect(addr).to include 'http'
       end
     end
 
