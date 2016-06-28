@@ -35,7 +35,7 @@ RSpec.describe Forker::Event do
       event.get_webpages
       pages = event.webpages
 
-      expect(pages.size).to eq 0
+      expect(pages.size).to eq 1
     end
 
     it 'when returns no pages' do
@@ -57,7 +57,7 @@ RSpec.describe Forker::Event do
 	and_return(updated_event(event))
 
       event.webpages.merge! webpages
-      event.parse_webpages(bookmakers, sport)
+      event.parse_webpages(bookmakers)
       result = event.parsed_webpages
 
       expect(result.size).to eq 1

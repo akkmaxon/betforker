@@ -3,7 +3,7 @@ module Forker
     attr_reader :addresses, :forks
     attr_accessor :webpages, :parsed_webpages
 
-    def initialize(addresses, sport)
+    def initialize(addresses, sport = 'tennis')
       @sport = sport
       @addresses = addresses || []
       @webpages = {}
@@ -14,7 +14,7 @@ module Forker
     def find_forks
       print_message_about_event if $config[:log]
       get_webpages
-      parse_webpages all_bookmakers, kind_of_sport
+      parse_webpages all_bookmakers
       print_parsed_webpages if $config[:log]
       forking
       @forks.flatten!
@@ -23,14 +23,13 @@ module Forker
     end
 
     def get_webpages
-      pages = Forker::Downloader.download_event_pages(addresses)
-      @webpages = pages if pages.size > 1
+      @webpages = Forker::Downloader.download_event_pages(addresses)
     end
 
-    def parse_webpages(bookmakers, sport)
+    def parse_webpages(bookmakers)
       bookmakers.each do |bookie|
 	b = eval bookie
-	b.parse_event(self, sport)
+	b.parse_event(self, @sport)
       end
     end
 
@@ -45,10 +44,6 @@ module Forker
 
     def all_bookmakers
       $config[:bookmakers]
-    end
-
-    def kind_of_sport
-      $config[:sport]
     end
 
     def print_message_about_event

@@ -57,7 +57,7 @@ RSpec.describe 'Forker finds forks without downloads' do
     it 'successfully with 1 fork' do
       event.webpages.merge! mar_with_forks
       event.webpages.merge! wh_with_forks
-      event.parse_webpages ['Marathon', 'WilliamHill'], sport
+      event.parse_webpages ['Marathon', 'WilliamHill']
       event.forking
       forks = event.forks.flatten
 
@@ -69,7 +69,7 @@ RSpec.describe 'Forker finds forks without downloads' do
       $config = { min_percent: 1.1, filtering: false }
       event.webpages.merge! mar_with_forks
       event.webpages.merge! wh_with_forks
-      event.parse_webpages ['Marathon', 'WilliamHill'], sport
+      event.parse_webpages ['Marathon', 'WilliamHill']
       event.forking
       forks = event.forks.flatten
 
@@ -82,7 +82,7 @@ RSpec.describe 'Forker finds forks without downloads' do
     it 'without forks' do
       event.webpages.merge! mar_with_forks
       event.webpages.merge! wh_without_forks
-      event.parse_webpages ['Marathon', 'WilliamHill'], sport
+      event.parse_webpages ['Marathon', 'WilliamHill']
       event.forking
       forks = event.forks.flatten
 
@@ -102,7 +102,6 @@ RSpec.describe 'Forker finds forks without downloads' do
 	and_return(return_from_downloader)
       allow(event).to receive(:all_bookmakers).
 	and_return(['Marathon', 'WilliamHill'])
-      allow(event).to receive(:kind_of_sport).and_return(sport)
 
       forks = event.find_forks
       f = forks.first

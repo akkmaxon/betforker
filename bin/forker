@@ -13,16 +13,23 @@ class Forker::App < Thor
   desc 'events, [-e]', 'List all current live events and exit'
   map '-e' => :events, '--events' => :events
   def events
+    Forker.build_events $config[:bookmakers], $config[:sport]
   end
 
   desc 'bookmaker BOOKMAKER, [-b]', 'Show only certain BOOKMAKER'
   map '-b' => :bookmaker, '--bookmaker' => :bookmaker
   def bookmaker(bookie)
+    say "You will see all about #{bookie} soon"
   end
 
   desc 'parse ADDRESS, [-p]', 'Parse event of given address'
   map '-p' => :parse, '--parse' => :parse
   def parse(address)
+    Downloader.prepare_phantomjs
+    event = Event.new [address]
+    event.get_webpages
+    event.parse_webpages $config[:bookmakers]
+    event.print_parsed_webpages
   end
 
   desc 'version, [-v]', 'Show version of forker'
