@@ -61,19 +61,22 @@ RSpec.describe Forker::Downloader do
     let(:addresses) do
       %w[ Marathon WilliamHill].map do |bookie|
 	live_page = if bookie == 'Marathon' then $marathon_live_page
-		    else $williamhill_live_page
+		    elsif bookie == 'WilliamHill' then $williamhill_live_page
 		    end
 	links = eval(bookie).parse_live_page(live_page, sport)
 	links.keys.first
       end
     end
 
-    specify { expect(addresses.size).to eq 2 }
-    specify { expect(addresses[0]).to include Forker::MARATHON_CHANGABLE }
-    specify { expect(addresses[1]).to include Forker::WILLIAMHILL_CHANGABLE }
+    it 'check addresses' do
+      $addresses = addresses
+      expect($addresses.size).to eq 2
+      expect($addresses[0]).to include Forker::MARATHON_CHANGABLE
+      expect($addresses[1]).to include Forker::WILLIAMHILL_CHANGABLE
+    end
 
     it 'marathon properly' do
-      result = Downloader.download_event_pages addresses
+      result = Downloader.download_event_pages $addresses
       page = Nokogiri::HTML(result['marathon'])
       script_with_data = page.css('script').find {|s| s.text.include? 'initData'}.text
 
@@ -86,7 +89,7 @@ RSpec.describe Forker::Downloader do
     end
 
     it 'williamhill properly' do
-      result = Downloader.download_event_pages addresses
+      result = Downloader.download_event_pages $addresses
       page = Nokogiri::HTML(result['williamhill'])
 
       expect(page.css('#selectedLive').text).to include 'All Markets'
