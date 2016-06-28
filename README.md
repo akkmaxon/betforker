@@ -1,5 +1,7 @@
 # forker #
 
+[![Build Status](https://travis-ci.org/akkmaxon/forker.svg?branch=master)](https://travis-ci.org/akkmaxon/forker)
+
 ## Description ##
 
 The app for looking for bet forks.
