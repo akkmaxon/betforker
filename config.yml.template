@@ -1,31 +1,29 @@
----
-:min_percent: 1.99
+#sets the minimal percent 
+#for fork detecting
+min_percent: 1.99
 
-#time in seconds
-:time_of_work: 3600
+#time of showing a notification
+time_of_notification: 20
 
-#time in seconds
-:time_of_notification: 20
-
-#where the log file is, for example /home/user/forker_log
-:log_file: forker_log
-
-#filter temporary forks
-:filtering: true
+#filters forks which
+#cannot be betted
+filtering: true
 
 #use in process of development
-:falling_phantomjs: true
+falling_phantomjs: true
 
-#notification with sound
+#notifications with sound
 #:sound_notification: true
-:sound_notification: false
+sound_notification: false
 
-#print phantomjs logs in STDOUT
-:phantomjs_logger: false
+#prints phantomjs logs in STDOUT
+phantomjs_logger: false
 
-:sport: tennis
+#kinds of sport in game
+sport: tennis
 
-:bookmakers:
+#list of bookmakers
+bookmakers:
 - WilliamHill
 - Marathon
 # Parimatch
