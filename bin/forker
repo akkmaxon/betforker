@@ -49,7 +49,9 @@ class Forker::App < Thor
   def default
     loop do
       events = Forker::build_events $config[:bookmakers], $config[:sport]
-      events.each do |event|
+      events_size = events.size
+      events.each_with_index do |event, index|
+	event.print_message_about_event(events_size, index + 1) if $config[:log]
 	forks = event.find_forks
 	forks.each do |f|
 	  f.desktop_show

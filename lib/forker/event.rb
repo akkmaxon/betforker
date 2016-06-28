@@ -12,7 +12,6 @@ module Forker
     end
 
     def find_forks
-      print_message_about_event if $config[:log]
       get_webpages
       parse_webpages all_bookmakers
       print_parsed_webpages if $config[:log]
@@ -46,8 +45,8 @@ module Forker
       $config[:bookmakers]
     end
 
-    def print_message_about_event
-      puts "\n\n#{'*' * 20} work with #{'*' * 20}"
+    def print_message_about_event(total_count, number)
+      puts "\n\n#{'*' * 20} work with #{number}/#{total_count} #{'*' * 20}"
       @addresses.each { |addr|	puts addr }
     end
 
