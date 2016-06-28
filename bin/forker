@@ -4,10 +4,50 @@ require 'forker'
 include Forker
 open(File.dirname(__FILE__) + '/../config.yml') {|f| $config = YAML.load(f)}
 
-events = Forker::build_events $config[:bookmakers], $config[:sport]
-events.each do |event|
-  forks = event.find_forks
-  forks.each do |f|
-    f.desktop_show
+class Forker::App < Thor
+
+  if ARGV.size == 0
+    ARGV << 'default'
+  end
+
+  desc 'events, [-e]', 'List all current live events and exit'
+  map '-e' => :events, '--events' => :events
+  def events
+  end
+
+  desc 'bookmaker BOOKMAKER, [-b]', 'Show only certain BOOKMAKER'
+  map '-b' => :bookmaker, '--bookmaker' => :bookmaker
+  def bookmaker(bookie)
+  end
+
+  desc 'parse ADDRESS, [-p]', 'Parse event of given address'
+  map '-p' => :parse, '--parse' => :parse
+  def parse(address)
+  end
+
+  desc 'version, [-v]', 'Show version of forker'
+  map '-v' => :version, '--version' => :version
+  def version
+    say "Version: #{Forker::VERSION}"
+  end
+
+  desc 'silent, [-s]', 'Run forker without logs with showing only desktop notifications'
+  map '-s' => :silent, '--silent' => :silent
+  def silent
+    $config[:log] = false
+    default
+  end
+
+  desc 'default', 'Run forker with logs and notifications if forks were found'
+  def default
+    events = Forker::build_events $config[:bookmakers], $config[:sport]
+    events.each do |event|
+      forks = event.find_forks
+      forks.each do |f|
+	f.desktop_show
+      end
+    end
   end
 end
+
+Forker::App.start

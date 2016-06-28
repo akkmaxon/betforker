@@ -2,6 +2,7 @@ require 'capybara/poltergeist'
 require 'yaml'
 require 'nokogiri'
 require 'mechanize'
+require 'thor'
 require 'forker/version'
 require 'forker/event'
 require 'forker/parsed_page'
@@ -35,6 +36,7 @@ module Forker
     Downloader.prepare_phantomjs
     need_to_be_structured = pull_live_events bookmakers, sport
     structured_events = structure_events need_to_be_structured
+    print_all_events(structured_events, sport) if $config[:log]
     structured_events.values.map { |addresses| Event.new(addresses, sport) }
   end
 
@@ -67,6 +69,18 @@ module Forker
     events.select do |names, addresses|
       addresses.size > 1
     end
+  end
+
+  def print_all_events(events, sport)
+    events.each do |names, addresses|
+      puts names + ':'
+      addresses.each do |address|
+	puts " - #{address}"
+      end
+    end
+    print '=' * 20
+    print "^ #{events.size} events of #{sport} ^"
+    puts '=' * 20
   end
 end
 

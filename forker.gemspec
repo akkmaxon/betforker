@@ -16,6 +16,7 @@ spec = Gem::Specification.new do |s|
   s.add_dependency('nokogiri')
   s.add_dependency('mechanize')
   s.add_dependency('poltergeist')
+  s.add_dependency('thor')
   s.add_development_dependency('rake')
   s.add_development_dependency('rspec')
 end

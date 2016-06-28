@@ -1,18 +1,18 @@
 module Forker
   module Downloader
     def download_from_marathon(address)
-      message_before_download address
+      print_message_before_download address if $config[:log]
       browser= marathon_cookies Mechanize.new
       html = browser.get(address).body
-      message_after_download html
+      print_message_after_download html if $config[:log]
       approved_page html
     end
 
     def download_from_williamhill(address)
-      message_before_download address
+      print_message_before_download address if $config[:log]
       browser= williamhill_cookies Capybara.current_session
       browser.visit(address)
-      message_after_download browser.html
+      print_message_after_download browser.html if $config[:log]
       approved_page browser.html
     end
 
@@ -90,11 +90,11 @@ module Forker
       false
     end
 
-    def message_before_download(address)
+    def print_message_before_download(address)
       print "\nProcessing #{address}..."
     end
 
-    def message_after_download(page)
+    def print_message_after_download(page)
       puts "ready (size: #{page.size})"
     end
   end

@@ -9,12 +9,15 @@
 #cannot be betted
 :filtering: true
 
-#use in process of development
-:falling_phantomjs: true
-
 #notifications with sound
 #:sound_notification: true
 :sound_notification: false
+
+#use in process of development
+:falling_phantomjs: true
+
+#log mode in default
+:log: true
 
 #prints phantomjs logs in STDOUT
 :phantomjs_logger: false

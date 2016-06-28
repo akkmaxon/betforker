@@ -1,6 +1,29 @@
 module Forker
   module Comparer
 
+    def self.compare(first, second)
+      return [] if first.bookie == second.bookie
+      forks = []
+      check_sorting first, second
+      return forks unless same_players? first, second
+
+      filtering, break_now = if $config[:filtering]
+			       [ true, is_a_break?(init_score(first, second)) ]
+			     else
+			       [ false, true ]
+			     end
+
+      forks << market_processing(:match, first, second, break_now)
+      forks << market_processing(:set, first, second, break_now)
+      forks << market_processing(:game, first, second)
+
+      forks = score_analyzer forks.flatten, filtering
+
+      forks.map do |f|
+	Fork.new f
+      end
+    end
+
     def self.same_players?(first, second)
       first.home_player[:name] == second.home_player[:name] && 
 	first.away_player[:name] == second.away_player[:name]
@@ -29,29 +52,6 @@ module Forker
 	players: "#{first.home_player[:name]}  VS  #{first.away_player[:name]}",
 	score: init_score(first, second)
       }
-    end
-
-    def self.compare(first, second)
-      return [] if first.bookie == second.bookie
-      forks = []
-      check_sorting first, second
-      return forks unless same_players? first, second
-
-      filtering, break_now = if $config[:filtering]
-			       [ true, is_a_break?(init_score(first, second)) ]
-			     else
-			       [ false, true ]
-			     end
-
-      forks << market_processing(:match, first, second, break_now)
-      forks << market_processing(:set, first, second, break_now)
-      forks << market_processing(:game, first, second)
-
-      forks = score_analyzer forks.flatten, filtering
-
-      forks.map do |f|
-	Fork.new f
-      end
     end
 
     def self.market_processing(market, first, second, break_now = true)

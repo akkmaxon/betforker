@@ -17,6 +17,7 @@ module Forker
       Score: #{@score}
       Market: #{@what}
       Percent: #{@percent}
+
       EOF
     end
 

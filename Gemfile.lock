@@ -5,6 +5,7 @@ PATH
       mechanize
       nokogiri
       poltergeist
+      thor
 
 GEM
   remote: https://rubygems.org/
@@ -64,6 +65,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
+    thor (0.19.1)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.2)

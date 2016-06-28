@@ -12,21 +12,22 @@ module Forker
     end
 
     def find_forks
-      # [Fork, Fork, Fork]
+      print_message_about_event if $config[:log]
       get_webpages
       parse_webpages all_bookmakers, kind_of_sport
+      print_parsed_webpages if $config[:log]
       forking
       @forks.flatten!
+      print_forks if $config[:log]
+      @forks
     end
 
     def get_webpages
-      # 'bookie_name' => 'html text' hash
       pages = Forker::Downloader.download_event_pages(addresses)
       @webpages = pages if pages.size > 1
     end
 
     def parse_webpages(bookmakers, sport)
-      # [ParsedPage, ParsedPage, ParsedPage]
       bookmakers.each do |bookie|
 	b = eval bookie
 	b.parse_event(self, sport)
@@ -34,7 +35,6 @@ module Forker
     end
 
     def forking
-      # [Fork, Fork,[],[Fork, Fork]]
       while @parsed_webpages.size > 1
 	first = @parsed_webpages.shift
 	@parsed_webpages.each do |second|
@@ -49,6 +49,32 @@ module Forker
 
     def kind_of_sport
       $config[:sport]
+    end
+
+    def print_message_about_event
+      puts "\n\n#{'*' * 20} work with #{'*' * 20}"
+      @addresses.each { |addr|	puts addr }
+    end
+
+    def print_parsed_webpages
+      puts "#{'-' * 20} Parsed event"
+      @parsed_webpages.each do |parsed|
+	puts <<-EOF
+#{parsed.bookie}, score: #{parsed.score}
+HomePlayer: #{parsed.home_player}
+AwayPlayer: #{parsed.away_player}
+
+	EOF
+      end
+    end
+
+    def print_forks
+      if @forks.empty?
+	puts "#{'-' * 20} No forks"
+      else
+	puts "#{'!' * 20}   Forks   #{'!' * 20}"
+	@forks.each { |f| puts f.show }
+      end
     end
   end
 end
