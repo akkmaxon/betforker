@@ -15,8 +15,8 @@ module Forker
     def download_live_page(bookie)
       begin
 	html = case bookie
-	       when 'Marathon' then download_from_marathon MARATHON_TENNIS_LIVE
-	       when 'WilliamHill' then download_from_williamhill WILLIAMHILL_LIVE
+	       when 'Marathon' then download_from_marathon Forker::MARATHON_TENNIS_LIVE
+	       when 'WilliamHill' then download_from_williamhill Forker::WILLIAMHILL_LIVE
 	       end
       rescue OpenSSL::SSL::SSLError
 	raise 'You are blocked by provider!!!'
@@ -29,9 +29,9 @@ module Forker
     def download_event_pages(addresses)
       result = {}
       addresses.each do |address|
-	if address.include? MARATHON_BASE
+	if address.include? Forker::MARATHON_BASE
 	  result['marathon'] = download_from_marathon address
-	elsif address.include? WILLIAMHILL_BASE
+	elsif address.include? Forker::WILLIAMHILL_BASE
 	  result['williamhill'] = download_from_williamhill address
 	end
       end

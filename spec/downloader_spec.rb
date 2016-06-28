@@ -34,7 +34,7 @@ RSpec.describe Forker::Downloader do
     end
 
     it 'marathon without cookies' do
-      allow(Marathon).to receive(:set_cookies).
+      allow(Forker::Bookmakers::Marathon).to receive(:set_cookies).
 	and_return([])
       live_page = Downloader.download_live_page 'Marathon'
       script_with_data = 
@@ -44,9 +44,8 @@ RSpec.describe Forker::Downloader do
     end
 
     it 'williamhill without cookies' do
-      allow(WilliamHill).to receive(:set_cookies).
+      allow(Forker::Bookmakers::WilliamHill).to receive(:set_cookies).
 	and_return([])
-      Downloader.prepare_phantomjs
       live_page = Downloader.download_live_page 'WilliamHill'
       script_with_data = 
 	Nokogiri::HTML(live_page).css('script').find {|s| s.text.include? 'flashvars'}.text
@@ -65,12 +64,9 @@ RSpec.describe Forker::Downloader do
       end
     end
 
-    it 'addresses created properly' do
-      expect(addresses.size).to eq 2
-      addresses.each do |addr|
-	expect(addr).to include 'http'
-      end
-    end
+    specify { expect(addresses.size).to eq 2 }
+    specify { expect(addresses[0]).to include Forker::MARATHON_CHANGABLE }
+    specify { expect(addresses[1]).to include Forker::WILLIAMHILL_CHANGABLE }
 
     it 'marathon properly' do
       result = Downloader.download_event_pages addresses
