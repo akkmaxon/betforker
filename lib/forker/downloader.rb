@@ -1,14 +1,18 @@
 module Forker
   module Downloader
     def download_from_marathon(address)
+      message_before_download address
       browser= marathon_cookies Mechanize.new
       html = browser.get(address).body
+      message_after_download html
       approved_page html
     end
 
     def download_from_williamhill(address)
+      message_before_download address
       browser= williamhill_cookies Capybara.current_session
       browser.visit(address)
+      message_after_download browser.html
       approved_page browser.html
     end
 
@@ -84,6 +88,14 @@ module Forker
 	return true if html.include? word
       end
       false
+    end
+
+    def message_before_download(address)
+      print "\nProcessing #{address}..."
+    end
+
+    def message_after_download(page)
+      puts "ready (size: #{page.size})"
     end
   end
 end

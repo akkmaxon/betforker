@@ -11,7 +11,8 @@ RSpec.describe Forker::Downloader do
 
   describe '#download_live_page' do
     it 'for marathon properly' do
-      page = Nokogiri::HTML(Downloader.download_live_page 'Marathon')
+      $marathon_live_page = Downloader.download_live_page 'Marathon'
+      page = Nokogiri::HTML($marathon_live_page)
       login_attr = page.css('#auth').attribute('action').text
       script_with_data = page.css('script').find {|s| s.text.include? 'initData'}.text
 
@@ -23,7 +24,8 @@ RSpec.describe Forker::Downloader do
     end
 
     it 'for williamhill properly' do
-      page = Nokogiri::HTML(Downloader.download_live_page 'WilliamHill')
+      $williamhill_live_page = Downloader.download_live_page 'WilliamHill'
+      page = Nokogiri::HTML($williamhill_live_page)
       login_text = page.css('#login').text
       script_with_data = page.css('script').find {|s| s.text.include? 'flashvars'}.text
 
@@ -58,7 +60,9 @@ RSpec.describe Forker::Downloader do
     let(:sport) { 'tennis' }
     let(:addresses) do
       %w[ Marathon WilliamHill].map do |bookie|
-	live_page = Downloader.download_live_page bookie
+	live_page = if bookie == 'Marathon' then $marathon_live_page
+		    else $williamhill_live_page
+		    end
 	links = eval(bookie).parse_live_page(live_page, sport)
 	links.keys.first
       end

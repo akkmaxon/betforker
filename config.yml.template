@@ -1,29 +1,29 @@
 #sets the minimal percent 
 #for fork detecting
-min_percent: 1.99
+:min_percent: 1.99
 
 #time of showing a notification
-time_of_notification: 20
+:time_of_notification: 20
 
 #filters forks which
 #cannot be betted
-filtering: true
+:filtering: true
 
 #use in process of development
-falling_phantomjs: true
+:falling_phantomjs: true
 
 #notifications with sound
 #:sound_notification: true
-sound_notification: false
+:sound_notification: false
 
 #prints phantomjs logs in STDOUT
-phantomjs_logger: false
+:phantomjs_logger: false
 
 #kinds of sport in game
-sport: tennis
+:sport: tennis
 
 #list of bookmakers
-bookmakers:
+:bookmakers:
 - WilliamHill
 - Marathon
 # Parimatch
