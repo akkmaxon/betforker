@@ -6,15 +6,11 @@
 :time_of_notification: 20
 
 #filters forks which
-#cannot be betted
+#cannot be betted(not in breaks etc)
 :filtering: true
 
 #notifications with sound
-#:sound_notification: true
-:sound_notification: false
-
-#use in process of development
-:falling_phantomjs: true
+:sound_notification: true
 
 #log mode in default
 :log: true

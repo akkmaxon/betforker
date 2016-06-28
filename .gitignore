@@ -1,7 +1,5 @@
 pkg/
-config.yml
 logs/
 *.swp
 tmp/
 .bundle/
-spec/support/logfile
