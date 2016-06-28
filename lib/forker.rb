@@ -26,10 +26,10 @@ module Forker
   WILLIAMHILL_CHANGABLE = 'http://sports.bukstavki77.com'
   ##########################################################################
 
-  MARATHON_BASE = MARATHON_CHANGABLE + "/en/"
-  MARATHON_TENNIS_LIVE = MARATHON_BASE + 'live/22723'
-  WILLIAMHILL_BASE = WILLIAMHILL_CHANGABLE + "/bet/en-ie/"
-  WILLIAMHILL_LIVE = WILLIAMHILL_BASE + 'betlive/all'
+  MARATHON_BASE = MARATHON_CHANGABLE + "/en"
+  MARATHON_TENNIS_LIVE = MARATHON_BASE + '/live/22723'
+  WILLIAMHILL_BASE = WILLIAMHILL_CHANGABLE + "/bet/en-ie"
+  WILLIAMHILL_LIVE = WILLIAMHILL_BASE + '/betlive/all'
 
   def build_events(bookmakers, sport)
     Downloader.prepare_phantomjs

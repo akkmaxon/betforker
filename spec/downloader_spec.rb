@@ -10,39 +10,48 @@ RSpec.describe Forker::Downloader do
   end
 
   describe '#download_live_page' do
-
     it 'for marathon properly' do
-      page = Downloader.download_live_page 'Marathon'
-      login_attr = Nokogiri::HTML(page).css('#auth').attribute('action').text
-      expect(page.size).to be > 1024
+      page = Nokogiri::HTML(Downloader.download_live_page 'Marathon')
+      login_attr = page.css('#auth').attribute('action').text
+      script_with_data = page.css('script').find {|s| s.text.include? 'initData'}.text
+
+      expect(page.text.size).to be > 1024
       expect(login_attr).to eq MARATHON_CHANGABLE + ':443/en/login.htm'
-      expect(page).to include 'Marathonbet'
-      expect(page).to include '"oddsType":"Decimal"'
-      expect(page).to include '"locale_name":"en"'
+      expect(page.title).to include 'betting odds'
+      expect(script_with_data).to include '"oddsType":"Decimal"'
+      expect(script_with_data).to include '"locale_name":"en"'
     end
 
     it 'for williamhill properly' do
-      page = Downloader.download_live_page 'WilliamHill'
-      login_attr = Nokogiri::HTML(page).css('#login').attribute('action').text
-      expect(page.size).to be > 1024
-      expect(page).to include WILLIAMHILL_CHANGABLE
-      expect(page).to include 'Join Now'
-      expect(page).to include 'priceFormat: "decimal"'
+      page = Nokogiri::HTML(Downloader.download_live_page 'WilliamHill')
+      login_text = page.css('#login').text
+      script_with_data = page.css('script').find {|s| s.text.include? 'flashvars'}.text
+
+      expect(page.text.size).to be > 1024
+      expect(login_text).to include 'Join Now'
+      expect(script_with_data).to include 'priceFormat: "decimal"'
+      expect(script_with_data).to include 'WilliamHill'
     end
 
     it 'marathon without cookies' do
       allow(Marathon).to receive(:set_cookies).
 	and_return([])
-      page = Downloader.download_live_page 'Marathon'
-      expect(page).to include '"oddsType":"Fractions"'
+      live_page = Downloader.download_live_page 'Marathon'
+      script_with_data = 
+	Nokogiri::HTML(live_page).css('script').find {|s| s.text.include? 'initData'}.text
+
+      expect(script_with_data).to include '"oddsType":"Fractions"'
     end
 
     it 'williamhill without cookies' do
       allow(WilliamHill).to receive(:set_cookies).
 	and_return([])
       Downloader.prepare_phantomjs
-      page = Downloader.download_live_page 'WilliamHill'
-      expect(page).to include 'priceFormat: "fraction"'
+      live_page = Downloader.download_live_page 'WilliamHill'
+      script_with_data = 
+	Nokogiri::HTML(live_page).css('script').find {|s| s.text.include? 'flashvars'}.text
+
+      expect(script_with_data).to include 'priceFormat: "fraction"'
     end
   end
 
@@ -58,21 +67,23 @@ RSpec.describe Forker::Downloader do
 
     it 'marathon properly' do
       result = Downloader.download_event_pages addresses
-      page = result['marathon']
-      expect(page.class).to eq String
-      expect(page.size).to be > 1024
-      expect(page).to include 'Marathonbet'
-      expect(page).to include 'live-today-member-name'
-      expect(page).to include 'result-description-part'
-      expect(page).to include 'All Markets'
+      page = Nokogiri::HTML(result['marathon'])
+      script_with_data = page.css('script').find {|s| s.text.include? 'initData'}.text
+
+      expect(page.text.size).to be > 1024
+      expect(page.title).to include 'betting odds'
+      expect(page.css('.live-today-member-name').size).to eq 2
+      expect(page.css('.active-shortcut-menu-link').text).to include 'All Markets'
+      expect(script_with_data).to include '"oddsType":"Decimal"'
+      expect(script_with_data).to include '"locale_name":"en"'
     end
 
     it 'williamhill properly' do
       result = Downloader.download_event_pages addresses
-      page = result['williamhill']
-      expect(page.class).to eq String
-      expect(page).to include 'All Markets'
-      expect(page).to include 'Match Betting Live'
+      page = Nokogiri::HTML(result['williamhill'])
+
+      expect(page.css('#selectedLive').text).to include 'All Markets'
+      expect(page.css('#primaryCollectionContainer').text).to include 'Match Betting Live'
     end
   end
 end
