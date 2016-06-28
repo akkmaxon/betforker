@@ -72,6 +72,9 @@ module Forker
   end
 
   def print_all_events(events, sport)
+    print '=' * 20
+    print "V #{events.size} events of #{sport} V"
+    puts '=' * 20
     events.each do |names, addresses|
       puts names + ':'
       addresses.each do |address|

@@ -47,12 +47,15 @@ class Forker::App < Thor
 
   desc 'default', 'Run forker with logs and notifications if forks were found'
   def default
-    events = Forker::build_events $config[:bookmakers], $config[:sport]
-    events.each do |event|
-      forks = event.find_forks
-      forks.each do |f|
-	f.desktop_show
+    loop do
+      events = Forker::build_events $config[:bookmakers], $config[:sport]
+      events.each do |event|
+	forks = event.find_forks
+	forks.each do |f|
+	  f.desktop_show
+	end
       end
+      Capybara.current_session.driver.browser.restart
     end
   end
 end
