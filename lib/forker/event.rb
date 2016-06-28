@@ -69,6 +69,7 @@ AwayPlayer: #{parsed.away_player}
       else
 	puts "#{'!' * 20}   Forks   #{'!' * 20}"
 	@forks.each { |f| puts f.show }
+	puts '!' * 51
       end
     end
   end

@@ -2,7 +2,7 @@ module Forker
   module Downloader
     def download_from_marathon(address)
       print_message_before_download address if $config[:log]
-      browser= marathon_cookies Mechanize.new
+      browser= marathon_cookies prepare_mechanize
       html = browser.get(address).body
       print_message_after_download html if $config[:log]
       approved_page html
@@ -42,6 +42,16 @@ module Forker
       result
     end
 
+    def browsers_timeout
+      10
+    end
+
+    def prepare_mechanize
+      agent = Mechanize.new
+      agent.read_timeout = browsers_timeout
+      agent
+    end
+
     def prepare_phantomjs
       logger = if $config[:phantomjs_logger]
 		 STDOUT
@@ -52,7 +62,7 @@ module Forker
 	opts = { js_errors: false,
 	  phantomjs_logger: logger,
 	  phantomjs_options: ['--load-images=false', '--ignore-ssl-errors=true'],
-	  timeout: 10 }
+	  timeout: browsers_timeout }
 	Capybara::Poltergeist::Driver.new(app, opts)
       end
       Capybara.default_driver = :poltergeist
@@ -91,11 +101,13 @@ module Forker
     end
 
     def print_message_before_download(address)
+      $beginning = Time.now
       print "\nProcessing #{address}..."
     end
 
     def print_message_after_download(page)
-      puts "ready (size: #{page.size})"
+      time = (Time.now - $beginning).round 2
+      puts "ready in #{time} seconds (size: #{page.size})"
     end
   end
 end
