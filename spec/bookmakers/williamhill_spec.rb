@@ -39,7 +39,7 @@ RSpec.describe Forker::Bookmakers::WilliamHill do
     end
 
     context 'tennis Motti/Peng vs Donati/Sonego' do
-      let(:webpage) { open_event_page('williamhill', 'motpen_donson.html') }
+      let(:webpage) { open_event_page('williamhill', 'first.html') }
       it 'all must be good' do
 	expect(result.home_player[:name]).to eq 'MottiPeng'
 	expect(result.away_player[:name]).to eq 'DonatiSonego'
@@ -51,7 +51,7 @@ RSpec.describe Forker::Bookmakers::WilliamHill do
     end
 
     context 'tennis Schmiedlova vs Argyelan' do
-      let(:webpage) { open_event_page('williamhill', 'sch_arg.html') }
+      let(:webpage) { open_event_page('williamhill', 'second.html') }
       it 'all must be good' do
 	expect(result.home_player[:name]).to eq 'Schmiedlova'
 	expect(result.away_player[:name]).to eq 'Argyelan'

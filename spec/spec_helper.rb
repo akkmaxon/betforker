@@ -30,6 +30,16 @@ module MyHelpers
     open_event_page('fake', 'fake.html')
   end
 
+  def page_from_provider
+    <<-EOF
+    <!doctype html>
+    <html><body>
+    <p> minjust.ru is blocking you </p>
+    <p> eais and gov.ru too </p>
+    </body></html>
+    EOF
+  end
+
   def updated_event(event)
     event.parsed_webpages << Forker::ParsedPage.new
   end

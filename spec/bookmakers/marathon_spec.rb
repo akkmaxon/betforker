@@ -39,7 +39,7 @@ RSpec.describe Forker::Bookmakers::Marathon do
     end
 
     context 'tennis C.Cianci/P.Martins vs B.Luz/J.Vale Costa' do
-      let(:webpage) { open_event_page('marathon', 'ciamar_luzcos.html') }
+      let(:webpage) { open_event_page('marathon', 'first.html') }
       it 'all must be good' do
 	expect(result.home_player[:name]).to eq 'CianciMartins'
 	expect(result.away_player[:name]).to eq 'CostaLuz'
@@ -54,7 +54,7 @@ RSpec.describe Forker::Bookmakers::Marathon do
     end
 
     context 'tennis Melzer vs Skugor' do
-      let(:webpage) { open_event_page('marathon', 'mel_sku.html') }
+      let(:webpage) { open_event_page('marathon', 'second.html') }
       it 'all must be good' do
 	expect(result.home_player[:name]).to eq 'Melzer'
 	expect(result.away_player[:name]).to eq 'Skugor'

@@ -1,43 +1,55 @@
 module Forker
   module Downloader
     def download_from_marathon(address)
-      print_message_before_download address if $config[:log]
-      browser= marathon_cookies prepare_mechanize
-      html = browser.get(address).body
-      print_message_after_download html if $config[:log]
-      approved_page html
+      begin
+	browser= marathon_cookies prepare_mechanize
+	browser.get(address).body
+      rescue OpenSSL::SSL::SSLError
+	abort 'You are blocked by provider!!!'
+      rescue SocketError
+	abort 'The address is wrong!!!'
+      end
     end
 
     def download_from_williamhill(address)
-      print_message_before_download address if $config[:log]
-      browser= williamhill_cookies Capybara.current_session
-      browser.visit(address)
-      print_message_after_download browser.html if $config[:log]
-      approved_page browser.html
+      begin
+	browser= williamhill_cookies Capybara.current_session
+	browser.visit(address).html
+      rescue OpenSSL::SSL::SSLError
+	abort 'You are blocked by provider!!!'
+      rescue SocketError
+	abort 'The address is wrong!!!'
+      end
     end
 
     def download_live_page(bookie)
-      begin
-	html = case bookie
-	       when 'Marathon' then download_from_marathon Forker::MARATHON_TENNIS_LIVE
-	       when 'WilliamHill' then download_from_williamhill Forker::WILLIAMHILL_LIVE
-	       end
-      rescue OpenSSL::SSL::SSLError
-	raise 'You are blocked by provider!!!'
-      rescue SocketError
-	raise 'The address is wrong!!!'
-      end
-      html
+      html = case bookie
+	     when 'Marathon'
+	       address = Forker::MARATHON_TENNIS_LIVE
+	       print_message_before_download address if $config[:log]
+	       download_from_marathon address
+	     when 'WilliamHill'
+	       download_from_williamhill Forker::WILLIAMHILL_LIVE
+	     else
+	       raise RuntimeError, 'Unknown bookie in Download.download_live_page'
+	     end
+      print_message_after_download html if $config[:log]
+      approved_page html
     end
 
     def download_event_pages(addresses)
       result = {}
       addresses.each do |address|
+        print_message_before_download address if $config[:log]
 	if address.include? Forker::MARATHON_BASE
-	  result['marathon'] = download_from_marathon address
+	  html = download_from_marathon address
+	  result['marathon'] = html
 	elsif address.include? Forker::WILLIAMHILL_BASE
-	  result['williamhill'] = download_from_williamhill address
+	  html = download_from_williamhill address
+	  result['williamhill'] = html
 	end
+	print_message_after_download html if $config[:log]
+	approved_page html
       end
       result
     end

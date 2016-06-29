@@ -1,31 +1,31 @@
 require 'spec_helper'
 
 RSpec.describe Forker::Downloader do
-  before do
-    Downloader.prepare_phantomjs
-  end
-
-  after do
-    Capybara.current_session.reset!
-  end
-
   describe '#download_live_page' do
+    before do
+      $config  = { log: false }
+    end
+
     it 'for marathon properly' do
-      $marathon_live_page = Downloader.download_live_page 'Marathon'
-      page = Nokogiri::HTML($marathon_live_page)
+      allow(Downloader).to receive(:download_from_marathon).
+	and_return open_right_live_page 'marathon'
+      marathon_live_page = Downloader.download_live_page 'Marathon'
+      page = Nokogiri::HTML(marathon_live_page)
       login_attr = page.css('#auth').attribute('action').text
       script_with_data = page.css('script').find {|s| s.text.include? 'initData'}.text
 
       expect(page.text.size).to be > 1024
-      expect(login_attr).to eq Forker::MARATHON_CHANGABLE + ':443/en/login.htm'
+      expect(login_attr).to include ':443/en/login.htm'
       expect(page.title).to include 'betting odds'
       expect(script_with_data).to include '"oddsType":"Decimal"'
       expect(script_with_data).to include '"locale_name":"en"'
     end
 
     it 'for williamhill properly' do
-      $williamhill_live_page = Downloader.download_live_page 'WilliamHill'
-      page = Nokogiri::HTML($williamhill_live_page)
+      allow(Downloader).to receive(:download_from_williamhill).
+	and_return open_right_live_page 'williamhill'
+      williamhill_live_page = Downloader.download_live_page 'WilliamHill'
+      page = Nokogiri::HTML(williamhill_live_page)
       login_text = page.css('#login').text
       script_with_data = page.css('script').find {|s| s.text.include? 'flashvars'}.text
 
@@ -34,49 +34,32 @@ RSpec.describe Forker::Downloader do
       expect(script_with_data).to include 'priceFormat: "decimal"'
       expect(script_with_data).to include 'WilliamHill'
     end
-
-    it 'marathon without cookies' do
-      allow(Forker::Bookmakers::Marathon).to receive(:set_cookies).
-	and_return([])
-      live_page = Downloader.download_live_page 'Marathon'
-      script_with_data = 
-	Nokogiri::HTML(live_page).css('script').find {|s| s.text.include? 'initData'}.text
-
-      expect(script_with_data).to include '"oddsType":"Fractions"'
+    
+    it 'block from provider' do
+      allow(Downloader).to receive(:download_from_marathon).
+	and_return page_from_provider
+      
+      expect { Downloader.download_live_page 'Marathon' }.to raise_error OpenSSL::SSL::SSLError
     end
 
-    it 'williamhill without cookies' do
-      allow(Forker::Bookmakers::WilliamHill).to receive(:set_cookies).
-	and_return([])
-      live_page = Downloader.download_live_page 'WilliamHill'
-      script_with_data = 
-	Nokogiri::HTML(live_page).css('script').find {|s| s.text.include? 'flashvars'}.text
-
-      expect(script_with_data).to include 'priceFormat: "fraction"'
-    end
+    it 'get wrong argument' do
+      expect { Downloader.download_live_page 'SomethingUnique' }.to raise_error RuntimeError
+    end    
   end
 
   describe '#download_event_pages' do
     let(:sport) { 'tennis' }
-    let(:addresses) do
-      %w[ Marathon WilliamHill].map do |bookie|
-	live_page = if bookie == 'Marathon' then $marathon_live_page
-		    elsif bookie == 'WilliamHill' then $williamhill_live_page
-		    end
-	links = eval(bookie).parse_live_page(live_page, sport)
-	links.keys.first
-      end
-    end
+    let(:addresses) { [ Forker::MARATHON_BASE, Forker::WILLIAMHILL_BASE ] }
 
-    it 'check addresses' do
-      $addresses = addresses
-      expect($addresses.size).to eq 2
-      expect($addresses[0]).to include Forker::MARATHON_CHANGABLE
-      expect($addresses[1]).to include Forker::WILLIAMHILL_CHANGABLE
+    before do
+      allow(Downloader).to receive(:download_from_marathon).
+	and_return open_event_page('marathon', 'first.html')
+      allow(Downloader).to receive(:download_from_williamhill).
+	and_return open_event_page('williamhill', 'first.html')
     end
 
     it 'marathon properly' do
-      result = Downloader.download_event_pages $addresses
+      result = Downloader.download_event_pages addresses
       page = Nokogiri::HTML(result['marathon'])
       script_with_data = page.css('script').find {|s| s.text.include? 'initData'}.text
 
@@ -89,11 +72,17 @@ RSpec.describe Forker::Downloader do
     end
 
     it 'williamhill properly' do
-      result = Downloader.download_event_pages $addresses
+      result = Downloader.download_event_pages addresses
       page = Nokogiri::HTML(result['williamhill'])
 
       expect(page.css('#selectedLive').text).to include 'All Markets'
       expect(page.css('#primaryCollectionContainer').text).to include 'Match Betting Live'
+    end
+
+    it 'block from provider' do
+      allow(Downloader).to receive(:download_from_marathon).
+	and_return page_from_provider
+      expect { Downloader.download_event_pages addresses }.to raise_error OpenSSL::SSL::SSLError
     end
   end
 end
