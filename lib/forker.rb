@@ -15,11 +15,10 @@ require 'forker/bookmakers/williamhill'
 require 'forker/bookmakers/marathon'
 
 module Forker
+  open(File.dirname(__FILE__) + '/../config.yml') {|f| $config = YAML.load(f)}
 
-  ##########################################################################
-  MARATHON_CHANGABLE = 'https://www.marafonsportsbook.com'
-  WILLIAMHILL_CHANGABLE = 'http://sports.bukstavki77.com'
-  ##########################################################################
+  MARATHON_CHANGABLE = $config[:marathon_changable]
+  WILLIAMHILL_CHANGABLE = $config[:williamhill_changable]
 
   MARATHON_BASE = MARATHON_CHANGABLE + "/en"
   MARATHON_TENNIS_LIVE = MARATHON_BASE + '/live/22723'

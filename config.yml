@@ -1,8 +1,10 @@
 ---
-:min_percent: -1.99
-:time_of_notification: 5
+:marathon_changable: https://www.sportmarafonbet.com
+:williamhill_changable: http://sports.bukstavki77.com
+:min_percent: 1.0
+:time_of_notification: 20
 :filtering: false
-:sound_notification: false
+:sound_notification: true
 :log: true
 :phantomjs_logger: false
 :sport: tennis

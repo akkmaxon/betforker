@@ -2,7 +2,6 @@
 $LOAD_PATH << File.expand_path(File.dirname(__FILE__) + '/../lib')
 require 'forker'
 include Forker
-open(File.dirname(__FILE__) + '/../config.yml') {|f| $config = YAML.load(f)}
 
 class Forker::App < Thor
 

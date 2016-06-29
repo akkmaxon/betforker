@@ -30,7 +30,9 @@ module Forker
 	       print_message_before_download address if $config[:log]
 	       download_from_marathon address
 	     when 'WilliamHill'
-	       download_from_williamhill Forker::WILLIAMHILL_LIVE
+	       address = Forker::WILLIAMHILL_LIVE
+	       print_message_before_download address if $config[:log]
+	       download_from_williamhill address
 	     else
 	       raise RuntimeError, 'Unknown bookie in Download.download_live_page'
 	     end

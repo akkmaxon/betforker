@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    forker (0.2.4)
+    forker (0.2.5)
       highline (~> 1.7)
       mechanize (~> 2.7)
       nokogiri (~> 1.6)
