@@ -1,14 +1,14 @@
 ---
 :marathon_changable: https://www.sportmarafonbet.com
 :williamhill_changable: http://sports.bukstavki77.com
-:download_timeout: 25
 :min_percent: 1.0
-:time_of_notification: 20
 :filtering: false
 :sound_notification: true
-:log: true
-:phantomjs_logger: false
 :sport: tennis
 :bookmakers:
 - Marathon
 - WilliamHill
+:log: true
+:time_of_notification: 20
+:download_timeout: 25
+:phantomjs_logger: false

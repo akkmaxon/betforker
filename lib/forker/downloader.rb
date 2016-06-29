@@ -3,26 +3,22 @@ module Forker
     module_function
 
     def download_from_marathon(address)
-      begin
-	browser= marathon_cookies prepare_mechanize
-	browser.get(address).body
-      rescue OpenSSL::SSL::SSLError
-	abort 'You are blocked by provider!!!'
-      rescue SocketError
-	abort 'The address is wrong!!!'
-      end
+      browser= marathon_cookies prepare_mechanize
+      browser.get(address).body
+    rescue OpenSSL::SSL::SSLError
+      abort 'You are blocked by provider!!!'
+    rescue Mechanize::ResponseCodeError
+      abort 'The address is wrong!!!'
     end
 
     def download_from_williamhill(address)
-      begin
-	browser= williamhill_cookies Capybara.current_session
-	browser.visit(address)
-	browser.html
-      rescue OpenSSL::SSL::SSLError
-	abort 'You are blocked by provider!!!'
-      rescue SocketError
-	abort 'The address is wrong!!!'
-      end
+      browser= williamhill_cookies Capybara.current_session
+      browser.visit(address)
+      browser.html
+    rescue OpenSSL::SSL::SSLError
+      abort 'You are blocked by provider!!!'
+    rescue Capybara::Poltergeist::StatusFailError
+      abort "The address is wrong or download timeout too small (now is #{$config[:download_timeout]})!!!"
     end
 
     def download_live_page(bookie)

@@ -20,56 +20,73 @@ module Forker
     def print_current_config
       puts 'Текущая конфигурация:'
       $config.each do |key, value|
-	puts "\t#{key} => #{value}"
+	puts "\t#{translate key} => #{value}"
       end
     end
 
     def manual_enter
       result = {}
-      $config.each_with_index do |key, index|
-	puts " #{index} > #{key}"
+      $config.each_with_index do |value, index|
+	puts " #{index} - #{translate value.first}"
       end
       puts " #{$config.size} > поменять все"
       entry = ask('Выбери то, что хочешь изменить (число): ', Integer) { |q| q.in = 0..$config.size }
       result.merge case entry
 		   when 0 then set_marathon_changable
 		   when 1 then set_williamhill_changable
-		   when 2 then set_download_timeout
-		   when 3 then set_min_percent
-		   when 4 then set_time_of_notification
-		   when 5 then set_filtering
-		   when 6 then set_sound_notification
+		   when 2 then set_min_percent
+		   when 3 then set_filtering
+		   when 4 then set_sound_notification
+		   when 5 then set_sport
+		   when 6 then set_bookmakers
 		   when 7 then set_log
-		   when 8 then set_phantomjs_logger
-		   when 9 then set_sport
-		   when 10 then set_bookmakers
+		   when 8 then set_time_of_notification
+		   when 9 then set_download_timeout
+		   when 10 then set_phantomjs_logger
 		   else all_fields
 		   end
     end
 
     def all_fields
       config = {}
-      config[:marathon_changable] = set_marathon_changable
-      config[:williamhill_changable] = set_williamhill_changable
-      config[:download_timeout] = set_download_timeout
-      config[:min_percent] = set_min_percent
-      config[:time_of_notification] = set_time_of_notification
-      config[:filtering] = set_filtering
-      config[:sound_notification] = set_sound_notification
-      config[:log] = set_log
-      config[:phantomjs_logger] = set_phantomjs_logger
-      config[:sport] = set_sport
-      config[:bookmakers] = set_bookmakers
+      config.merge! set_marathon_changable
+      config.merge! set_williamhill_changable
+      config.merge! set_min_percent
+      config.merge! set_filtering
+      config.merge! set_sound_notification
+      config.merge! set_sport
+      config.merge! set_bookmakers
+      config.merge! set_log
+      config.merge! set_time_of_notification
+      config.merge! set_download_timeout
+      config.merge! set_phantomjs_logger
       config
     end
 
+    def translate(config_key)
+      case config_key
+      when :marathon_changable then 'адрес marathon'
+      when :williamhill_changable then 'адрес williamhill'
+      when :download_timeout then 'download timeout'
+      when :min_percent then 'минимальный процент вилки'
+      when :time_of_notification then 'время показа найденной вилки в секундах'
+      when :filtering then 'показ только тех вилок, что можно поставить'
+      when :sound_notification then 'звук сообщений'
+      when :log then 'показ событий в терминале'
+      when :phantomjs_logger then 'phantomjs logs'
+      when :sport then 'виды спорта'
+      when :bookmakers then 'список букмекеров'
+      else config_key
+      end
+    end
+
     def set_marathon_changable
-      address = ask("\tВпиши новый адрес формата https://newmarathontrololo.com > ")
+      address = ask("\tВпиши новый адрес формата https://www.mirrorofmarathon.com > ")
       { marathon_changable: address }
     end
 
     def set_williamhill_changable
-      address = ask("\tВпиши новый адрес формата http://sports.newwilliamhillrololo.com > ")
+      address = ask("\tВпиши новый адрес формата http://sports.mirrorofwilliamhill.com > ")
       { williamhill_changable: address }
     end
 
@@ -91,11 +108,11 @@ module Forker
     end
 
     def set_filtering
-      { filtering: true_or_false(ask("\tфильтровать показ вне перерывов (y/N) > ")) }
+      { filtering: true_or_false(ask("\tпоказывать вилки ТОЛЬКО в перерывах (y/N) > ")) }
     end
 
     def set_sound_notification
-      { sound_notification: true_or_false(ask("\tзвук найденной вилки (y/N) > ")) }
+      { sound_notification: true_or_false(ask("\tвключить звук (y/N) > ")) }
     end
 
     def set_log
