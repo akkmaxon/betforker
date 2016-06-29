@@ -1,5 +1,7 @@
 module Forker
   module Downloader
+    module_function
+
     def download_from_marathon(address)
       begin
 	browser= marathon_cookies prepare_mechanize

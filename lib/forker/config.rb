@@ -1,5 +1,7 @@
 module Forker
   module Config
+    module_function
+
     def update
       print_current_config
       if true_or_false ask 'Будешь что-нибудь менять? (y/N) '
@@ -27,7 +29,7 @@ module Forker
       $config.each_with_index do |key, index|
 	puts " #{index} > #{key}"
       end
-      puts "#{$config.size} > поменять все"
+      puts " #{$config.size} > поменять все"
       entry = ask('Выбери то, что хочешь изменить (число): ', Integer) { |q| q.in = 0..$config.size }
       result.merge case entry
 		   when 0 then set_marathon_changable

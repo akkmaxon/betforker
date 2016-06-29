@@ -1,8 +1,9 @@
 module Forker
   module Bookmakers
     module WilliamHill
+      module_function
 
-      def self.parse_live_page(html, sport)
+      def parse_live_page(html, sport)
 	nok = Nokogiri::HTML(html)
 	links = Hash.new
 	nok.css('#ip_sport_24_types .CentrePad a').each do |link|
@@ -14,7 +15,7 @@ module Forker
 	links
       end
 
-      def self.parse_event(event, sport)
+      def parse_event(event, sport)
 	result = Forker::ParsedPage.new bookie: 'WilliamHill'
 	html = extract_html_from(event)
 	return event if html.nil?
@@ -32,12 +33,12 @@ module Forker
 	event.parsed_webpages << result
       end
 
-      def self.extract_html_from(event)
+      def extract_html_from(event)
 	arr = event.webpages.values_at 'williamhill'
 	arr.first
       end
 
-      def self.concatenated_names(string)
+      def concatenated_names(string)
 	w = []
 	if string.include?(' v ')
 	  string.split(' v ').each do |pl|
@@ -51,7 +52,7 @@ module Forker
 	result
       end
 
-      def self.second_names_finder(names)
+      def second_names_finder(names)
 	w = []
 	names.gsub!('-', ' ')
 	if names.include? '/'
@@ -64,7 +65,7 @@ module Forker
 	w
       end
 
-      def self.target_filler(market, title, home_away, result)
+      def target_filler(market, title, home_away, result)
 	result = result
 	case home_away
 	when 'home'
@@ -96,7 +97,7 @@ module Forker
 	result
       end
 
-      def self.set_cookies
+      def set_cookies
 	domain = Forker::WILLIAMHILL_CHANGABLE.split('//').last.gsub('sports', '')
 	[{
 	  name: 'cust_lang',

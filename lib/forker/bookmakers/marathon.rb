@@ -1,7 +1,9 @@
 module Forker
   module Bookmakers
     module Marathon
-      def self.parse_live_page(html, sport)
+      module_function
+
+      def parse_live_page(html, sport)
 	nok = Nokogiri::HTML(html)
 	links = {}
 	nok.css('tbody').each do |table|
@@ -14,7 +16,7 @@ module Forker
 	links
       end
 
-      def self.parse_event(event, sport)
+      def parse_event(event, sport)
 	result = Forker::ParsedPage.new bookie: 'Marathon'
 	html = extract_html_from(event)
 	return event if html.nil?
@@ -71,12 +73,12 @@ module Forker
 	event.parsed_webpages << result
       end
 
-      def self.extract_html_from(event)
+      def extract_html_from(event)
 	arr = event.webpages.values_at 'marathon'
 	arr.first
       end
 
-      def self.concatenated_names(string)
+      def concatenated_names(string)
 	w = []
 	if string.include?(' v ')
 	  string.split(' v ').each do |pl|
@@ -90,7 +92,7 @@ module Forker
 	who
       end
 
-      def self.second_names_finder(names)
+      def second_names_finder(names)
 	second_name = []
 	if names.include?('/')
 	  nn = names.split(/\//)
@@ -105,7 +107,7 @@ module Forker
 	second_name
       end
 
-      def self.set_cookies
+      def set_cookies
 	domain = Forker::MARATHON_CHANGABLE.gsub('https://www', '')
 	[{
 	  domain: domain,

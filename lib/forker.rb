@@ -78,10 +78,7 @@ module Forker
     print "^ #{events.size} events of #{sport} ^"
     puts '=' * 20
   end
-
   include Bookmakers
-  include Downloader
-  include Config
 end
 
 include Forker

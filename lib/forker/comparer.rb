@@ -1,10 +1,11 @@
 module Forker
   module Comparer
-
     UNREAL_PERCENT = 25
     FAKE_PERCENT = -3.5
 
-    def self.compare(first, second)
+    module_function
+
+    def compare(first, second)
       return [] if first.bookie == second.bookie
       forks = []
       check_sorting first, second
@@ -27,17 +28,17 @@ module Forker
       end
     end
 
-    def self.same_players?(first, second)
+    def same_players?(first, second)
       first.home_player[:name] == second.home_player[:name] && 
 	first.away_player[:name] == second.away_player[:name]
     end
 
-    def self.change_names(object)
+    def change_names(object)
       object.home_player, object.away_player =
 	object.away_player, object.home_player
     end
     
-    def self.check_sorting(first, second)
+    def check_sorting(first, second)
       [first, second].each do |k|
 	if k.home_player[:name] > k.away_player[:name]
 	  change_names k
@@ -45,11 +46,11 @@ module Forker
       end
     end
 
-    def self.init_score(first, second)
+    def init_score(first, second)
       if first.score.empty? then second.score else first.score end
     end
 
-    def self.fork_template(first, second)
+    def fork_template(first, second)
       {
 	bookmakers: "#{first.bookie} - #{second.bookie}",
 	players: "#{first.home_player[:name]}  VS  #{first.away_player[:name]}",
@@ -57,7 +58,7 @@ module Forker
       }
     end
 
-    def self.market_processing(market, first, second, break_now = true)
+    def market_processing(market, first, second, break_now = true)
       result = []
       if first.home_player.key?(market) and second.home_player.key?(market) and break_now
 	respond = case market
@@ -78,7 +79,7 @@ module Forker
       result
     end
 
-    def self.calculate(x, y)
+    def calculate(x, y)
       return FAKE_PERCENT if x == 0.0 or y == 0.0
       x_bet = 100.0
       sum_of_win = x * x_bet
@@ -90,7 +91,7 @@ module Forker
       percent
     end
 
-    def self.match_win(first, second)
+    def match_win(first, second)
       respond = {}
       percent_straight = calculate(first.home_player[:match], second.away_player[:match])
       percent_reverse = calculate(first.away_player[:match], second.home_player[:match])
@@ -102,7 +103,7 @@ module Forker
       respond
     end
 
-    def self.game_or_set_win(param, first, second)
+    def game_or_set_win(param, first, second)
       respond = []
       percent_straight = {}
       percent_reverse = {}
@@ -135,7 +136,7 @@ module Forker
       respond
     end
 
-    def self.is_a_break?(score)
+    def is_a_break?(score)
       g1, g2, s1, s2 = score_parser(score)
       end_of_set = ((s1 + s2) == 12 and s1 != s2) || ((s1 == 6 and (s1 - s2) > 1) || (s2 == 6 and (s2 - s1) > 1))
       if (g1 + g2) == 0 and ((s1 + s2) == 0 or (s1 + s2).odd? or end_of_set)
@@ -145,7 +146,7 @@ module Forker
       end
     end
 
-    def self.score_analyzer(forks, filtering)
+    def score_analyzer(forks, filtering)
       return forks if forks.empty? or not filtering
       forks.each do |f|
 	next unless f[:what].include?('game')
@@ -157,7 +158,7 @@ module Forker
       forks
     end
 
-    def self.score_parser(score)
+    def score_parser(score)
       s = score.split(/\(|\)|,/)
       if s.size == 1 or score[0] == ' '
 	games = '0:0'

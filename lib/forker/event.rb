@@ -47,11 +47,10 @@ module Forker
 
     def print_message_about_event(total_count, number)
       puts "\n\n#{'*' * 20} work with #{number}/#{total_count} #{'*' * 20}"
-      @addresses.each { |addr|	puts addr }
     end
 
     def print_parsed_webpages
-      puts "#{'-' * 20} Parsed event"
+      puts "\n#{'-' * 20} Parsed event"
       @parsed_webpages.each do |parsed|
 	puts <<-EOF
 #{parsed.bookie}, score: #{parsed.score}
