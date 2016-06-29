@@ -32,14 +32,15 @@ module Forker
       result.merge case entry
 		   when 0 then set_marathon_changable
 		   when 1 then set_williamhill_changable
-		   when 2 then set_min_percent
-		   when 3 then set_time_of_notification
-		   when 4 then set_filtering
-		   when 5 then set_sound_notification
-		   when 6 then set_log
-		   when 7 then set_phantomjs_logger
-		   when 8 then set_sport
-		   when 9 then set_bookmakers
+		   when 2 then set_download_timeout
+		   when 3 then set_min_percent
+		   when 4 then set_time_of_notification
+		   when 5 then set_filtering
+		   when 6 then set_sound_notification
+		   when 7 then set_log
+		   when 8 then set_phantomjs_logger
+		   when 9 then set_sport
+		   when 10 then set_bookmakers
 		   else all_fields
 		   end
     end
@@ -48,6 +49,7 @@ module Forker
       config = {}
       config[:marathon_changable] = set_marathon_changable
       config[:williamhill_changable] = set_williamhill_changable
+      config[:download_timeout] = set_download_timeout
       config[:min_percent] = set_min_percent
       config[:time_of_notification] = set_time_of_notification
       config[:filtering] = set_filtering
@@ -67,6 +69,11 @@ module Forker
     def set_williamhill_changable
       address = ask("\tВпиши новый адрес формата http://sports.newwilliamhillrololo.com > ")
       { williamhill_changable: address }
+    end
+
+    def set_download_timeout
+      timeout = ask("\tdownloader timeout > ", Integer)
+      { download_timeout: timeout }
     end
 
     def set_min_percent

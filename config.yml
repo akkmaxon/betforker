@@ -1,6 +1,7 @@
 ---
 :marathon_changable: https://www.sportmarafonbet.com
 :williamhill_changable: http://sports.bukstavki77.com
+:download_timeout: 25
 :min_percent: 1.0
 :time_of_notification: 20
 :filtering: false

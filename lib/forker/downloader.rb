@@ -60,7 +60,7 @@ module Forker
     end
 
     def browsers_timeout
-      10
+      $config[:download_timeout]
     end
 
     def prepare_mechanize
