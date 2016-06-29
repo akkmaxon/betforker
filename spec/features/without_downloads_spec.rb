@@ -4,7 +4,7 @@ RSpec.describe 'Forker finds forks without downloads' do
   let(:sport) { 'tennis' }
   let(:event) { Forker::Event.new [1,2,3], sport }
   before do
-    $config = { min_percent: 1.1, filtering: true }
+    $config = { min_percent: 1.1, filtering: true , bookmakers: ['Marathon', 'WilliamHill'] }
   end
 
   describe 'beginning with parsed webpages' do
@@ -112,6 +112,27 @@ RSpec.describe 'Forker finds forks without downloads' do
       expect(forks.size).to eq 1
       expect(f.what).to eq 'game7'
       expect(f.bookmakers).to eq 'Marathon - WilliamHill'
+    end
+  end
+
+  describe 'from the beginning' do
+    it 'one time' do
+      allow(Forker).to receive(:pull_live_events).
+	and_return unstructured_events
+      allow(Downloader).to receive(:download_from_marathon).
+	and_return open_event_page('marathon', 'with_forks.html')
+      allow(Downloader).to receive(:download_from_williamhill).
+	and_return open_event_page('williamhill', 'with_forks.html')
+
+      events = Forker.build_events ['Marathon', 'WilliamHill'], sport
+      expect(events.size).to eq structured_events.size
+
+      events.each do |ev|
+	forks = ev.find_forks
+	if ev.addresses.include?(Forker::MARATHON_BASE) and ev.addresses.include?(Forker::WILLIAMHILL_BASE)
+	  expect(forks).to_not be_empty
+	end
+      end
     end
   end
 end

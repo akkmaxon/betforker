@@ -14,7 +14,8 @@ module Forker
     def download_from_williamhill(address)
       begin
 	browser= williamhill_cookies Capybara.current_session
-	browser.visit(address).html
+	browser.visit(address)
+	browser.html
       rescue OpenSSL::SSL::SSLError
 	abort 'You are blocked by provider!!!'
       rescue SocketError
@@ -41,12 +42,14 @@ module Forker
       result = {}
       addresses.each do |address|
         print_message_before_download address if $config[:log]
-	if address.include? Forker::MARATHON_BASE
+	if address.include? Forker::MARATHON_CHANGABLE
 	  html = download_from_marathon address
 	  result['marathon'] = html
-	elsif address.include? Forker::WILLIAMHILL_BASE
+	elsif address.include? Forker::WILLIAMHILL_CHANGABLE
 	  html = download_from_williamhill address
 	  result['williamhill'] = html
+	else
+	  next
 	end
 	print_message_after_download html if $config[:log]
 	approved_page html

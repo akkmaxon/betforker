@@ -30,6 +30,38 @@ module MyHelpers
     open_event_page('fake', 'fake.html')
   end
 
+  def unstructured_events
+    {
+      "#{Forker::MARATHON_BASE}1" => 'FirstSecond',
+      "#{Forker::WILLIAMHILL_BASE}1" => 'FirstSecond',
+      'pm_second_addr' => 'FirstSecond',
+      'br_first_addr' => 'FirstSecond',
+      "#{Forker::MARATHON_BASE}2" => 'ThirdFourth',
+      "#{Forker::WILLIAMHILL_BASE}2" => 'ThirdFourth',
+      'br_second_addr' => 'ThirdFourth',
+      "#{Forker::MARATHON_BASE}3" => 'FifthSixth',
+      'pm_first_addr' => 'FifthSixth',
+      'br_third_addr' => 'FifthSixth',
+      "#{Forker::WILLIAMHILL_BASE}3" => 'NoSuchPlayers',
+      "#{Forker::WILLIAMHILL_BASE}4" => 'NoMoreSuchPlayers'
+      }
+  end
+
+  def structured_events
+    {
+      'FirstSecond' => ["#{Forker::MARATHON_BASE}1",
+			"#{Forker::WILLIAMHILL_BASE}1",
+			'pm_second_addr',
+			'br_first_addr'],
+      'ThirdFourth' => ["#{Forker::MARATHON_BASE}2",
+			"#{Forker::WILLIAMHILL_BASE}2",
+			'br_second_addr'],
+      'FifthSixth' => ["#{Forker::MARATHON_BASE}3",
+		       'pm_first_addr',
+		       'br_third_addr']
+      }
+  end
+
   def page_from_provider
     <<-EOF
     <!doctype html>
