@@ -10,19 +10,24 @@ class Forker::App < Thor
     ARGV << 'default'
   end
 
-  desc 'events, [-e]', 'List all current live events and exit'
+  desc 'config', 'Change app\'s configuration'
+  map '-c' => :config, '--config' => :config
+  def config
+    if Config.update
+      open(File.dirname(__FILE__) + '/../config.yml', 'w') do |file|
+	yaml = YAML.dump $config
+	file.write yaml
+      end
+    end
+  end
+
+  desc 'events', 'List all current live events and exit'
   map '-e' => :events, '--events' => :events
   def events
     Forker.build_events $config[:bookmakers], $config[:sport]
   end
 
-  desc 'bookmaker BOOKMAKER, [-b]', 'Show only certain BOOKMAKER'
-  map '-b' => :bookmaker, '--bookmaker' => :bookmaker
-  def bookmaker(bookie)
-    say "You will see all about #{bookie} soon"
-  end
-
-  desc 'parse ADDRESS, [-p]', 'Parse event of given address'
+  desc 'parse ADDRESS', 'Parse event of given address'
   map '-p' => :parse, '--parse' => :parse
   def parse(address)
     Downloader.prepare_phantomjs
@@ -32,20 +37,20 @@ class Forker::App < Thor
     event.print_parsed_webpages
   end
 
-  desc 'version, [-v]', 'Show version of forker'
+  desc 'version', 'Show version of forker'
   map '-v' => :version, '--version' => :version
   def version
     say "Version: #{Forker::VERSION}"
   end
 
-  desc 'silent, [-s]', 'Run forker without logs with showing only desktop notifications'
+  desc 'silent', 'Run forker without logs with showing only desktop notifications'
   map '-s' => :silent, '--silent' => :silent
   def silent
     $config[:log] = false
     default
   end
 
-  desc 'default', 'Run forker with logs and notifications if forks were found'
+  desc 'default', 'Run forker with logs and notifications if forks were found(default mode)'
   def default
     loop do
       events = Forker::build_events $config[:bookmakers], $config[:sport]

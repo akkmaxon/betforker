@@ -1,7 +1,6 @@
 require 'forker'
 
 module MyHelpers
-  $config = { min_percent: 1.1, filtering: true }
 
   HTML_PATH = File.expand_path('../support/html', __FILE__)
 

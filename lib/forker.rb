@@ -3,24 +3,18 @@ require 'yaml'
 require 'nokogiri'
 require 'mechanize'
 require 'thor'
+require 'highline/import'
 require 'forker/version'
 require 'forker/event'
 require 'forker/parsed_page'
 require 'forker/downloader'
 require 'forker/comparer'
 require 'forker/fork'
-require 'forker/output'
+require 'forker/config'
 require 'forker/bookmakers/williamhill'
 require 'forker/bookmakers/marathon'
-require 'forker/bookmakers/__to_change__/betfair'
-require 'forker/bookmakers/__to_change__/parimatch'
-require 'forker/bookmakers/__to_change__/sbobet'
-require 'forker/bookmakers/__to_change__/winlinebet'
-require 'forker/names_winlinebet'
 
 module Forker
-  include Bookmakers
-  include Downloader
 
   ##########################################################################
   MARATHON_CHANGABLE = 'https://www.marafonsportsbook.com'
@@ -85,6 +79,10 @@ module Forker
     print "^ #{events.size} events of #{sport} ^"
     puts '=' * 20
   end
+
+  include Bookmakers
+  include Downloader
+  include Config
 end
 
 include Forker

@@ -3,6 +3,9 @@ require 'spec_helper'
 RSpec.describe 'Forker finds forks without downloads' do
   let(:sport) { 'tennis' }
   let(:event) { Forker::Event.new [1,2,3], sport }
+  before do
+    $config = { min_percent: 1.1, filtering: true }
+  end
 
   describe 'beginning with parsed webpages' do
     it 'with many forks' do

@@ -1,7 +1,8 @@
 PATH
   remote: .
   specs:
-    forker (0.2.2)
+    forker (0.2.3)
+      highline
       mechanize
       nokogiri
       poltergeist
@@ -22,6 +23,7 @@ GEM
     diff-lcs (1.2.5)
     domain_name (0.5.20160615)
       unf (>= 0.0.5, < 1.0.0)
+    highline (1.7.8)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     mechanize (2.7.4)

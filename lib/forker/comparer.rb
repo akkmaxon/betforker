@@ -1,6 +1,9 @@
 module Forker
   module Comparer
 
+    UNREAL_PERCENT = 25
+    FAKE_PERCENT = -3.5
+
     def self.compare(first, second)
       return [] if first.bookie == second.bookie
       forks = []
@@ -76,14 +79,14 @@ module Forker
     end
 
     def self.calculate(x, y)
-      return -3.5 if x == 0.0 or y == 0.0
+      return FAKE_PERCENT if x == 0.0 or y == 0.0
       x_bet = 100.0
       sum_of_win = x * x_bet
       y_bet = sum_of_win / y
       sum_of_bet = x_bet + y_bet
       profit = sum_of_win - sum_of_bet
       percent = (profit / sum_of_bet) * 100
-      percent = -3.5 if percent > 25
+      percent = FAKE_PERCENT if percent >= UNREAL_PERCENT
       percent
     end
 
