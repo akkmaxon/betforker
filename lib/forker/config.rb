@@ -2,6 +2,51 @@ module Forker
   module Config
     module_function
 
+    PERSONAL_CONFIG = "#{ENV['HOME']}/.forker.conf.yml"
+
+    def config_initialization!
+      template= YAML.load File.open(File.dirname(__FILE__) + '/../../config.yml', 'r')
+      write_personal_config(template) unless File.exist? PERSONAL_CONFIG
+      personal= YAML.load File.open(PERSONAL_CONFIG, 'r')
+      $config = check_personal_configuration template, personal
+    end
+
+    def check_personal_configuration(template, personal)
+      same_values = []
+      2.times do
+	if template.keys == personal.keys
+	  template.values.each_with_index do |tempval, index|
+	    same_values << same_typeofs(tempval.class, personal.values[index].class)
+	  end
+	  if same_values.include? false
+	    template.each do |key, value|
+	      personal[key] = value unless same_typeofs value.class, personal[key].class
+	    end
+	    write_personal_config(personal)
+	  end
+	  break
+	else
+	  template.each do |key, value|
+	    personal[key] = value unless personal[key]
+	  end
+	  write_personal_config(personal)
+	end
+      end
+      personal
+    end
+
+    def same_typeofs(a, b)
+      (a == b) or (a == TrueClass and b == FalseClass) or
+      (a == FalseClass and b == TrueClass)
+    end
+
+    def write_personal_config(config)
+      File.open(PERSONAL_CONFIG, 'w') do |file|
+	yaml = YAML.dump config
+	file.write yaml
+      end
+    end
+
     def update
       print_current_config
       if true_or_false ask 'Будешь что-нибудь менять? (y/N) '
@@ -20,16 +65,16 @@ module Forker
     def print_current_config
       puts 'Текущая конфигурация:'
       $config.each do |key, value|
-	puts "\t#{translate key} => #{value}"
+	puts "   #{translate key} => #{value}"
       end
     end
 
     def manual_enter
       result = {}
       $config.each_with_index do |value, index|
-	puts " #{index} - #{translate value.first}"
+	puts "   #{index} - #{translate value.first}"
       end
-      puts " #{$config.size} > поменять все"
+      puts "   #{$config.size} - поменять все"
       entry = ask('Выбери то, что хочешь изменить (число): ', Integer) { |q| q.in = 0..$config.size }
       result.merge case entry
 		   when 0 then set_marathon_changable
@@ -81,46 +126,46 @@ module Forker
     end
 
     def set_marathon_changable
-      address = ask("\tВпиши новый адрес формата https://www.mirrorofmarathon.com > ")
+      address = ask("Впиши новый адрес формата https://www.mirrorofmarathon.com > ")
       { marathon_changable: address }
     end
 
     def set_williamhill_changable
-      address = ask("\tВпиши новый адрес формата http://sports.mirrorofwilliamhill.com > ")
+      address = ask("Впиши новый адрес формата http://sports.mirrorofwilliamhill.com > ")
       { williamhill_changable: address }
     end
 
     def set_download_timeout
-      timeout = ask("\tdownloader timeout > ", Integer)
+      timeout = ask("downloader timeout > ", Integer)
       { download_timeout: timeout }
     end
 
     def set_min_percent
-      percent = ask("\tминимальный процент (число) > ", Float) do |q|
+      percent = ask("минимальный процент (число) > ", Float) do |q|
 	q.in = Forker::Comparer::FAKE_PERCENT...Forker::Comparer::UNREAL_PERCENT
       end
       { min_percent: percent }
     end
 
     def set_time_of_notification
-      time = ask("\tвремя показа вилки в секундах > ", Integer) { |q| q.in = 1..120 }
+      time = ask("время показа вилки в секундах > ", Integer) { |q| q.in = 1..120 }
       { time_of_notification: time }
     end
 
     def set_filtering
-      { filtering: true_or_false(ask("\tпоказывать вилки ТОЛЬКО в перерывах (y/N) > ")) }
+      { filtering: true_or_false(ask("показывать вилки ТОЛЬКО в перерывах (y/N) > ")) }
     end
 
     def set_sound_notification
-      { sound_notification: true_or_false(ask("\tвключить звук (y/N) > ")) }
+      { sound_notification: true_or_false(ask("включить звук (y/N) > ")) }
     end
 
     def set_log
-      { log: true_or_false(ask("\tпоказывать в терминале, что происходит (y/N) > ")) }
+      { log: true_or_false(ask("показывать в терминале, что происходит (y/N) > ")) }
     end
 
     def set_phantomjs_logger
-      { phantomjs_logger: true_or_false(ask("\tпоказывать логи phantomjs (y/N) > ")) }
+      { phantomjs_logger: true_or_false(ask("показывать логи phantomjs (y/N) > ")) }
     end
 
     def set_sport

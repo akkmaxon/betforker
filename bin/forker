@@ -12,11 +12,8 @@ class Forker::App < Thor
   desc 'config', 'Change app\'s configuration'
   map '-c' => :config, '--config' => :config
   def config
-    if Config.update
-      open(File.dirname(__FILE__) + '/../config.yml', 'w') do |file|
-	yaml = YAML.dump $config
-	file.write yaml
-      end
+    if Forker::Config.update
+      Forker::Config.write_personal_config $config
     end
   end
 

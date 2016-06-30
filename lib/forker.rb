@@ -15,11 +15,10 @@ require 'forker/bookmakers/williamhill'
 require 'forker/bookmakers/marathon'
 
 module Forker
-  open(File.dirname(__FILE__) + '/../config.yml') {|f| $config = YAML.load(f)}
+  Config.config_initialization!
 
-  MARATHON_CHANGABLE = $config[:marathon_changable]
-  WILLIAMHILL_CHANGABLE = $config[:williamhill_changable]
-
+  MARATHON_CHANGABLE =  $config[:marathon_changable]
+  WILLIAMHILL_CHANGABLE =  $config[:williamhill_changable]
   MARATHON_BASE = MARATHON_CHANGABLE + "/en"
   MARATHON_TENNIS_LIVE = MARATHON_BASE + '/live/22723'
   WILLIAMHILL_BASE = WILLIAMHILL_CHANGABLE + "/bet/en-ie"
@@ -78,6 +77,7 @@ module Forker
     print "^ #{events.size} events of #{sport} ^"
     puts '=' * 20
   end
+
   include Bookmakers
 end
 
