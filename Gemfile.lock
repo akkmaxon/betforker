@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    betforker (1.0.0)
+    betforker (1.0.1)
       highline (~> 1.7)
       mechanize (~> 2.7)
       nokogiri (~> 1.6)

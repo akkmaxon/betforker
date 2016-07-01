@@ -4,11 +4,12 @@ RSpec.describe Betforker::Config do
   describe '.update' do
     before do
       $config = { a: 'cc', b: 10, c: true }
+      allow(Config).to receive(:manual_enter).and_return(
+	{ a: 'aa', b: 15, c: false })
+      allow(Config).to receive(:write_personal_config).and_return nil
     end
 
     it 'user can update config' do
-      allow(Config).to receive(:manual_enter).and_return(
-	{ a: 'aa', b: 15, c: false })
       values = Config.manual_enter
       Config.update_config values
 
