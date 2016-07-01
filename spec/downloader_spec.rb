@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Forker::Downloader do
+RSpec.describe Betforker::Downloader do
   describe '#download_live_page' do
     before do
       $config  = { log: false }
@@ -49,7 +49,7 @@ RSpec.describe Forker::Downloader do
 
   describe '#download_event_pages' do
     let(:sport) { 'tennis' }
-    let(:addresses) { [ Forker::MARATHON_BASE, Forker::WILLIAMHILL_BASE ] }
+    let(:addresses) { [ Betforker::MARATHON_BASE, Betforker::WILLIAMHILL_BASE ] }
 
     before do
       allow(Downloader).to receive(:download_from_marathon).

@@ -1,10 +1,10 @@
-# forker
+# betforker
 
 [![Build Status](https://travis-ci.org/akkmaxon/forker.svg?branch=master)](https://travis-ci.org/akkmaxon/forker)
 
 ## Description
 
-The app for looking for bet forks.
+The app is looking for bet forks.
 
 ## Installation
 
@@ -13,9 +13,9 @@ Requirements:
 - ruby
 - phantomjs
 
-Inside the cloned directory run:
+After that run:
 
-    $ gem install ./forker.gem
+    $ gem install betforker
 
 Do not forget about extending your $PATH with rubygems' binaries.
 
@@ -23,11 +23,11 @@ Do not forget about extending your $PATH with rubygems' binaries.
 
 Execute the app:
 
-    $ forker
+    $ betforker
 
 View help:
 
-    $ forker help
+    $ betforker help
 
 ## License
 

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Forker::Bookmakers::WilliamHill do
+RSpec.describe Betforker::Bookmakers::WilliamHill do
   describe '#parse_live_page' do
     let(:sport) { 'tennis' }
     let(:result) { WilliamHill.parse_live_page(webpage, sport) }
@@ -13,7 +13,7 @@ RSpec.describe Forker::Bookmakers::WilliamHill do
 
       it "every hash key contains address" do
 	result.keys.each do |key|
-	  expect(key).to include Forker::WILLIAMHILL_BASE
+	  expect(key).to include Betforker::WILLIAMHILL_BASE
 	end
       end
     end

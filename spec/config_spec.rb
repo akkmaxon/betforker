@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Forker::Config do
+RSpec.describe Betforker::Config do
   describe '.update' do
     before do
       $config = { a: 'cc', b: 10, c: true }

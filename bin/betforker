@@ -1,0 +1,66 @@
+#!/usr/bin/env ruby
+$LOAD_PATH << File.expand_path(File.dirname(__FILE__) + '/../lib')
+require 'betforker'
+include Betforker
+
+class Betforker::App < Thor
+
+  if ARGV.size == 0
+    ARGV << 'default'
+  end
+
+  desc 'config', 'Change app\'s configuration'
+  map '-c' => :config, '--config' => :config
+  def config
+    if Betforker::Config.update
+      Betforker::Config.write_personal_config $config
+    end
+  end
+
+  desc 'events', 'List all current live events and exit'
+  map '-e' => :events, '--events' => :events
+  def events
+    Betforker.build_events $config[:bookmakers], $config[:sport]
+  end
+
+  desc 'parse ADDRESS', 'Parse event of given address'
+  map '-p' => :parse, '--parse' => :parse
+  def parse(address)
+    Downloader.prepare_phantomjs
+    event = Event.new [address]
+    event.get_webpages
+    event.parse_webpages $config[:bookmakers]
+    event.print_parsed_webpages
+  end
+
+  desc 'version', 'Show version of betforker'
+  map '-v' => :version, '--version' => :version
+  def version
+    say "Version: #{Betforker::VERSION}"
+  end
+
+  desc 'silent', 'Run betforker without logs with showing only desktop notifications'
+  map '-s' => :silent, '--silent' => :silent
+  def silent
+    $config[:log] = false
+    default
+  end
+
+  desc 'default', 'Run betforker with logs and notifications if forks were found(default mode)'
+  def default
+    loop do
+      events = Betforker::build_events $config[:bookmakers], $config[:sport]
+      events_size = events.size
+      events.each_with_index do |event, index|
+	event.print_message_about_event(events_size, index + 1) if $config[:log]
+	forks = event.find_forks
+	forks.each do |f|
+	  f.desktop_show
+	end
+      end
+      Capybara.current_session.driver.browser.restart
+    end
+  end
+end
+
+Betforker::App.start

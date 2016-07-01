@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    forker (0.2.9)
+    betforker (0.2.9)
       highline (~> 1.7)
       mechanize (~> 2.7)
       nokogiri (~> 1.6)
@@ -82,7 +82,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  forker!
+  betforker!
   rake (~> 11.2)
   rspec (~> 3.4)
 

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Forker::Comparer do
+RSpec.describe Betforker::Comparer do
   before do
     $config = { min_percent: 1.1, filtering: true }
   end

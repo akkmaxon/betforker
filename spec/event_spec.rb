@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Forker::Event do
+RSpec.describe Betforker::Event do
   let(:sport) { 'tennis' }
   let(:addresses) do
     [ 'http://first-valid-address.com',
@@ -61,7 +61,7 @@ RSpec.describe Forker::Event do
       result = event.parsed_webpages
 
       expect(result.size).to eq 1
-      expect(result.first.class).to eq Forker::ParsedPage
+      expect(result.first.class).to eq Betforker::ParsedPage
     end
   end
 

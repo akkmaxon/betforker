@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Forker::Fork do
+RSpec.describe Betforker::Fork do
   describe '#show' do
     let(:data) do
       { bookmakers: 'First - Second',
