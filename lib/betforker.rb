@@ -15,10 +15,10 @@ require 'betforker/bookmakers/williamhill'
 require 'betforker/bookmakers/marathon'
 
 module Betforker
-  Config.config_initialization!
+  include Bookmakers
+  module_function
 
-  MARATHON_CHANGABLE =  $config[:marathon_changable]
-  WILLIAMHILL_CHANGABLE =  $config[:williamhill_changable]
+  MARATHON_CHANGABLE, WILLIAMHILL_CHANGABLE = Config.changable_addresses
   MARATHON_BASE = MARATHON_CHANGABLE + "/en"
   MARATHON_TENNIS_LIVE = MARATHON_BASE + '/live/22723'
   WILLIAMHILL_BASE = WILLIAMHILL_CHANGABLE + "/bet/en-ie"
@@ -77,8 +77,4 @@ module Betforker
     print "^ #{events.size} events of #{sport} ^"
     puts '=' * 20
   end
-
-  include Bookmakers
 end
-
-include Betforker

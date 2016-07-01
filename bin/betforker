@@ -12,9 +12,7 @@ class Betforker::App < Thor
   desc 'config', 'Change app\'s configuration'
   map '-c' => :config, '--config' => :config
   def config
-    if Betforker::Config.update
-      Betforker::Config.write_personal_config $config
-    end
+    Betforker::Config.update
   end
 
   desc 'events', 'List all current live events and exit'

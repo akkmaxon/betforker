@@ -1,4 +1,5 @@
 require 'betforker'
+include Betforker
 
 module MyHelpers
 

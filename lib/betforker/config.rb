@@ -11,6 +11,12 @@ module Betforker
       $config = check_personal_configuration template, personal
     end
 
+    def changable_addresses
+      config_initialization!
+      [$config[:marathon_changable],
+       $config[:williamhill_changable]]
+    end
+
     def check_personal_configuration(template, personal)
       same_values = []
       2.times do
@@ -57,18 +63,20 @@ module Betforker
 
     def update
       print_current_config
-      if true_or_false ask 'Будешь что-нибудь менять? (y/N) '
+      change = true_or_false ask('Будешь что-нибудь менять? (y/N) ')
+      while change
 	new_values = manual_enter
 	update_config new_values
 	print_current_config
+	change = true_or_false ask('Что нибудь еще? (y/N) ')
       end
     end
 
     def update_config(values)
-      $config = {}
       values.each do |key, value|
 	$config[key] = value
       end
+      write_personal_config $config
     end
 
     def print_current_config
@@ -101,6 +109,7 @@ module Betforker
 		   end
     end
 
+  #!!!!!!!!!!!!!!! ^ and V should be synchronized !!!!!!!!!!!!!!
     def all_fields
       config = {}
       config.merge! set_marathon_changable
