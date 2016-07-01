@@ -27,7 +27,7 @@ module Betforker
 	  if same_values.include? false
 	    new = {}
 	    template.each do |key, value|
-	      new[key] = if same_typeofs value.class, personal[key].class
+	      new[key] = if same_typeofs(value.class, personal[key].class)
 			   personal[key]
 			 else
 			   value
@@ -40,7 +40,7 @@ module Betforker
 	else
 	  new = {}
 	  template.each do |key, value|
-	    new[key] = if personal[key] then personal[key] else value end
+	    new[key] = if personal.key?(key) then personal[key] else value end
 	  end
 	  personal = new
 	  write_personal_config(personal)
