@@ -19,16 +19,24 @@ module Forker
 	    same_values << same_typeofs(tempval.class, personal.values[index].class)
 	  end
 	  if same_values.include? false
+	    new = {}
 	    template.each do |key, value|
-	      personal[key] = value unless same_typeofs value.class, personal[key].class
+	      new[key] = if same_typeofs value.class, personal[key].class
+			   personal[key]
+			 else
+			   value
+			 end
 	    end
+	    personal = new
 	    write_personal_config(personal)
 	  end
 	  break
 	else
+	  new = {}
 	  template.each do |key, value|
-	    personal[key] = value unless personal[key]
+	    new[key] = if personal[key] then personal[key] else value end
 	  end
+	  personal = new
 	  write_personal_config(personal)
 	end
       end
@@ -57,6 +65,7 @@ module Forker
     end
 
     def update_config(values)
+      $config = {}
       values.each do |key, value|
 	$config[key] = value
       end
