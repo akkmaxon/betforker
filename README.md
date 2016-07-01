@@ -1,6 +1,6 @@
 # betforker
 
-[![Build Status](https://travis-ci.org/akkmaxon/forker.svg?branch=master)](https://travis-ci.org/akkmaxon/forker)
+[![Build Status](https://travis-ci.org/akkmaxon/betforker.svg?branch=master)](https://travis-ci.org/akkmaxon/betforker)
 
 ## Description
 
